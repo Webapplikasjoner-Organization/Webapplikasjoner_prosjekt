@@ -4,6 +4,8 @@ import { GameList } from "../../components/GameList";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageLayout } from "@/components/PageLayout";
+import { FilterPanel } from "@/components/FilterPanel";
+import { SortPanel } from "@/components/SortPanel";
 
 /**
  * En server-komponent. Den kjører på serveren, én gang per forespørsel, og
@@ -52,7 +54,10 @@ export function Home() {
   return (
     <main>
       <PageLayout>
-        <GameList />
+        <h1>Main page</h1>
+        <FilterPanel />
+        <SortPanel />
+        <p>Here is something to do with games.</p>
       </PageLayout>
     </main>
   );

@@ -4,9 +4,13 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { CreateUserPage } from "@/app/pages/CreateUserPage";
 import { Home } from "./app/pages/Home";
+//import GamePage from "./app/pages/GamePage";
 import UserProfile from "./app/pages/UserProfile";
 import ChangePasswordPage from "./app/pages/ChangePasswordPage";
 import MyGamesPage from "./app/pages/MyGamesPage";
+import DeleteAccountPage from "./app/pages/DeleteAccountPage";
+import SelectUser from "./app/pages/SelectUser";
+//import SearchResults from "./app/pages/SearchResults";
 
 
 /**
@@ -34,6 +38,10 @@ const app = defineApp([
     route("/user-profile", UserProfile),
     route("/change-password", ChangePasswordPage),
     route("/my-games", MyGamesPage),
+    route("/delete-account", DeleteAccountPage),
+    route("/select-user", SelectUser),
+    /*route("/games/:id", GamePage)*/
+    /*route("/search-results/:game-title", SearchResults)*/
   ]),
 ]);
 

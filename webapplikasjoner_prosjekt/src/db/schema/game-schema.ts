@@ -6,6 +6,7 @@ export const games = sqliteTable("games", {
   boxArtImageURL: text().notNull().unique(),
   genres: text().notNull(),
   releaseDate: integer("releaseDate", { mode: "timestamp" }).notNull(),
+  description: text().notNull(),
 });
 
 export type Game = typeof games.$inferSelect;
