@@ -6,6 +6,7 @@ import { CreateUserPage } from "@/app/pages/CreateUserPage";
 import { Home } from "./app/pages/Home";
 import UserProfile from "./app/pages/UserProfile";
 import ChangePasswordPage from "./app/pages/ChangePasswordPage";
+import { createGameItemPage } from "./app/pages/GameItemPage";
 
 
 /**
@@ -32,6 +33,7 @@ const app = defineApp([
     route("/create-user", CreateUserPage),
     route("/user-profile", UserProfile),
     route("/change-password", ChangePasswordPage),
+    route("/game", createGameItemPage)
   ]),
 ]);
 
