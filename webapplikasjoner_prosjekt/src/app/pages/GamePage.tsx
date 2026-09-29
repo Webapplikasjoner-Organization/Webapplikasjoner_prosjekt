@@ -20,6 +20,7 @@ export default function GamePage({params}) {
             <p><span className="font-bold">Genres: </span>{genres.join(", ")}</p>
             <p><span className="font-bold">Release Date: </span>{releaseDate.toLocaleDateString()}</p>
             <p><span className="font-bold">Description: </span>{description}</p>
+            <button>See game series</button>
           </>
         ) : (
           <p>The game could not be found.</p>

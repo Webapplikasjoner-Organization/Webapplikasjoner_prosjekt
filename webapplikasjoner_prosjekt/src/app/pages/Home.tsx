@@ -52,13 +52,17 @@ export function Home() {
   //   </main>
   // );
   return (
-    <main>
-      <PageLayout>
+    <PageLayout>
+      <main className="flex flex-col gap-10">
         <h1>Main page</h1>
-        <FilterPanel />
-        <SortPanel />
+        <div>
+          <FilterPanel />  
+        </div>
+        <div>
+          <SortPanel />
+        </div>
         <p>Here is something to do with games.</p>
-      </PageLayout>
-    </main>
+      </main>
+    </PageLayout>
   );
 }

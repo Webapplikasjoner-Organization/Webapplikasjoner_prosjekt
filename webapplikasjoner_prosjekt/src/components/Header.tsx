@@ -11,9 +11,10 @@ export function Header() {
         <ul className="flex flex-row gap-5 text-brand-white">
           <li><a href="/">Home</a></li>
           <li><a href="/my-games">My Games</a></li>
+          <li><a href="/articles">Articles</a></li>
         </ul>
       </nav>
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-4">
         <form action={`/search-results/${query}`}>
           <input className="bg-brand-black text-brand-white border-solid border-3 border-brand-cyan mr-5 p-2" type="text" placeholder="Search for games..." value={query} onChange={(e) => setQuery(e.target.value)}/>
           <button className="text-brand-white" type="submit">Search</button>

@@ -7,10 +7,14 @@ import { SortPanel } from "@/components/SortPanel";
 export default function MyGamesPage() {
   return (
     <PageLayout>
-      <main>
+      <main className="flex flex-col gap-10">
         <h1>My games</h1>
-        <FilterPanel></FilterPanel>
-        <SortPanel></SortPanel>
+        <div>
+            <FilterPanel />  
+          </div>
+          <div>
+            <SortPanel />
+          </div>
         <AddGame></AddGame>
         <GameList/>
       </main>

@@ -11,7 +11,8 @@ import MyGamesPage from "./app/pages/MyGamesPage";
 import DeleteAccountPage from "./app/pages/DeleteAccountPage";
 import SelectUser from "./app/pages/SelectUser";
 //import SearchResults from "./app/pages/SearchResults";
-
+import ArticlesPage from "./app/pages/ArticlesPage";
+//import ArticlePage from "./app/pages/ArticlePage";
 
 /**
  * Alt som ligger på `ctx` for én forespørsel.
@@ -42,6 +43,8 @@ const app = defineApp([
     route("/select-user", SelectUser),
     /*route("/games/:id", GamePage)*/
     /*route("/search-results/:game-title", SearchResults)*/
+    route("/articles", ArticlesPage),
+    /*route("/articles/:id", ArticlePage),*/
   ]),
 ]);
 
