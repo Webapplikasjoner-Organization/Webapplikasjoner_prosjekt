@@ -1,15 +1,19 @@
 export function Header() {
   return (
-    <header className="flex justify-between bg-[#28c6ff]">
-      <a href="/create-user"><img src="https://placehold.co/50x50/blue/white" alt="placeholder"/>Create a user account.</a>
-      <a href="/"><p>CheckPoint</p></a>
-      <nav>
-        <ul>
-          <li><a href="" className="m-5">Option 1</a></li>
-          <li><a href="" className="m-5">Option 2</a></li>
-          <li><a href="" className="m-5">Option 3</a></li>
+    <header className="flex justify-between bg-brand-grey">
+      <a href="/"><img src="/images/checkpoint.png" width="150" height="150" alt="Checkpoint Logo"/></a>
+      <nav className="flex flex-row items-center">
+        <ul className="flex flex-row gap-5 text-brand-white">
+          <li><a href="/">Home</a></li>
+          <li><a href="/">News</a></li>
+          <li><a href="/">My Games</a></li>
         </ul>
       </nav>
+      <div className="flex flex-row items-center">
+        <input className="bg-brand-black text-brand-white border-solid border-3 border-brand-cyan mr-5 p-2" type="text" placeholder="Search for games..."/>
+        <a href="/create-user"><img src="https://placehold.co/50x50/blue/white" alt="placeholder"/></a>
+        <a className="text-brand-white" href="/user-profile">Profile page</a>  
+      </div>
     </header>
   )
 }
