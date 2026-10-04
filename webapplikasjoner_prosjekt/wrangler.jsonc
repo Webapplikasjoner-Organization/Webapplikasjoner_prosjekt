@@ -3,7 +3,7 @@
 
   // Navnet på workeren, og subdomenet den får: <name>.workers.dev.
   // Bytt til noe som er deres.
-  "name": "webapp",
+  "name": "checkpoint",
   "main": "src/worker.tsx",
 
   // Pinner hvordan runtimen oppfører seg. Å flytte datoen fram kan endre
