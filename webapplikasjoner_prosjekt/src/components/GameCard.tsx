@@ -12,6 +12,7 @@ export function GameCard({ game }: { game: Game }) {
         <p><span className="font-bold">Release Date: </span>{releaseDate.toLocaleDateString()}</p>
         <p><span className="font-bold">Description: </span>{description}</p>
         <p>Like button</p>
+        <button>Add game</button>
       </section>
     </article>
   )

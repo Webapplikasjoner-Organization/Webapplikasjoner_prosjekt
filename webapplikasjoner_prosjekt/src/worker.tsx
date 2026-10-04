@@ -4,15 +4,15 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { CreateUserPage } from "@/app/pages/CreateUserPage";
 import { Home } from "./app/pages/Home";
-//import GamePage from "./app/pages/GamePage";
+import GamePage from "./app/pages/GamePage";
 import UserProfile from "./app/pages/UserProfile";
 import ChangePasswordPage from "./app/pages/ChangePasswordPage";
 import MyGamesPage from "./app/pages/MyGamesPage";
 import DeleteAccountPage from "./app/pages/DeleteAccountPage";
 import SelectUser from "./app/pages/SelectUser";
-//import SearchResults from "./app/pages/SearchResults";
+import SearchResults from "./app/pages/SearchResults";
 import ArticlesPage from "./app/pages/ArticlesPage";
-//import ArticlePage from "./app/pages/ArticlePage";
+import ArticlePage from "./app/pages/ArticlePage";
 
 /**
  * Alt som ligger på `ctx` for én forespørsel.
@@ -41,10 +41,10 @@ const app = defineApp([
     route("/my-games", MyGamesPage),
     route("/delete-account", DeleteAccountPage),
     route("/select-user", SelectUser),
-    /*route("/games/:id", GamePage)*/
-    /*route("/search-results/:game-title", SearchResults)*/
+    route("/games/:id", GamePage),
+    route("/search-results/:query", SearchResults),
     route("/articles", ArticlesPage),
-    /*route("/articles/:id", ArticlePage),*/
+    route("/articles/:id", ArticlePage),
   ]),
 ]);
 

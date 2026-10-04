@@ -13,8 +13,8 @@ export function CreateUserPage() {
   return (
     <main>
       <PageLayout>
-        <h1 className="text-center text-5xl">Create a user:</h1>
-        <form className="flex items-center flex-col m-10 gap-2">
+        <h1 className="text-center text-5xl">Create an account:</h1>
+        <form className="flex justify-between items-center flex-col m-10 gap-2">
           <label>Username:
             <input
               value={username}
