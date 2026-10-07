@@ -16,7 +16,7 @@ export default function MyGamesPage() {
             <SortPanel />
           </div>
         <AddGame></AddGame>
-        <GameList selection={[1,3,5]} />
+       {/*<GameList selection={[1,3,5]} /> */} 
       </main>
     </PageLayout>
   );

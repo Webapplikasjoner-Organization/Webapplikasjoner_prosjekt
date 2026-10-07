@@ -61,7 +61,7 @@ export function Home() {
         <div>
           <SortPanel />
         </div>
-        <GameList />
+        {/*<GameList />*/}
       </main>
     </PageLayout>
   );
