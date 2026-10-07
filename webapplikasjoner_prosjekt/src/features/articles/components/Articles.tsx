@@ -1,5 +1,5 @@
 import { ARTICLES } from "@/data/articles";
-import { ArticleCard } from "../components/ArticleCard";
+import { ArticleCard } from "./ArticleCard";
 
 export function Articles() {
   return (

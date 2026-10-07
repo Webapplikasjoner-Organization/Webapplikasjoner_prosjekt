@@ -1,4 +1,4 @@
-import { GameCard } from "@/components/GameCard";
+import { GameCard } from "@/features/games/components/GameCard";
 import { PageLayout } from "@/components/PageLayout";
 import { GAMES } from "@/data/games";
 

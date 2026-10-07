@@ -1,4 +1,4 @@
-import { Articles } from "@/components/Articles";
+import { Articles } from "@/features/articles/components/Articles";
 import { PageLayout } from "@/components/PageLayout";
 
 export default function ArticlesPage() {

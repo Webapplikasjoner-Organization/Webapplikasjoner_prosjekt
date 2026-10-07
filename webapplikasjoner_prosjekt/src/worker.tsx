@@ -2,17 +2,17 @@ import { defineApp } from "rwsdk/worker";
 import { render, route } from "rwsdk/router";
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
-import { CreateUserPage } from "@/app/pages/CreateUserPage";
+import { CreateUserPage } from "@/features/users/pages/CreateUserPage";
 import { Home } from "./app/pages/Home";
-import GamePage from "./app/pages/GamePage";
-import UserProfile from "./app/pages/UserProfile";
-import ChangePasswordPage from "./app/pages/ChangePasswordPage";
+import GamePage from "./features/games/GamePage";
+import UserProfile from "./features/users/pages/UserProfile";
+import ChangePasswordPage from "./features/users/pages/ChangePasswordPage";
 import MyGamesPage from "./app/pages/MyGamesPage";
-import DeleteAccountPage from "./app/pages/DeleteAccountPage";
-import SelectUser from "./app/pages/SelectUser";
+import DeleteAccountPage from "./features/users/pages/DeleteAccountPage";
+import SelectUser from "./features/users/pages/SelectUser";
 import SearchResults from "./app/pages/SearchResults";
-import ArticlesPage from "./app/pages/ArticlesPage";
-import ArticlePage from "./app/pages/ArticlePage";
+import ArticlesPage from "./features/articles/ArticlesPage";
+import ArticlePage from "./features/articles/ArticlePage";
 
 /**
  * Alt som ligger på `ctx` for én forespørsel.

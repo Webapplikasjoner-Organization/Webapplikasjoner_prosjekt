@@ -1,7 +1,7 @@
 //Claude chatlog explaining how to use the igdb API.
 //https://claude.ai/share/cbf3f386-cf06-47b9-810b-7f8b9e8884e2
 
-import { GameCard } from "@/components/GameCard";
+import { GameCard } from "@/features/games/components/GameCard";
 import { env } from "cloudflare:workers";
 import { EXPO_PUBLIC_AUTHENTICATION_URL_BASE, EXPO_PUBLIC_BASE_URL, GRANT_TYPE } from "@/constants/env_values";
 import { GAMES } from "@/data/games";
