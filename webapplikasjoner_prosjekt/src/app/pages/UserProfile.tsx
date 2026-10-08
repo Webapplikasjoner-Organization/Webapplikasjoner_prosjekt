@@ -10,8 +10,8 @@ export default function UserProfile({ params }: RequestInfo) {
         <h1>{`${username}'s page`}</h1>
         <a href="/">Change profile picture</a>
         <a href="/my-games">My Games</a>
-        <a href="/change-password">Change password</a>
-        <a className="text-red-600" href="/delete-account">
+        <a href={`/users/${username}/change-password`}>Change password</a>
+        <a className="text-red-600" href={`/users/${username}/delete-account`}>
           Delete account
         </a>
       </main>
