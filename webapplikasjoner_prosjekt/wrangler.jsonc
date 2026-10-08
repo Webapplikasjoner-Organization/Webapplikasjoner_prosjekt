@@ -15,18 +15,22 @@
   // Statiske filer fra public/. rwsdk forventer at bindingen finnes.
   "assets": {
     "binding": "ASSETS",
-    "directory": "public"
+    "directory": "public",
   },
 
   // Logger hver request, så `wrangler tail` viser hele bildet.
   "observability": {
     "enabled": true,
-    "head_sampling_rate": 1
+    "head_sampling_rate": 1,
   },
 
   // Offentlige variabler. Alle som når workeren kan lese dem, så ingenting
   // hemmelig havner her. Hemmeligheter: `wrangler secret put NAVN`.
-  "vars": {},
+  "vars": {
+    "EXPO_PUBLIC_AUTHENTICATION_URL_BASE": "https://id.twitch.tv/oauth2/token",
+    "GRANT_TYPE": "client_credentials",
+    "EXPO_PUBLIC_BASE_URL": "https://api.igdb.com/v4/",
+  },
 
   // D1, Cloudflares SQLite. Fungerer lokalt uten konto: wrangler lager en
   // SQLite-fil under .wrangler/. `database_id` trengs først når dere skal
@@ -39,9 +43,9 @@
       "migrations_dir": "drizzle/migrations",
       // Drizzle v1 legger hver migrasjon i sin egen mappe. Uten dette
       // mønsteret finner wrangler ingenting, og sier «No migrations to apply».
-      "migrations_pattern": "drizzle/migrations/*/migration.sql"
-    }
-  ]
+      "migrations_pattern": "drizzle/migrations/*/migration.sql",
+    },
+  ],
 
   // Workers AI. Har ingen lokal emulering, så kallet går alltid til
   // Cloudflare. Husk `npm run generate` etter at dere slår den på.

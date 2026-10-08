@@ -11,7 +11,7 @@ export const setCommonHeaders =
       // Force HTTPS for two years.
       response.headers.set(
         "Strict-Transport-Security",
-        "max-age=63072000; includeSubDomains; preload"
+        "max-age=63072000; includeSubDomains; preload",
       );
     }
 
@@ -27,7 +27,7 @@ export const setCommonHeaders =
     // The app uses neither location, microphone nor camera.
     response.headers.set(
       "Permissions-Policy",
-      "geolocation=(), microphone=(), camera=()"
+      "geolocation=(), microphone=(), camera=()",
     );
 
     // CSP, strict by default. 'unsafe-eval' stays because the rwsdk RSC
@@ -39,10 +39,10 @@ export const setCommonHeaders =
         `script-src 'self' 'unsafe-eval' 'nonce-${nonce}'`,
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
-        "img-src 'self' https://placehold.co data: blob:",
+        "img-src 'self' https://placehold.co https://images.igdb.com data: blob:",
         "media-src 'self' data: blob:",
         "frame-ancestors 'self'",
         "object-src 'none'",
-      ].join("; ")
+      ].join("; "),
     );
   };

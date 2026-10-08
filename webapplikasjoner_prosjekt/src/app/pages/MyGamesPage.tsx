@@ -1,4 +1,3 @@
-import { AddGame } from "@/components/AddGame";
 import { GameList } from "@/components/GameList";
 import { PageLayout } from "@/components/PageLayout";
 import { FilterPanel } from "@/components/FilterPanel";
@@ -10,13 +9,12 @@ export default function MyGamesPage() {
       <main className="flex flex-col gap-10">
         <h1>My games</h1>
         <div>
-            <FilterPanel />  
-          </div>
-          <div>
-            <SortPanel />
-          </div>
-        <AddGame></AddGame>
-        <GameList selection={[1,3,5]} />
+          <FilterPanel />
+        </div>
+        <div>
+          <SortPanel />
+        </div>
+        <GameList />
       </main>
     </PageLayout>
   );
