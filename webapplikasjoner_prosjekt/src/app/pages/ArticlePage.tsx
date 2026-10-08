@@ -1,11 +1,14 @@
+import type { RequestInfo } from "rwsdk/worker";
 import { PageLayout } from "@/components/PageLayout";
 import { ARTICLES } from "@/data/articles";
 import { Article as ArticleType } from "@/types/article";
 
-export default function Article({params}: {params: {id: string}}) {
+export default function Article({ params }: RequestInfo) {
   const { id } = params;
 
-  const article: ArticleType | undefined = ARTICLES.find((article) => article.id === id);
+  const article: ArticleType | undefined = ARTICLES.find(
+    (article) => article.id === id,
+  );
 
   const { title, content, articleImageURL } = article || {};
 
@@ -14,7 +17,12 @@ export default function Article({params}: {params: {id: string}}) {
       <main className="flex flex-col items-center pt-5 pb-5">
         {article ? (
           <article>
-            <img src={articleImageURL} width="600" height="300" alt="article-image"></img>
+            <img
+              src={articleImageURL}
+              width="600"
+              height="300"
+              alt="article-image"
+            ></img>
             <h1>{title}</h1>
             <p>{content}</p>
             <img src="" width="50" height="50" alt="like-button" />

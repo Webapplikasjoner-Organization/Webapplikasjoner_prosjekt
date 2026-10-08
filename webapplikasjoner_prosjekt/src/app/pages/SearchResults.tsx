@@ -2,12 +2,9 @@ import { getIGDBContent } from "@/api/igdb";
 import { GameCard } from "@/components/GameCard";
 import { CLIENTID } from "@/constants/env_values";
 import { PageLayout } from "@/components/PageLayout";
+import type { RequestInfo } from "rwsdk/worker";
 
-export default async function SearchResults({
-  params,
-}: {
-  params: { query: string };
-}) {
+export default async function SearchResults({ params }: RequestInfo) {
   let { query } = params;
   query = query.replace(/%20/g, " ");
 

@@ -28,15 +28,13 @@ const app = defineApp([
 
   // API-rute. Ligger UTENFOR render(), så svaret er akkurat det handleren
   // returnerer: JSON, uten HTML-skall rundt.
-  route("/api/status", () =>
-    Response.json({ status: "ok", version: "0.1.0" })
-  ),
+  route("/api/status", () => Response.json({ status: "ok", version: "0.1.0" })),
 
   // Sider. render(Document, [...]) pakker dem i et helt HTML-dokument.
   render(Document, [
-    route("/", Home), 
+    route("/", Home),
     route("/create-user", CreateUserPage),
-    route("/user-profile", UserProfile),
+    route("/users/:username", UserProfile),
     route("/change-password", ChangePasswordPage),
     route("/my-games", MyGamesPage),
     route("/delete-account", DeleteAccountPage),
