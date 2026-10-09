@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 
 export const CLIENTID = env.CLIENT_ID;
 export const CLIENTSECRET = env.CLIENT_SECRET;
-export const EXPO_PUBLIC_AUTHENTICATION_URL_BASE =
-  env.EXPO_PUBLIC_AUTHENTICATION_URL_BASE;
+export const PUBLIC_AUTHENTICATION_URL_BASE =
+  env.PUBLIC_AUTHENTICATION_URL_BASE;
 export const GRANT_TYPE = env.GRANT_TYPE;
-export const EXPO_PUBLIC_BASE_URL = env.EXPO_PUBLIC_BASE_URL;
+export const PUBLIC_BASE_URL = env.PUBLIC_BASE_URL;

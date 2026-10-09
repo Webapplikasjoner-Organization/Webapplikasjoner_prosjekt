@@ -27,9 +27,9 @@
   // Offentlige variabler. Alle som når workeren kan lese dem, så ingenting
   // hemmelig havner her. Hemmeligheter: `wrangler secret put NAVN`.
   "vars": {
-    "EXPO_PUBLIC_AUTHENTICATION_URL_BASE": "https://id.twitch.tv/oauth2/token",
+    "PUBLIC_AUTHENTICATION_URL_BASE": "https://id.twitch.tv/oauth2/token",
     "GRANT_TYPE": "client_credentials",
-    "EXPO_PUBLIC_BASE_URL": "https://api.igdb.com/v4/",
+    "PUBLIC_BASE_URL": "https://api.igdb.com/v4/",
   },
 
   // D1, Cloudflares SQLite. Fungerer lokalt uten konto: wrangler lager en
