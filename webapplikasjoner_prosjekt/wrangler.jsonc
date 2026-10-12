@@ -38,8 +38,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "webapp-db",
-      "database_id": "__change_me__",
+      "database_name": "checkpoint-db",
+      "database_id": "123456789",
       "migrations_dir": "drizzle/migrations",
       // Drizzle v1 legger hver migrasjon i sin egen mappe. Uten dette
       // mønsteret finner wrangler ingenting, og sier «No migrations to apply».

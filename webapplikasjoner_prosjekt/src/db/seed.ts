@@ -6,35 +6,81 @@
 // startet. Da slipper dere å lure på om feilen ligger i dataene.
 import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
-import { users, tasks } from "./schema";
+import { users, games, articles } from "./schema";
 
-/*
 export const seedData = async (env: Env) => {
   const db = drizzle(env.DB);
 
   // Tøm først, så seed kan kjøres om igjen uten å doble alt.
-  await db.delete(tasks);
   await db.delete(users);
+  await db.delete(games);
+  await db.delete(articles);
 
   // Brukerne må inn før oppgavene: fremmednøkkelen krever at brukeren finnes.
   // Databasen nekter hvis dere tar rekkefølgen feil, og det er en god ting.
-  const [user] = await db
-    .insert(users)
-    .values({ name: "Test Testesen", email: "test@example.com" })
-    .returning();
 
-  await db.insert(tasks).values([
+  // Jeg vet at passord ikke burde lagres slik i klartekst men jeg har det slik så lenge
+  // helt til jeg finner ut av kryptering.
+  await db.insert(users).values([
     {
-      title: "Lese leksjonen før timen",
-      completed: true,
-      userId: user.id,
-      dueDate: new Date(Date.now() - 86_400_000),
+      username: "Jane Doe",
+      password: "password456",
     },
     {
-      title: "Sette opp prosjektet",
-      completed: false,
-      userId: user.id,
-      dueDate: new Date(Date.now() + 86_400_000),
+      username: "Alice Smith",
+      password: "password789",
+    },
+    {
+      username: "Bob Johnson",
+      password: "password101",
+    },
+  ]);
+
+  await db.insert(games).values([
+    {
+      name: "The Legend of Zelda: Tears of the Kingdom",
+      cover: "https://example.com/zelda.jpg",
+      genres: "Action, Adventure",
+      rating: 5,
+      releaseDate: new Date("2023-05-12"),
+      summary: "An open-world adventure game set in the kingdom of Hyrule.",
+    },
+    {
+      name: "Super Mario Odyssey",
+      cover: "https://example.com/mario.jpg",
+      genres: "Platformer",
+      rating: 10,
+      releaseDate: new Date("2017-09-27"),
+      summary:
+        "Join Mario on a globe-trotting adventure to save Princess Peach.",
+    },
+    {
+      name: "Animal Crossing: New Horizons",
+      cover: "https://example.com/animalcrossing.jpg",
+      genres: "Simulation",
+      rating: 8,
+      releaseDate: new Date("2020-03-20"),
+      summary:
+        "A life simulation game where players develop a deserted island into a thriving community.",
+    },
+  ]);
+
+  await db.insert(articles).values([
+    {
+      title: "Exciting new game released",
+      content:
+        "The latest installment in the popular game series has just been released.",
+      articleImageURL: "https://example.com/article1.jpg",
+    },
+    {
+      title: "Upcoming game announcement",
+      content: "A highly anticipated game is set to release next year.",
+      articleImageURL: "https://example.com/article2.jpg",
+    },
+    {
+      title: "Game review: Clair Obscur: Expedition 33",
+      content: "For those who come after.",
+      articleImageURL: "https://example.com/article3.jpg",
     },
   ]);
 
@@ -45,4 +91,3 @@ export default defineScript(async ({ env }) => {
   await seedData(env);
   return Response.json({ success: true });
 });
-*/
