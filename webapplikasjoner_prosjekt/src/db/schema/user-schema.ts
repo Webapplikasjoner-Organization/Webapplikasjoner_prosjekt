@@ -1,7 +1,10 @@
+import { createId } from "@/lib/id";
 import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
   username: text().notNull(),
   password: text().notNull(),
 });

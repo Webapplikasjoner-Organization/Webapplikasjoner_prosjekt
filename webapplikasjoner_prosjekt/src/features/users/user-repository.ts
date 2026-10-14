@@ -1,20 +1,20 @@
 import { db, type DB } from "@/db";
-import { User } from "@/db/schema/user-schema";
-import type { CreateUser, UpdateUser } from "@/db/schema/user-schema";
+import type { CreateUser, UpdateUser, User } from "@/db/schema/user-schema";
 import type { Result } from "@/shared/result";
 import { users } from "@/db/schema/user-schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export interface UserRepository {
-  createUser: (user: CreateUser) => Promise<Result<User>>;
-  getUser: (id: string) => Promise<Result<User>>;
-  updateUser: (id: string, username: string) => Promise<Result<User>>;
-  deleteUser: (id: string) => Promise<Result<void>>;
+  create: (user: CreateUser) => Promise<Result<User>>;
+  findMany: (params: any) => Promise<Result<User[]>>;
+  findById: (id: string) => Promise<Result<User> | null>;
+  update: (id: string, user: UpdateUser) => Promise<Result<User> | null>;
+  delete: (id: string) => Promise<Result<void>>;
 }
 
 export function createUserRepository(_db: DB): UserRepository {
   return {
-    async createUser(user: CreateUser): Promise<Result<User>> {
+    async create(user: CreateUser): Promise<Result<User>> {
       try {
         const createUser = await _db
           .insert(users)
@@ -36,21 +36,36 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async getUser(id: string): Promise<Result<User>> {
+    async findMany(params: any): Promise<Result<User[]>> {
+      try {
+        const listUsers = await _db
+          .select()
+          .from(users)
+          .orderBy(desc(users.username));
+        return {
+          ok: true,
+          data: listUsers,
+        };
+      } catch (error) {
+        console.error(error);
+        return {
+          ok: false,
+          error: {
+            code: 500,
+            message: "Server error. Could not retrieve the list of users.",
+          },
+        };
+      }
+    },
+    async findById(id: string): Promise<Result<User> | null> {
       try {
         const getUser = await _db
           .select()
           .from(users)
-          .where(eq(users.id, Number(id)))
+          .where(eq(users.id, id))
           .get();
         if (!getUser) {
-          return {
-            ok: false,
-            error: {
-              code: 404,
-              message: `A user with the ID ${id} was not found.`,
-            },
-          };
+          return null;
         }
         return {
           ok: true,
@@ -67,22 +82,16 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async updateUser(id: string, username: string): Promise<Result<User>> {
+    async update(id: string, user: UpdateUser): Promise<Result<User> | null> {
       try {
         const updateUser = await _db
           .update(users)
-          .set({ username })
-          .where(eq(users.id, Number(id)))
+          .set({ ...user })
+          .where(eq(users.id, id))
           .returning()
           .get();
         if (!updateUser) {
-          return {
-            ok: false,
-            error: {
-              code: 404,
-              message: `A user with the ID ${id} was not found.`,
-            },
-          };
+          return null;
         }
         return {
           ok: true,
@@ -99,23 +108,12 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async deleteUser(id: string): Promise<Result<void>> {
+    async delete(id: string): Promise<Result<void>> {
       try {
-        const deleteUser = await _db
-          .delete(users)
-          .where(eq(users.id, Number(id)));
-        if (!deleteUser) {
-          return {
-            ok: false,
-            error: {
-              code: 404,
-              message: `A user with the ID ${id} was not found.`,
-            },
-          };
-        }
+        const deleteUser = await _db.delete(users).where(eq(users.id, id));
         return {
           ok: true,
-          data: undefined,
+          data: deleteUser,
         };
       } catch (error) {
         console.error(error);
