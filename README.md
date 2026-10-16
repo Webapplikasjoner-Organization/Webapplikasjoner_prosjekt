@@ -94,7 +94,7 @@ Prosjektet utvikles gjennom høstsemesteret 2026 som en del av emnet Webutviklin
 
 ## Tekniske detaljer
 
-Tester kjøres med vitest rammeverket. Selve testfilene ligger i "__tests__" mappene under "pages" og "components" mappene. De kjøres med "npm run test".
+Tester kjøres med vitest rammeverket. Selve testfilene ligger i "__tests__" mappene under "pages", "components" og "features" mappene. De kjøres med "npm run test".
 
 Ruter ligger samlet i "worker.tsx". Alle HTML-sider er en del av render(Document, []). API-ruter og mellomvarer ligger øverst innenfor defineApp. Grupper av relaterte API-ruter er importert fra "routes.ts" filer inni "features" mappen og pakket ut med "...".
 
