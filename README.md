@@ -2,7 +2,7 @@
 
 CheckPoint er et studentprosjekt utviklet i emnet **Webapplikasjoner** ved Høgskolen i Østfold.
 
-## Om prosjektet
+## Om prosjektet og hva appen gjør
 
 CheckPoint er en interaktiv nettside for spillinteresserte. Formålet med appen er å gjøre det enkelt å holde seg oppdatert på hva som skjer i spillverdenen, samtidig som brukeren kan holde oversikt over spillene sine på ett sted.
 
@@ -83,3 +83,23 @@ Planlagt teknologi inkluderer blant annet:
 🚧 **Under utvikling**
 
 Prosjektet utvikles gjennom høstsemesteret 2026 som en del av emnet Webutvikling.
+
+## Starte appen
+
+1. Kopier url-en for prosjektet fra main-branchen og klon den i GitHub Desktop applikasjonen.
+2. Kjør "npm install" i "webapplikasjoner_prosjekt" mappen.
+3. Hent private og hemmelige nøkler og legg dem i en ".dev.vars" fil i for å bruke IGDB-api-et. Kontakt Daniel Karlsen for å få nøklene.
+4. Kjør "npx wrangler types".
+5. Kjør "npm run dev" og åpne url-en i en nettleser.
+
+## Tekniske detaljer
+
+Tester kjøres med vitest rammeverket. Selve testfilene ligger i "__tests__" mappene under "pages" og "components" mappene. De kjøres med "npm run test".
+
+Ruter ligger samlet i "worker.tsx". Alle HTML-sider er en del av render(Document, []). API-ruter og mellomvarer ligger øverst innenfor defineApp. Grupper av relaterte API-ruter er importert fra "routes.ts" filer inni "features" mappen og pakket ut med "...".
+
+Dummy data ligger innenfor "data" mappen. Den faktiske dataen vi bruker i prosjektet er i "db" mappen. Det er schemaer for ulike typer dataer vi bruker i prosjektet som vi migrerer til databasen. "seed.ts" lager dataen vi bruker for å teste applikasjonen. Det er også zod-schemaer for typene inni "types" mappen. Databaselogikken bruker schemaen fra "db" mens komponentene bruker zod-schemaet fra "types". 
+
+Komponenter som rendrer de faktiske HTML-sidene ligger i "pages". Underliggende komponenter som sidene i "pages" bruker ligger i "components". Å ha komponenter uavhengig fra sidene skaper fleksibilitet og mulighet til å bruke dem på tvers av sider potensielt med annerledes logikk sendt via props.
+
+For å bruke IGDB-API-et trygt så måtte vi lagre nøklene et sted som ikke eksponerer dem i klartekst. Derfor er det best at de som ønsker å bruke applikasjonen kan stoles på og spør om nøklene selv direkte slik at nøklene forhåpentligvis ikke lekkes ut. 
