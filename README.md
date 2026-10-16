@@ -1,14 +1,14 @@
 # CheckPoint 🎮
 
-CheckPoint er et studentprosjekt utviklet i emnet **Mobilprogrammering** ved Høgskolen i Østfold.
+CheckPoint er et studentprosjekt utviklet i emnet **Webapplikasjoner** ved Høgskolen i Østfold.
 
 ## Om prosjektet
 
-CheckPoint er en mobilapp for spillinteresserte. Formålet med appen er å gjøre det enkelt å holde seg oppdatert på hva som skjer i spillverdenen, samtidig som brukeren kan holde oversikt over spillene sine på ett sted.
+CheckPoint er en interaktiv nettside for spillinteresserte. Formålet med appen er å gjøre det enkelt å holde seg oppdatert på hva som skjer i spillverdenen, samtidig som brukeren kan holde oversikt over spillene sine på ett sted.
 
 Appen skal blant annet kunne vise spillnyheter, nylig lanserte spill og informasjon om forskjellige spill. Brukeren skal også kunne opprette en personlig bruker og lage egne spillister.
 
-Prosjektet utvikles som en del av emnet Mobilprogrammering og skal demonstrere bruk av moderne mobilutvikling, eksterne datakilder, komponentbasert utvikling, state-håndtering, navigasjon og testing.
+Prosjektet utvikles som en del av emnet Webapplikasjoner og skal demonstrere bruk av moderne webutvikling, eksterne datakilder, komponentbasert utvikling, state-håndtering, navigasjon og testing.
 
 ## Gruppen
 
@@ -66,14 +66,20 @@ Dette inkluderer blant annet:
 
 ## Teknologi
 
-Prosjektet utvikles som en React Native-applikasjon med Expo.
+Prosjektet utvikles i RWSDK rammeverket sammen med React biblioteket.
 
 Planlagt teknologi inkluderer blant annet:
 
-- React Native
-- Expo
+- React
+- RWSDK (Redwood Software Development Kit)
 - JavaScript / TypeScript
 - Git og GitHub
 - GitHub Projects
-- Ekstern API/dat ​​akilde
+- Ekstern API/datakilde
 - Testing av komponenter og hovedflyt
+
+## Prosjektstatus
+
+🚧 **Under utvikling**
+
+Prosjektet utvikles gjennom høstsemesteret 2026 som en del av emnet Webutvikling.
