@@ -3,12 +3,12 @@ import { userController } from "./user-controller";
 
 export const userRoutes = [
   route("/api/v1/users", {
-    get: userController.findMany,
+    get: userController.list,
     post: userController.create,
   }),
   route("/api/v1/users/:id", {
     get: userController.findById,
-    put: userController.update,
+    patch: userController.update,
     delete: userController.delete,
   }),
 ];

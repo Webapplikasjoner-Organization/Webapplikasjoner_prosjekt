@@ -3,12 +3,13 @@ import type { CreateUser, UpdateUser, User } from "@/db/schema/user-schema";
 import type { Result } from "@/shared/result";
 import { users } from "@/db/schema/user-schema";
 import { eq, desc } from "drizzle-orm";
+import { type UserListParams } from "@/utils/validate-list-params";
 
 export interface UserRepository {
   create: (user: CreateUser) => Promise<Result<User>>;
-  findMany: (params: any) => Promise<Result<User[]>>;
+  findMany: (params: UserListParams) => Promise<Result<User[]>>;
   findById: (id: string) => Promise<Result<User> | null>;
-  update: (id: string, user: UpdateUser) => Promise<Result<User> | null>;
+  update: (id: string, username: string) => Promise<Result<User> | null>;
   delete: (id: string) => Promise<Result<void>>;
 }
 
@@ -24,6 +25,7 @@ export function createUserRepository(_db: DB): UserRepository {
         return {
           ok: true,
           data: createUser,
+          code: 201,
         };
       } catch (error) {
         console.error(error);
@@ -36,15 +38,19 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async findMany(params: any): Promise<Result<User[]>> {
+    async findMany({ q, limit }: UserListParams): Promise<Result<User[]>> {
       try {
-        const listUsers = await _db
-          .select()
-          .from(users)
-          .orderBy(desc(users.username));
+        const rows = await _db.query.users.findMany({
+          where: {
+            username: q ? { like: `%${q}%` } : undefined,
+          },
+          orderBy: { username: "desc" },
+          limit,
+        });
         return {
           ok: true,
-          data: listUsers,
+          data: rows,
+          code: 200,
         };
       } catch (error) {
         console.error(error);
@@ -70,6 +76,7 @@ export function createUserRepository(_db: DB): UserRepository {
         return {
           ok: true,
           data: getUser,
+          code: 200,
         };
       } catch (error) {
         console.error(error);
@@ -82,11 +89,11 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async update(id: string, user: UpdateUser): Promise<Result<User> | null> {
+    async update(id: string, username: string): Promise<Result<User> | null> {
       try {
         const updateUser = await _db
           .update(users)
-          .set({ ...user })
+          .set({ username: username })
           .where(eq(users.id, id))
           .returning()
           .get();
@@ -96,6 +103,7 @@ export function createUserRepository(_db: DB): UserRepository {
         return {
           ok: true,
           data: updateUser,
+          code: 201,
         };
       } catch (error) {
         console.error(error);
@@ -114,6 +122,7 @@ export function createUserRepository(_db: DB): UserRepository {
         return {
           ok: true,
           data: deleteUser,
+          code: 200,
         };
       } catch (error) {
         console.error(error);

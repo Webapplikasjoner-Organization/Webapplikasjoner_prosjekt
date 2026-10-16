@@ -23,14 +23,9 @@ export function validateListParams(input: Params): ListParamsValidation {
   const params: UserListParams = {};
 
   const search = input.q?.trim();
-  if (search === undefined || search === "") {
-    return {
-      ok: false,
-      field: "q",
-      errors: "Search query cannot be empty.",
-    };
+  if (search) {
+    params.q = search;
   }
-  params.q = search;
 
   if (input.limit) {
     const limit = Number(input.limit);

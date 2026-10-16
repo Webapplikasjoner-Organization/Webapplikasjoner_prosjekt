@@ -1,6 +1,7 @@
 export interface ResultData<T> {
   ok: true;
   data: T;
+  code: number;
 }
 
 export interface ResultError {
@@ -8,7 +9,7 @@ export interface ResultError {
   error: {
     code: number;
     message: string;
-    fieldErrors?: Record<string, string>;
+    fieldErrors?: Record<string, string | string[]>;
   };
 }
 

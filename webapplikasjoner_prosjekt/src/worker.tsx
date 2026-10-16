@@ -1,5 +1,6 @@
 import { defineApp } from "rwsdk/worker";
 import { render, route } from "rwsdk/router";
+import { userRoutes } from "@/features/users/user-routes";
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { CreateUserPage } from "@/app/pages/CreateUserPage";
@@ -13,7 +14,8 @@ import SelectUser from "./app/pages/SelectUser";
 import SearchResults from "./app/pages/SearchResults";
 import ArticlesPage from "./app/pages/ArticlesPage";
 import ArticlePage from "./app/pages/ArticlePage";
-
+import { env } from "cloudflare:workers";
+import { seedData } from "./db/seed";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
  *
@@ -25,6 +27,18 @@ export type AppContext = {};
 const app = defineApp([
   // Middleware. Kjører for hver forespørsel, i rekkefølgen de står.
   setCommonHeaders(),
+  ...userRoutes,
+
+  ...(import.meta.env.VITE_IS_DEV_SERVER
+    ? [
+        route("/api/dev/seed", {
+          post: async () => {
+            await seedData(env);
+            return Response.json({ ok: true });
+          },
+        }),
+      ]
+    : []),
 
   // API-rute. Ligger UTENFOR render(), så svaret er akkurat det handleren
   // returnerer: JSON, uten HTML-skall rundt.
