@@ -98,7 +98,7 @@ Tester kjøres med vitest rammeverket. Selve testfilene ligger i "__tests__" map
 
 Ruter ligger samlet i "worker.tsx". Alle HTML-sider er en del av render(Document, []). API-ruter og mellomvarer ligger øverst innenfor defineApp. Grupper av relaterte API-ruter er importert fra "routes.ts" filer inni "features" mappen og pakket ut med "...".
 
-Dummy data ligger innenfor "data" mappen. Den faktiske dataen vi bruker i prosjektet er i "db" mappen. Det er schemaer for ulike typer dataer vi bruker i prosjektet som vi migrerer til databasen. "seed.ts" lager dataen vi bruker for å teste applikasjonen. Det er også zod-schemaer for typene inni "types" mappen. Databaselogikken bruker schemaen fra "db" mens komponentene bruker zod-schemaet fra "types". 
+Dummy data ligger innenfor "data" mappen. Den faktiske dataen vi bruker i prosjektet er i "db" mappen og fra IGDB-API-et. Det er schemaer for ulike typer dataer vi bruker i prosjektet som vi migrerer til databasen. "seed.ts" lager dataen vi bruker for å teste applikasjonen. Det er også zod-schemaer for typene inni "types" mappen. Databaselogikken bruker schemaen fra "db" mens komponentene bruker zod-schemaet fra "types". 
 
 Komponenter som rendrer de faktiske HTML-sidene ligger i "pages". Underliggende komponenter som sidene i "pages" bruker ligger i "components". Å ha komponenter uavhengig fra sidene skaper fleksibilitet og mulighet til å bruke dem på tvers av sider potensielt med annerledes logikk sendt via props.
 
