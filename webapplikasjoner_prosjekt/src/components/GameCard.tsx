@@ -5,7 +5,7 @@ import { getIGDBContent } from "@/api/igdb";
 import { brandStyles } from "@/app/styles/brand-styles";
 
 export async function GameCard({ game }: { game: Partial<Game> }) {
-  const { id, name, cover, genres, rating, releaseDate, summary } = game;
+  const { id, name, cover, genres, rating, release_dates, summary } = game;
 
   const franchises = `
     fields name, games;
@@ -53,7 +53,10 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
         </p>
         <p>
           <span className="font-bold">Release Date: </span>
-          {releaseDate?.toLocaleDateString()}
+          {release_dates
+            ?.map((releaseDate) => releaseDate.human)
+            .join(", ")
+            .slice(0, 12)}
         </p>
         <p>
           <span className="font-bold">Summary: </span>

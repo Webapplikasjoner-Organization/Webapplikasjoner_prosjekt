@@ -8,7 +8,7 @@ import { validateListParams } from "@/utils/validate-list-params";
 
 export interface UserService {
   create: (input: CreateUser) => Promise<Result<UserDTO>>;
-  list: (params: Params) => Promise<Result<UserDTO[]>>;
+  list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (id: string) => Promise<Result<UserDTO> | null>;
   update: (id: string, input: string) => Promise<Result<UserDTO> | null>;
   delete: (id: string) => Promise<Result<void> | null>;

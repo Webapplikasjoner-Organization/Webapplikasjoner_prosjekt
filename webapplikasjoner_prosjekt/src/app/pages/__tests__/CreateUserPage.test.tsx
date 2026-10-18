@@ -6,11 +6,11 @@ import userEvent from "@testing-library/user-event";
 import { CreateUserPage } from "@/app/pages/CreateUserPage";
 import { navigate } from "rwsdk/client";
 
-describe("CreateUserPage ", () => {
-  vi.mock("rwsdk/client", () => ({
-    navigate: vi.fn(),
-  }));
+vi.mock("rwsdk/client", () => ({
+  navigate: vi.fn(),
+}));
 
+describe("CreateUserPage ", () => {
   it("Username and Password are on the screen after submission", async () => {
     const user = userEvent.setup();
     render(<CreateUserPage />);

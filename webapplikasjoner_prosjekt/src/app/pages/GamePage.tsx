@@ -10,7 +10,7 @@ export default async function GamePage({ params }: RequestInfo) {
   const { id } = params;
 
   const gameWithID = `
-  fields name, cover.image_id, genres.name, rating, first_release_date, summary;
+  fields name, cover.image_id, genres.name, rating, release_dates.human, summary;
   where id = (${id});
   sort rating desc;
   limit 10;`;
@@ -19,7 +19,7 @@ export default async function GamePage({ params }: RequestInfo) {
 
   const game = gameFromIGDB?.[0];
 
-  const { name, cover, genres, rating, releaseDate, summary } = game;
+  const { name, cover, genres, rating, release_dates, summary } = game;
 
   const franchises = `
     fields name, games;
@@ -65,7 +65,10 @@ export default async function GamePage({ params }: RequestInfo) {
             </p>
             <p>
               <span className="font-bold">Release Date: </span>
-              {releaseDate ? releaseDate.toLocaleDateString() : "N/A"}
+              {release_dates
+                ?.map((releaseDate) => releaseDate.human)
+                .join(", ")
+                .slice(0, 12)}
             </p>
             <p>
               <span className="font-bold">Description: </span>

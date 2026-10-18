@@ -7,10 +7,10 @@ import { type UserListParams } from "@/utils/validate-list-params";
 
 export interface UserRepository {
   create: (user: CreateUser) => Promise<Result<User>>;
-  findMany: (params: UserListParams) => Promise<Result<User[]>>;
+  findMany: (params?: UserListParams) => Promise<Result<User[]>>;
   findById: (id: string) => Promise<Result<User> | null>;
   update: (id: string, username: string) => Promise<Result<User> | null>;
-  delete: (id: string) => Promise<Result<void>>;
+  delete: (id: string) => Promise<Result<void> | null>;
 }
 
 export function createUserRepository(_db: DB): UserRepository {
@@ -38,7 +38,7 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async findMany({ q, limit }: UserListParams): Promise<Result<User[]>> {
+    async findMany({ q, limit }: UserListParams = {}): Promise<Result<User[]>> {
       try {
         const rows = await _db.query.users.findMany({
           where: {
@@ -116,8 +116,11 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async delete(id: string): Promise<Result<void>> {
+    async delete(id: string): Promise<Result<void> | null> {
       try {
+        if (!(await this.findById(id))) {
+          return null;
+        }
         const deleteUser = await _db.delete(users).where(eq(users.id, id));
         return {
           ok: true,
