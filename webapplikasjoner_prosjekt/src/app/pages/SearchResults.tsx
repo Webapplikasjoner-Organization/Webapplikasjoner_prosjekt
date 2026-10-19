@@ -5,7 +5,7 @@ import { CLIENTID } from "@/constants/env_values";
 import { PageLayout } from "@/components/PageLayout";
 import type { RequestInfo } from "rwsdk/worker";
 
-export default async function SearchResults({ params }: RequestInfo) {
+export async function SearchResults({ params }: RequestInfo) {
   let { q } = params;
   q = q.replace(/%20/g, " ");
 

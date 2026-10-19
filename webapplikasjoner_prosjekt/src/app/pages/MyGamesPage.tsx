@@ -3,7 +3,7 @@ import { PageLayout } from "@/components/PageLayout";
 import { FilterPanel } from "@/components/FilterPanel";
 import { SortPanel } from "@/components/SortPanel";
 
-export default function MyGamesPage() {
+export function MyGamesPage() {
   return (
     <PageLayout>
       <main className="flex flex-col gap-10">

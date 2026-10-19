@@ -1,7 +1,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { PageLayout } from "@/components/PageLayout";
 
-export default function UserProfile({ params }: RequestInfo) {
+export function UserProfile({ params }: RequestInfo) {
   const { username } = params;
 
   return (

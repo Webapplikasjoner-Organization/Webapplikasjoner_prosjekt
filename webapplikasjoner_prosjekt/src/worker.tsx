@@ -5,18 +5,18 @@ import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
 import { CreateUserPage } from "@/app/pages/CreateUserPage";
 import { LoginPage } from "@/app/pages/LoginPage";
-import { Home } from "./app/pages/Home";
-import GamePage from "./app/pages/GamePage";
-import UserProfile from "./app/pages/UserProfile";
-import ChangePasswordPage from "./app/pages/ChangePasswordPage";
-import MyGamesPage from "./app/pages/MyGamesPage";
-import DeleteAccountPage from "./app/pages/DeleteAccountPage";
-import SearchResults from "./app/pages/SearchResults";
-import ArticlesPage from "./app/pages/ArticlesPage";
-import ArticlePage from "./app/pages/ArticlePage";
+import { Home } from "@/app/pages/Home";
+import { GamePage } from "./app/pages/GamePage";
+import { UserProfile } from "./app/pages/UserProfile";
+import { ChangePasswordPage } from "./app/pages/ChangePasswordPage";
+import { MyGamesPage } from "./app/pages/MyGamesPage";
+import { DeleteAccountPage } from "./app/pages/DeleteAccountPage";
+import { SearchResults } from "./app/pages/SearchResults";
+import { ArticlesPage } from "./app/pages/ArticlesPage";
+import { ArticlePage } from "./app/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
-import UsersPage from "./app/pages/UsersPage";
+import { UsersPage } from "./app/pages/UsersPage";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
  *

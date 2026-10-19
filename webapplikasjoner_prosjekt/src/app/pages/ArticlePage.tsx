@@ -3,7 +3,7 @@ import { PageLayout } from "@/components/PageLayout";
 import { ARTICLES } from "@/data/articles";
 import { Article as ArticleType } from "@/types/article";
 
-export default function Article({ params }: RequestInfo) {
+export function ArticlePage({ params }: RequestInfo) {
   const { id } = params;
 
   const article: ArticleType | undefined = ARTICLES.find(

@@ -6,7 +6,7 @@ import { getIGDBContent } from "@/api/igdb";
 
 import type { RequestInfo } from "rwsdk/worker";
 
-export default async function GamePage({ params }: RequestInfo) {
+export async function GamePage({ params }: RequestInfo) {
   const { id } = params;
 
   const gameWithID = `

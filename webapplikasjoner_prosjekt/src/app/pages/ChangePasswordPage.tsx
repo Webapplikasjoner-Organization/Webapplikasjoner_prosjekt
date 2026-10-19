@@ -5,7 +5,7 @@ import { navigate } from "rwsdk/client";
 import { useState } from "react";
 import { brandStyles } from "@/app/styles/brand-styles";
 
-export default function ChangePasswordPage() {
+export function ChangePasswordPage() {
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
 
