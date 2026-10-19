@@ -1,6 +1,6 @@
 import { Counter } from "@/components/Counter";
 import { TimeClient } from "@/components/TimeClient";
-import { GameList } from "../../components/GameList";
+import { GameList } from "../../features/games/components/GameList";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageLayout } from "@/components/PageLayout";

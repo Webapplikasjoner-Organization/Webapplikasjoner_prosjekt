@@ -1,5 +1,6 @@
-import { Articles } from "@/components/Articles";
+
 import { PageLayout } from "@/components/PageLayout";
+import { Articles } from "../components/Articles";
 
 export function ArticlesPage() {
   return (

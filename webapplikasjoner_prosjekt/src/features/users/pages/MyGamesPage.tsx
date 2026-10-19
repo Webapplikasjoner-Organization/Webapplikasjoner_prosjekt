@@ -1,4 +1,4 @@
-import { GameList } from "@/components/GameList";
+import { GameList } from "@/features/games/components/GameList";
 import { PageLayout } from "@/components/PageLayout";
 import { FilterPanel } from "@/components/FilterPanel";
 import { SortPanel } from "@/components/SortPanel";

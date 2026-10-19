@@ -3,20 +3,20 @@ import { render, route } from "rwsdk/router";
 import { userRoutes } from "@/features/users/user-routes";
 import { Document } from "@/app/Document";
 import { setCommonHeaders } from "@/app/headers";
-import { CreateUserPage } from "@/app/pages/CreateUserPage";
-import { LoginPage } from "@/app/pages/LoginPage";
+import { CreateUserPage } from "@/features/users/pages/CreateUserPage";
+import { LoginPage } from "@/features/users/pages/LoginPage";
 import { Home } from "@/app/pages/Home";
-import { GamePage } from "./app/pages/GamePage";
-import { UserProfile } from "./app/pages/UserProfile";
-import { ChangePasswordPage } from "./app/pages/ChangePasswordPage";
-import { MyGamesPage } from "./app/pages/MyGamesPage";
-import { DeleteAccountPage } from "./app/pages/DeleteAccountPage";
-import { SearchResults } from "./app/pages/SearchResults";
-import { ArticlesPage } from "./app/pages/ArticlesPage";
-import { ArticlePage } from "./app/pages/ArticlePage";
+import { GamePage } from "./features/games/pages/GamePage";
+import { UserProfile } from "./features/users/pages/UserProfile";
+import { ChangePasswordPage } from "./features/users/pages/ChangePasswordPage";
+import { MyGamesPage } from "./features/users/pages/MyGamesPage";
+import { DeleteAccountPage } from "./features/users/pages/DeleteAccountPage";
+import { SearchResults } from "./features/games/pages/SearchResults";
+import { ArticlesPage } from "./features/articles/pages/ArticlesPage";
+import { ArticlePage } from "./features/articles/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
-import { UsersPage } from "./app/pages/UsersPage";
+import { UsersPage } from "./features/users/pages/UsersPage";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
  *

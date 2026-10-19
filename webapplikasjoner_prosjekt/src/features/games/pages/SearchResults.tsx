@@ -1,5 +1,5 @@
 import { getIGDBContent } from "@/api/igdb";
-import { GameCard } from "@/components/GameCard";
+import { GameCard } from "@/features/games/components/GameCard";
 import { Suspense } from "react";
 import { CLIENTID } from "@/constants/env_values";
 import { PageLayout } from "@/components/PageLayout";
