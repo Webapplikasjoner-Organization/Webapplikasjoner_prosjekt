@@ -90,7 +90,8 @@ Prosjektet utvikles gjennom høstsemesteret 2026 som en del av emnet Webutviklin
 2. Kjør "npm install" i "webapplikasjoner_prosjekt" mappen.
 3. Hent private og hemmelige nøkler og legg dem i en ".dev.vars" fil i for å bruke IGDB-api-et. Kontakt Daniel Karlsen for å få nøklene.
 4. Kjør "npx wrangler types".
-5. Kjør "npm run dev" og åpne url-en i en nettleser.
+5. Kjør "npm run migrate:dev" og "npm run migrate:dev" for å migrere schemaer til databasen og deretter "npm run generate".
+6. Kjør "npm run dev" og åpne url-en i en nettleser.
 
 ## Tekniske detaljer
 
