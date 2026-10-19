@@ -1,11 +1,13 @@
+"use client";
+
 import { createContext, useContext, useState } from "react";
 import { Game } from "../types/game";
 import { GAMES } from "@/data/games";
 
 type GameContextData = {
-  games: Game[],
-  getGames: () => Promise<Game[]>,
-}
+  games: Game[];
+  getGames: () => Promise<Game[]>;
+};
 
 const GamesContext = createContext<GameContextData | null>(null);
 
@@ -20,9 +22,9 @@ export function GamesProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <GamesContext value={{ games, getGames }}>
+    <GamesContext.Provider value={{ games, getGames }}>
       {children}
-    </GamesContext>
+    </GamesContext.Provider>
   );
 }
 

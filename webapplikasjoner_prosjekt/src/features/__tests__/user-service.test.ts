@@ -120,7 +120,7 @@ describe("userService.findById", () => {
 
 describe("userService.update", () => {
   it("Updates the username of a specific user", async () => {
-    const result = await service.update("1", "updatedusername");
+    const result = await service.update("1", "username", "updatedusername");
     if (result === null) {
       throw new Error("Did not find a user with that id.");
     }
@@ -132,7 +132,24 @@ describe("userService.update", () => {
     expect(result.code).toBe(201);
   });
   it("Does not find a user to update and returns null", async () => {
-    const result = await service.update("666", "updatedusername");
+    const result = await service.update("666", "username", "updatedusername");
+    expect(result).toBeNull();
+  });
+
+  it("Updates the password of a specific user", async () => {
+    const result = await service.update("1", "password", "updatedpassword");
+    if (result === null) {
+      throw new Error("Did not find a user with that id.");
+    }
+    if (!result.ok) {
+      throw new Error("Failed to update user.");
+    }
+    expect(result.ok).toBe(true);
+    expect(result.data.password).toBe("updatedpassword");
+    expect(result.code).toBe(201);
+  });
+  it("Does not find a user to update the password and returns null", async () => {
+    const result = await service.update("666", "password", "updatedpassword");
     expect(result).toBeNull();
   });
 });

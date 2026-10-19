@@ -10,6 +10,8 @@ export const UserSchema = z.object({
   password: z.string().min(1, { message: "Password: is required " }),
 });
 
+export type User = z.infer<typeof UserSchema>;
+
 /*
 export type User = {
   readonly id: string,

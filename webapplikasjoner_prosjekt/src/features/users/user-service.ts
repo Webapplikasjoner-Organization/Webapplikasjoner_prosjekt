@@ -10,7 +10,11 @@ export interface UserService {
   create: (input: CreateUser) => Promise<Result<UserDTO>>;
   list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (id: string) => Promise<Result<UserDTO> | null>;
-  update: (id: string, input: string) => Promise<Result<UserDTO> | null>;
+  update: (
+    id: string,
+    category: string,
+    newValue: string,
+  ) => Promise<Result<UserDTO> | null>;
   delete: (id: string) => Promise<Result<void> | null>;
 }
 
@@ -65,8 +69,12 @@ export function createUserService(_repository: UserRepository): UserService {
         code: 200,
       };
     },
-    async update(id: string, input: string): Promise<Result<UserDTO> | null> {
-      const result = await _repository.update(id, input);
+    async update(
+      id: string,
+      category: string,
+      newValue: string,
+    ): Promise<Result<UserDTO> | null> {
+      const result = await _repository.update(id, category, newValue);
       if (result === null) {
         return null;
       }

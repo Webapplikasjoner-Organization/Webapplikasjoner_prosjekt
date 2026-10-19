@@ -9,6 +9,7 @@ import { Home } from "@/app/pages/Home";
 import { GamePage } from "./features/games/pages/GamePage";
 import { UserProfile } from "./features/users/pages/UserProfile";
 import { ChangePasswordPage } from "./features/users/pages/ChangePasswordPage";
+import { ChangeUsernamePage } from "./features/users/pages/ChangeUsernamePage";
 import { MyGamesPage } from "./features/users/pages/MyGamesPage";
 import { DeleteAccountPage } from "./features/users/pages/DeleteAccountPage";
 import { SearchResults } from "./features/games/pages/SearchResults";
@@ -53,6 +54,7 @@ const app = defineApp([
     route("/login", LoginPage),
     route("/users/:id", UserProfile),
     route("/users/:id/change-password", ChangePasswordPage),
+    route("/users/:id/change-username", ChangeUsernamePage),
     route("/users/:id/delete-account", DeleteAccountPage),
     route("/my-games", MyGamesPage),
     route("/games/:id", GamePage),

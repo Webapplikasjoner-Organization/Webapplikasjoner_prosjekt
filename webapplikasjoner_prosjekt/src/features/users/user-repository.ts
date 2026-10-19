@@ -9,7 +9,11 @@ export interface UserRepository {
   create: (user: CreateUser) => Promise<Result<User>>;
   findMany: (params?: UserListParams) => Promise<Result<User[]>>;
   findById: (id: string) => Promise<Result<User> | null>;
-  update: (id: string, username: string) => Promise<Result<User> | null>;
+  update: (
+    id: string,
+    category: string,
+    newValue: string,
+  ) => Promise<Result<User> | null>;
   delete: (id: string) => Promise<Result<void> | null>;
 }
 
@@ -89,11 +93,15 @@ export function createUserRepository(_db: DB): UserRepository {
         };
       }
     },
-    async update(id: string, username: string): Promise<Result<User> | null> {
+    async update(
+      id: string,
+      category: string,
+      newValue: string,
+    ): Promise<Result<User> | null> {
       try {
         const updateUser = await _db
           .update(users)
-          .set({ username: username })
+          .set({ [category]: newValue })
           .where(eq(users.id, id))
           .returning()
           .get();
