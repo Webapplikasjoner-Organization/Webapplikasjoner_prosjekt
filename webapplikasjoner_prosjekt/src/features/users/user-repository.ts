@@ -3,7 +3,7 @@ import type { CreateUser, UpdateUser, User } from "@/db/schema/user-schema";
 import type { Result } from "@/shared/result";
 import { users } from "@/db/schema/user-schema";
 import { eq, desc } from "drizzle-orm";
-import { type UserListParams } from "@/utils/validate-list-params";
+import { type UserListParams } from "@/features/users/utils/validate-list-params";
 
 export interface UserRepository {
   create: (user: CreateUser) => Promise<Result<User>>;
@@ -21,14 +21,14 @@ export function createUserRepository(_db: DB): UserRepository {
   return {
     async create(user: CreateUser): Promise<Result<User>> {
       try {
-        const createUser = await _db
+        const createdUser = await _db
           .insert(users)
           .values(user)
           .returning()
           .get();
         return {
           ok: true,
-          data: createUser,
+          data: createdUser,
           code: 201,
         };
       } catch (error) {

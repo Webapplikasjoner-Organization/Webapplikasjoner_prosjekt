@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   type UserListParams,
   validateListParams,
-} from "@/utils/validate-list-params";
+} from "@/features/users/utils/validate-list-params";
 
 describe("validateListParams", () => {
   it("Return errors whenlimit cannot be converted to a number", () => {

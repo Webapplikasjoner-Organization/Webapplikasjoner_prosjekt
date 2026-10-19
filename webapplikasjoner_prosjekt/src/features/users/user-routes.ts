@@ -8,7 +8,13 @@ export const userRoutes = [
   }),
   route("/api/v1/users/:id", {
     get: userController.findById,
-    patch: userController.update,
-    delete: userController.delete,
+    patch: [
+      //Require authentication
+      userController.update,
+    ],
+    delete: [
+      //Require authentication
+      userController.delete,
+    ],
   }),
 ];
