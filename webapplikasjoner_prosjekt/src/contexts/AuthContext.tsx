@@ -40,7 +40,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       navigate("/login");
       return;
     }
-    userService.update(user.id, "username", newUsername);
+    userService.update({
+      id: user.id,
+      category: "username",
+      newValue: newUsername,
+    });
   }, []);
 
   const changePassword = useCallback((newPassword: string) => {
@@ -48,7 +52,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       navigate("/login");
       return;
     }
-    userService.update(user.id, "password", newPassword);
+    userService.update({
+      id: user.id,
+      category: "password",
+      newValue: newPassword,
+    });
   }, []);
 
   const deleteAccount = useCallback(() => {
