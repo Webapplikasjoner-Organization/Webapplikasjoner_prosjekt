@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { ArticlePage } from "../pages/ArticlePage";
 
 
+// Component-test
 test('renders correct article with pic', () => {
     
     const mockProps = {
