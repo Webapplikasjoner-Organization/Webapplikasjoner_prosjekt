@@ -5,7 +5,6 @@ import type {
   CreateUserFormAction,
 } from "@/features/users/actions";
 import { useActionState } from "react";
-import { navigate } from "rwsdk/client";
 
 interface CreateUserFormProps {
   action: CreateUserFormAction;

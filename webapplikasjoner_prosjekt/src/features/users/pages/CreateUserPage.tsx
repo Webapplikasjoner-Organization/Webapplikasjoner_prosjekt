@@ -1,8 +1,6 @@
-"use client";
+"use server";
 
 import { PageLayout } from "@/components/PageLayout";
-import { useState } from "react";
-import { navigate } from "rwsdk/client";
 import { CreateUserForm } from "@/features/users/components/CreateUserForm";
 import { createUserAction } from "@/features/users/actions";
 
