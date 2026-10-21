@@ -53,20 +53,23 @@ export function createUserController(_service: UserService): UserController {
         code: 200,
       });
     },
-    async findById({ request, ctx }: RequestInfo): Promise<Response> {
-      let body: unknown;
-      try {
-        body = await request.json();
-      } catch (error) {
-        return Response.json({
-          ok: false,
-          error: {
-            code: 400,
-            message: "Body must be in JSON format.",
-          },
-        });
-      }
-      const result = await _service.findById(body);
+    async findById({ request, ctx, params }: RequestInfo): Promise<Response> {
+      // let body: unknown;
+      // try {
+      //   body = await request.json();
+      // } catch (error) {
+      //   return Response.json({
+      //     ok: false,
+      //     error: {
+      //       code: 400,
+      //       message: "Body must be in JSON format.",
+      //     },
+      //   });
+      // }
+      // Kan hente ut params direkte ellers må det sendes som body i findUserById og vi må bruke POST
+      const { id } = params;
+      console.log("ID", id);
+      const result = await _service.findById(id);
       if (result === null) {
         return Response.json({
           ok: false,
