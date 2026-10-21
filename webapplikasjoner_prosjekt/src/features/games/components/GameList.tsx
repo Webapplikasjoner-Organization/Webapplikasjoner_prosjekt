@@ -2,7 +2,7 @@ import { getIGDBContent } from "@/api/igdb";
 import type { Game } from "@/types/game";
 import { CLIENTID } from "@/constants/env_values";
 import { GameCard } from "./GameCard";
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 
 const gamesFromIGDB = `
 fields name, cover.image_id, genres.name, rating, release_dates.human, summary;
@@ -11,11 +11,19 @@ sort rating desc;
 limit 10;`;
 
 export async function GameList() {
-  const games: Partial<Game>[] = await getIGDBContent(
-    "games",
-    gamesFromIGDB,
-    CLIENTID,
-  );
+  const [games, setGames] = useState<Partial<Game>[]>([]);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      const igdbGames: Partial<Game>[] = await getIGDBContent(
+        "games",
+        gamesFromIGDB,
+        CLIENTID,
+      );
+      setGames(igdbGames);
+    };
+    fetchGames();
+  }, []);
 
   return (
     <section className="flex flex-row flex-wrap justify-evenly gap-10">

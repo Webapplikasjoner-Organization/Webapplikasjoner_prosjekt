@@ -13,9 +13,13 @@ export async function createUser(input: unknown): Promise<Result<UserDTO>> {
     });
     if (!response.ok) {
       console.log(response.ok, response.status, response.statusText);
-      throw new Error(
-        `Failed to create a user: ${(response.ok, response.status, response.statusText)}`,
-      );
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
     }
     const data = await response.json();
     return data as { ok: true; data: UserDTO; code: 201 };
@@ -40,9 +44,13 @@ export async function listUsers(
     const response = await fetch(`/api/v1/users?${query}`);
     if (!response.ok) {
       console.log(response.ok, response.status, response.statusText);
-      throw new Error(
-        `Failed to fetch users: ${(response.ok, response.status, response.statusText)}`,
-      );
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
     }
     const data = await response.json();
     return data as { ok: true; data: UserDTO[]; code: 200 };
@@ -61,12 +69,16 @@ export async function listUsers(
 
 export async function findUserById(id: string): Promise<Result<UserDTO>> {
   try {
-    const response = await fetch(`/api/v1/users/${id}`);
+    const response = await fetch(`/api/v1/users/${encodeURIComponent(id)}`);
     if (!response.ok) {
       console.log(response.ok, response.status, response.statusText);
-      throw new Error(
-        `Failed to fetch a user by id: ${(response.ok, response.status, response.statusText)}`,
-      );
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
     }
     const data = await response.json();
     return data as { ok: true; data: UserDTO; code: 200 };
@@ -88,7 +100,7 @@ export async function updateUser(
   input: unknown,
 ): Promise<Result<UserDTO>> {
   try {
-    const response = await fetch(`/api/v1/users/${id}`, {
+    const response = await fetch(`/api/v1/users/${encodeURIComponent(id)}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -97,9 +109,13 @@ export async function updateUser(
     });
     if (!response.ok) {
       console.log(response.ok, response.status, response.statusText);
-      throw new Error(
-        `Failed to update a user: ${(response.ok, response.status, response.statusText)}`,
-      );
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
     }
     const data = await response.json();
     return data as { ok: true; data: UserDTO; code: 201 };
@@ -118,7 +134,7 @@ export async function updateUser(
 
 export async function deleteUser(id: string): Promise<Result<void>> {
   try {
-    const response = await fetch(`/api/v1/users/${id}`, {
+    const response = await fetch(`/api/v1/users/${encodeURIComponent(id)}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -126,9 +142,13 @@ export async function deleteUser(id: string): Promise<Result<void>> {
     });
     if (!response.ok) {
       console.log(response.ok, response.status, response.statusText);
-      throw new Error(
-        `Failed to delete a user: ${(response.ok, response.status, response.statusText)}`,
-      );
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
     }
     const data = await response.json();
     return data as { ok: true; data: void; code: 200 };

@@ -1,12 +1,8 @@
-import type { CreateUser } from "@/db/schema/user-schema";
 import {
   createUserSchema,
   updateUserSchema,
 } from "@/features/users/user-schema";
-import type {
-  CreateUserInput,
-  UpdateUserInput,
-} from "@/features/users/user-schema";
+import { z } from "zod";
 import { toUserDTO } from "./user-mapper";
 import type { Result } from "@/shared/result";
 import { userRepository, type UserRepository } from "./user-repository";
@@ -18,6 +14,7 @@ export interface UserService {
   create: (input: unknown) => Promise<Result<UserDTO>>;
   list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (input: unknown) => Promise<Result<UserDTO> | null>;
+  findByUsername: (input: unknown) => Promise<Result<UserDTO> | null>;
   update: (input: unknown) => Promise<Result<UserDTO> | null>;
   delete: (input: unknown) => Promise<Result<void> | null>;
 }
@@ -31,9 +28,19 @@ export function createUserService(_repository: UserRepository): UserService {
           ok: false,
           error: {
             code: 400,
-            message: "Invalid input for creating a user.",
+            message: "Username and password fields cannot be empty.",
+            fieldErrors: z.flattenError(parsed.error).fieldErrors,
           },
         };
+      if (Object.keys(parsed.data).length === 0) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Input is empty.",
+          },
+        };
+      }
       const rule = validateUser(parsed.data);
       if (!rule.ok) {
         return {
@@ -98,6 +105,47 @@ export function createUserService(_repository: UserRepository): UserService {
       if (!result.ok) {
         return result;
       }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      return {
+        ok: true,
+        data: toUserDTO(result.data),
+        code: 200,
+      };
+    },
+    async findByUsername(input: unknown): Promise<Result<UserDTO> | null> {
+      if (typeof input !== "string" || input.trim() === "") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Username cannot be an empty string.",
+          },
+        };
+      }
+      const result = await _repository.findByUsername(input);
+      if (result === null) {
+        return null;
+      }
+      if (!result.ok) {
+        return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
       return {
         ok: true,
         data: toUserDTO(result.data),
@@ -112,6 +160,16 @@ export function createUserService(_repository: UserRepository): UserService {
           error: {
             code: 400,
             message: "Invalid input for updating a user.",
+            fieldErrors: z.flattenError(parsed.error).fieldErrors,
+          },
+        };
+      }
+      if (Object.keys(parsed.data).length === 0) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Input is empty.",
           },
         };
       }
@@ -122,6 +180,15 @@ export function createUserService(_repository: UserRepository): UserService {
       }
       if (!result.ok) {
         return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
       }
       return {
         ok: true,

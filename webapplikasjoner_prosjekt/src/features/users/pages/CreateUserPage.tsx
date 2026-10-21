@@ -7,7 +7,7 @@ import { createUserAction } from "@/features/users/actions";
 export function CreateUserPage() {
   return (
     <PageLayout>
-      <main>
+      <main className="flex flex-col items-center">
         <CreateUserForm action={createUserAction} />
       </main>
     </PageLayout>
