@@ -1,0 +1,58 @@
+import { Game } from "@/types/game";
+
+export const GAMES: Game[] = [
+  {
+    id: "1",
+    name: "Game 1",
+    cover: { id: "1", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "1", name: "Action/Adventure" }],
+    rating: 85,
+    release_dates: [{ id: "1", human: new Date("Feb 07, 2012") }],
+    summary: "This is the description for Game 1.",
+  },
+  {
+    id: "2",
+    name: "Game 2",
+    cover: { id: "2", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "2", name: "Strategy/RPG" }],
+    rating: 90,
+    release_dates: [{ id: "2", human: new Date("Feb 07, 2023") }],
+    summary: "This is the description for Game 2.",
+  },
+  {
+    id: "3",
+    name: "Game 3",
+    cover: { id: "3", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "3", name: "Simulation/Casual" }],
+    rating: 75,
+    release_dates: [{ id: "3", human: new Date("Feb 09, 2023") }],
+    summary: "This is the description for Game 3.",
+  },
+  {
+    id: "4",
+    name: "Game 4",
+    cover: { id: "4", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "4", name: "Puzzle/Indie" }],
+    rating: 80,
+    release_dates: [{ id: "4", human: new Date("Mar 15, 2023") }],
+    summary: "This is the description for Game 4.",
+  },
+  {
+    id: "5",
+    name: "Game 5",
+    cover: { id: "5", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "5", name: "Horror/Thriller" }],
+    rating: 70,
+    release_dates: [{ id: "5", human: new Date("Apr 20, 2023") }],
+    summary: "This is the description for Game 5.",
+  },
+  {
+    id: "6",
+    name: "Game 6",
+    cover: { id: "6", image_id: "https://placehold.co/300x300/orange/white" },
+    genres: [{ id: "6", name: "Racing/Sports" }],
+    rating: 95,
+    release_dates: [{ id: "6", human: new Date("May 10, 2023") }],
+    summary: "This is the description for Game 6.",
+  },
+];

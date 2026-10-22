@@ -1,0 +1,21 @@
+import { GameList } from "@/features/games/components/GameList";
+import { PageLayout } from "@/components/PageLayout";
+import { FilterPanel } from "@/components/FilterPanel";
+import { SortPanel } from "@/components/SortPanel";
+
+export function MyGamesPage() {
+  return (
+    <PageLayout>
+      <main className="flex flex-col gap-10">
+        <h1>My games</h1>
+        <div>
+          <FilterPanel />
+        </div>
+        <div>
+          <SortPanel />
+        </div>
+        <GameList />
+      </main>
+    </PageLayout>
+  );
+}
