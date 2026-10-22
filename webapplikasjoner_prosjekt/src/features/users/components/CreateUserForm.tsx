@@ -8,7 +8,6 @@ import type {
 } from "@/features/users/actions";
 import { useActionState } from "react";
 import { navigate } from "rwsdk/client";
-import { userService } from "@/features/users/user-service";
 
 interface CreateUserFormProps {
   action: CreateUserFormAction;

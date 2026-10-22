@@ -26,6 +26,10 @@ export default defineConfig({
         __dirname,
         "src/test/cloudflare-workers.ts",
       ),
+      // Må lage en "symlink" til disse globalt for da de ikke finnes under test
+      // Nå "faker" vi koden de gir slik at testene ikke krasjer
+      "rwsdk/client": resolve(__dirname, "src/test/rwsdk-client.ts"),
+      "rwsdk/worker": resolve(__dirname, "src/test/rwsdk-worker.ts"),
     },
   },
   test: {

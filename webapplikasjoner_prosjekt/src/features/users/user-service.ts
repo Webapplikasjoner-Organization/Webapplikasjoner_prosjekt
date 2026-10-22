@@ -89,15 +89,16 @@ export function createUserService(_repository: UserRepository): UserService {
       };
     },
     async findById(input: unknown): Promise<Result<UserDTO> | null> {
-      if (typeof input !== "string" || isNaN(Number(input))) {
-        return {
-          ok: false,
-          error: {
-            code: 400,
-            message: "Id must be a string that can be represented as a number.",
-          },
-        };
-      }
+      // user-id er streng så isNaN sjekken vil feile
+      // if (typeof input !== "string" || isNaN(Number(input))) {
+      //   return {
+      //     ok: false,
+      //     error: {
+      //       code: 400,
+      //       message: "Id must be a string that can be represented as a number.",
+      //     },
+      //   };
+      // }
       const result = await _repository.findById(input);
       if (result === null) {
         return null;
