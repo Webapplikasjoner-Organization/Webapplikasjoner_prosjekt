@@ -99,6 +99,15 @@ export function createUserService(_repository: UserRepository): UserService {
       //     },
       //   };
       // }
+      if (typeof input !== "string") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Id must be a string.",
+          },
+        };
+      }
       const result = await _repository.findById(input);
       if (result === null) {
         return null;

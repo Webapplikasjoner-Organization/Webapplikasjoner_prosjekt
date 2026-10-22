@@ -75,7 +75,7 @@ export function createUserController(_service: UserService): UserController {
           ok: false,
           error: {
             code: 404,
-            message: `User with the id: ${body} was not found.`,
+            message: `User with the id: ${id} was not found.`,
           },
         });
       }
@@ -91,26 +91,19 @@ export function createUserController(_service: UserService): UserController {
         code: 200,
       });
     },
-    async findByUsername({ request, ctx }: RequestInfo): Promise<Response> {
-      let body: unknown;
-      try {
-        body = await request.json();
-      } catch (error) {
-        return Response.json({
-          ok: false,
-          error: {
-            code: 400,
-            message: "Body must be in JSON format.",
-          },
-        });
-      }
-      const result = await _service.findByUsername(body);
+    async findByUsername({
+      request,
+      ctx,
+      params,
+    }: RequestInfo): Promise<Response> {
+      const { username } = params;
+      const result = await _service.findByUsername(username);
       if (result === null) {
         return Response.json({
           ok: false,
           error: {
             code: 404,
-            message: `User with the username: ${body} was not found.`,
+            message: `User with the username: ${username} was not found.`,
           },
         });
       }
