@@ -41,6 +41,15 @@ export function createUserController(_service: UserService): UserController {
     async list({ request, ctx }: RequestInfo): Promise<Response> {
       const params = parseParams(request);
       const result = await _service.list(params);
+      if (result === null) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 404,
+            message: `No users could be found.`,
+          },
+        });
+      }
       if (!result.ok) {
         return Response.json({
           ok: false,
@@ -68,7 +77,6 @@ export function createUserController(_service: UserService): UserController {
       // }
       // Kan hente ut params direkte ellers må det sendes som body i findUserById og vi må bruke POST
       const { id } = params;
-      console.log("ID", id);
       const result = await _service.findById(id);
       if (result === null) {
         return Response.json({
@@ -148,10 +156,8 @@ export function createUserController(_service: UserService): UserController {
           error: result.error,
         });
       }
-      return Response.json({
-        ok: true,
-        data: result.data,
-        code: 200,
+      return new Response(null, {
+        status: 200,
       });
     },
     async delete({ request, ctx }: RequestInfo): Promise<Response> {
@@ -183,10 +189,8 @@ export function createUserController(_service: UserService): UserController {
           error: result.error,
         });
       }
-      return Response.json({
-        ok: true,
-        data: result.data,
-        code: 200,
+      return new Response(null, {
+        status: 204,
       });
     },
   };

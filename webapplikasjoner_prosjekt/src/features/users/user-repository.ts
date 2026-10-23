@@ -16,7 +16,7 @@ export interface UserRepository {
     id: string,
     category: string,
     newValue: string,
-  ) => Promise<Result<User> | null>;
+  ) => Promise<Result<void> | null>;
   delete: (id: string) => Promise<Result<void> | null>;
 }
 
@@ -138,21 +138,18 @@ export function createUserRepository(_db: DB): UserRepository {
       id: string,
       category: string,
       newValue: string,
-    ): Promise<Result<User> | null> {
+    ): Promise<Result<void> | null> {
       try {
-        const updateUser = await _db
+        await _db
           .update(users)
           .set({ [category]: newValue })
           .where(eq(users.id, id))
           .returning()
           .get();
-        if (!updateUser) {
-          return null;
-        }
         return {
           ok: true,
-          data: updateUser,
-          code: 201,
+          data: undefined,
+          code: 200,
         };
       } catch (error) {
         console.error(error);
@@ -167,14 +164,11 @@ export function createUserRepository(_db: DB): UserRepository {
     },
     async delete(id: string): Promise<Result<void> | null> {
       try {
-        if (!(await this.findById(id))) {
-          return null;
-        }
-        const deleteUser = await _db.delete(users).where(eq(users.id, id));
+        await _db.delete(users).where(eq(users.id, id));
         return {
           ok: true,
-          data: deleteUser,
-          code: 200,
+          data: undefined,
+          code: 204,
         };
       } catch (error) {
         console.error(error);

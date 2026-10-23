@@ -1,10 +1,10 @@
 import type { RequestInfo } from "rwsdk/worker";
-
 import { PageLayout } from "@/components/PageLayout";
 import { brandStyles } from "@/app/styles/brand-styles";
 // import { findUserById } from "@/features/users/user-api";
 import { userService } from "@/features/users/user-service";
 // import { navigate } from "rwsdk/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 export async function UserProfile({ params, request }: RequestInfo) {
   const { id } = params;
@@ -31,7 +31,7 @@ export async function UserProfile({ params, request }: RequestInfo) {
           <a href="/">Change profile picture</a>
         </button>
         <button className={brandStyles.button}>
-          <a href="/my-games">My Games</a>
+          <a href={`/users/${id}/my-games`}>My Games</a>
         </button>
         <button className={brandStyles.button}>
           <a href={`/users/${id}/change-username`}>Change username</a>

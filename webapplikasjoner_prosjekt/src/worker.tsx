@@ -56,7 +56,7 @@ const app = defineApp([
     route("/users/:id/change-password", ChangePasswordPage),
     route("/users/:id/change-username", ChangeUsernamePage),
     route("/users/:id/delete-account", DeleteAccountPage),
-    route("/my-games", MyGamesPage),
+    route("/users/:id/my-games", MyGamesPage),
     route("/games/:id", GamePage),
     route("/search-results/:q", SearchResults),
     route("/articles", ArticlesPage),

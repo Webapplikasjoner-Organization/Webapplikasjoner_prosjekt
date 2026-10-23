@@ -35,43 +35,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const changeProfilePicture = useCallback((url: string) => {}, []);
 
-  const changeUsername = useCallback((newUsername: string) => {
+  const changeUsername = useCallback(async (newUsername: string) => {
     if (!user) {
-      navigate("/login");
+      await navigate("/login");
       return;
     }
-    userService.update({
+    await userService.update({
       id: user.id,
       category: "username",
       newValue: newUsername,
     });
   }, []);
 
-  const changePassword = useCallback((newPassword: string) => {
+  const changePassword = useCallback(async (newPassword: string) => {
     if (!user) {
-      navigate("/login");
+      await navigate("/login");
       return;
     }
-    userService.update({
+    await userService.update({
       id: user.id,
       category: "password",
       newValue: newPassword,
     });
   }, []);
 
-  const deleteAccount = useCallback(() => {
+  const deleteAccount = useCallback(async () => {
     if (!user) {
-      navigate("/login");
+      await navigate("/login");
       return;
     }
-    userService.delete(user.id);
+    await userService.delete(user.id);
     setUser(null);
-    navigate("/login");
+    await navigate("/login");
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
     setUser(null);
-    navigate("/login");
+    await navigate("/login");
   }, []);
 
   const value = {
