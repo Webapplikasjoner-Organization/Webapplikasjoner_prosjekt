@@ -31,7 +31,7 @@ export function Header() {
       </nav>
       <div className="flex flex-row items-center gap-4">
         <SearchBar />
-        <a href="/create-user">
+        <a href="/login">
           <img src="https://placehold.co/50x50/blue/white" alt="placeholder" />
         </a>
       </div>

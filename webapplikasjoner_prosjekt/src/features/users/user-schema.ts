@@ -5,6 +5,11 @@ export const createUserSchema = z.object({
   password: z.string().min(1, { message: "Password cannot be empty." }).trim(),
 });
 
+export const loginSchema = z.object({
+  username: z.string().min(1, { message: "Username cannot be empty." }).trim(),
+  password: z.string().min(1, { message: "Password cannot be empty." }).trim(),
+});
+
 export const updateUserSchema = z.object({
   id: z.string().min(1, { message: "Id is required." }),
   category: z.string().min(1, { message: "Category cannot be empty." }).trim(),
@@ -12,4 +17,5 @@ export const updateUserSchema = z.object({
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;

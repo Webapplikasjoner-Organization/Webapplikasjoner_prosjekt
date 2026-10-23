@@ -1,46 +1,127 @@
 "use server";
 
-import type { Result, ResultError } from "@/shared/result";
+import type { Result, ResultData, ResultError } from "@/shared/result";
 import type { UserDTO } from "@/features/users/user-mapper";
 import { requestInfo } from "rwsdk/worker";
 import { userService } from "@/features/users/user-service";
+import { loginSchema, createUserSchema } from "./user-schema";
 
-export type CreateUserFormState =
-  | { ok: true; data: UserDTO }
-  | {
-      ok: false;
-      error: {
-        code: number;
-        message: string;
-        fieldErrors?: Record<string, string | string[]>;
-      };
-      values: CreateUserFormValues;
-    }
+export type FormState =
+  | ResultData<UserDTO>
+  | (ResultError & { values: FormValues })
   | null;
-export type CreateUserFormValues = { username: string; password: string };
+export type FormValues = { username: string; password: string };
 
 export type CreateUserFormAction = (
-  prevState: CreateUserFormState,
+  prevState: FormState,
   formData: FormData,
-) => Promise<CreateUserFormState>;
+) => Promise<FormState>;
 
 export async function createUserAction(
-  _prevState: CreateUserFormState,
+  _prevState: FormState,
   formData: FormData,
-): Promise<CreateUserFormState> {
-  const { ctx, request } = requestInfo;
+): Promise<FormState> {
+  try {
+    const { ctx, request } = requestInfo;
 
-  const values: CreateUserFormValues = {
-    username: String(formData.get("username")),
-    password: String(formData.get("password")),
-  };
+    const values: FormValues = {
+      username: String(formData.get("username")) as string,
+      password: String(formData.get("password")) as string,
+    };
 
-  const result = await userService.create({
-    username: values.username,
-    password: values.password,
-  });
+    const validation = createUserSchema.safeParse(values);
 
-  return result.ok
-    ? { ok: true, data: result.data }
-    : { ok: false, error: result.error, values };
+    if (!validation.success) {
+      return {
+        ok: false,
+        error: {
+          code: 400,
+          message: "Invalid input for creating a user.",
+        },
+        values,
+      };
+    }
+
+    const result = await userService.create({
+      username: values.username,
+      password: values.password,
+    });
+
+    return result.ok
+      ? { ok: true, data: result.data, code: 201 }
+      : { ok: false, error: result.error, values };
+  } catch (error) {
+    return {
+      ok: false,
+      error: {
+        code: 500,
+        message: "An unexpected error occurred while trying to create a user.",
+      },
+      values: {
+        username: String(formData.get("username")),
+        password: String(formData.get("password")),
+      },
+    };
+  }
+}
+
+export type LoginFormAction = (
+  prevState: FormState,
+  formData: FormData,
+) => Promise<FormState>;
+
+export async function loginAction(
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  try {
+    const { ctx, request } = requestInfo;
+
+    const values: FormValues = {
+      username: String(formData.get("username")) as string,
+      password: String(formData.get("password")) as string,
+    };
+
+    const validation = loginSchema.safeParse(values);
+
+    if (!validation.success) {
+      return {
+        ok: false,
+        error: {
+          code: 400,
+          message: "Invalid input for login.",
+        },
+        values,
+      };
+    }
+
+    const result = await userService.findByUsername(values.username);
+
+    if (result === null) {
+      return {
+        ok: false,
+        error: {
+          code: 404,
+          message: "No user could be found with this information.",
+        },
+        values,
+      };
+    }
+
+    return result.ok
+      ? { ok: true, data: result.data, code: 200 }
+      : { ok: false, error: result.error, values };
+  } catch (error) {
+    return {
+      ok: false,
+      error: {
+        code: 500,
+        message: "An unexpected error occurred while trying to login.",
+      },
+      values: {
+        username: String(formData.get("username")),
+        password: String(formData.get("password")),
+      },
+    };
+  }
 }

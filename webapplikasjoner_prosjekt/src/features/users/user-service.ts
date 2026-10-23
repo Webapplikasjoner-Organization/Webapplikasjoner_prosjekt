@@ -137,7 +137,16 @@ export function createUserService(_repository: UserRepository): UserService {
       };
     },
     async findByUsername(input: unknown): Promise<Result<UserDTO> | null> {
-      if (typeof input !== "string" || input.trim() === "") {
+      if (typeof input !== "string") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Username must be a string.",
+          },
+        };
+      }
+      if (input.trim() === "") {
         return {
           ok: false,
           error: {
@@ -147,12 +156,13 @@ export function createUserService(_repository: UserRepository): UserService {
         };
       }
       const result = await _repository.findByUsername(input);
+      console.log(result);
       if (result === null) {
         return {
           ok: false,
           error: {
             code: 404,
-            message: "User could not be found.",
+            message: `A user with the username ${input} could not be found.`,
           },
         };
       }

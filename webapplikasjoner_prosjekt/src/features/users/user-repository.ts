@@ -110,11 +110,9 @@ export function createUserRepository(_db: DB): UserRepository {
     },
     async findByUsername(username: string): Promise<Result<User> | null> {
       try {
-        const getUser = await _db
-          .select()
-          .from(users)
-          .where(eq(users.username, username))
-          .get();
+        const getUser = await _db.query.users.findFirst({
+          where: { username: username ? { like: username } : undefined },
+        });
         if (!getUser) {
           return null;
         }
