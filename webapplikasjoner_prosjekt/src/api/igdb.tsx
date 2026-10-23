@@ -24,7 +24,7 @@ async function getAccessToken(
 
     if (!response.ok) {
       throw new Error(
-        `Access token retreival error: ${response.status} ${await response.text()}`,
+        `Access token retrieval error: ${response.status} ${await response.text()}`,
       );
     }
 

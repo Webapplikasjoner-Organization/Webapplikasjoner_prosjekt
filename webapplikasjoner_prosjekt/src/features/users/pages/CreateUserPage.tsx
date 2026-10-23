@@ -1,4 +1,4 @@
-"use server";
+"use client"
 
 import { PageLayout } from "@/components/PageLayout";
 import { CreateUserForm } from "@/features/users/components/CreateUserForm";

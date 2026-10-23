@@ -1,3 +1,5 @@
+"use server"
+
 import type { Result, ResultError } from "@/shared/result";
 import type { UserDTO } from "@/features/users/user-mapper";
 import { requestInfo } from "rwsdk/worker";
