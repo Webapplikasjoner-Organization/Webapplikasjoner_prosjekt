@@ -42,7 +42,7 @@ export function CreateUserForm({ action }: CreateUserFormProps) {
           defaultValue={failed ? failed?.values.password : ""}
           className="border p-4 m-4 rounded-sm"
         ></input>
-        <button type="submit" disabled={isPending} className="border p-4 m-4 rounded-sm">
+        <button type="submit" disabled={isPending} className="border p-4 m-4 font-semibold text-brand-white rounded-sm bg-emerald-900 hover:opacity-90 active:scale-95 transition-all">
           {isPending ? "Creating Account..." : "Create Account"}
         
         </button>
