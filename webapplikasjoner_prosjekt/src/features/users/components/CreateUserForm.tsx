@@ -32,6 +32,7 @@ export function CreateUserForm({ action }: CreateUserFormProps) {
           name="username"
           type="text"
           defaultValue={failed ? failed?.values.username : ""}
+          className="border p-4 m-4 rounded-sm"
         ></input>
         <label htmlFor="password">Password:</label>
         <input
@@ -39,9 +40,11 @@ export function CreateUserForm({ action }: CreateUserFormProps) {
           name="password"
           type="password"
           defaultValue={failed ? failed?.values.password : ""}
+          className="border p-4 m-4 rounded-sm"
         ></input>
-        <button type="submit" disabled={isPending}>
+        <button type="submit" disabled={isPending} className="border p-4 m-4 rounded-sm">
           {isPending ? "Creating Account..." : "Create Account"}
+        
         </button>
         {usernameError && (
           <p id="username-error" className="text-red-500">
