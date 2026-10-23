@@ -7,6 +7,12 @@ export const GameSchema = z.object({
     id: z.string().min(1, { message: "Cover ID: is required " }),
     image_id: z.string().min(1, { message: "Cover Image ID: is required " }),
   }),
+  platforms: z.array(
+    z.object({
+      id: z.string().min(1, { message: "Platform ID: is required " }),
+      name: z.string().min(1, { message: "Platform name: is required " }),
+    }),
+  ),
   genres: z.array(
     z.object({
       id: z.string().min(1, { message: "Genre ID: is required " }),
@@ -33,6 +39,10 @@ export type Game = {
     id: string,
     image_id: string,
   },
+  platforms: {
+    id: string,
+    name: string,
+  }[],
   genres: {
     id: string,
     name: string,

@@ -4,6 +4,7 @@ export const games = sqliteTable("games", {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
   cover: text(),
+  platforms: text(),
   genres: text().notNull(),
   rating: int().notNull(),
   releaseDate: integer("releaseDate", { mode: "timestamp" }).notNull(),

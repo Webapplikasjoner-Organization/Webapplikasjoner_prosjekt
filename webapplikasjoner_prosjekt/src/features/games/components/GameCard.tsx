@@ -5,7 +5,8 @@ import { getIGDBContent } from "@/api/igdb";
 import { brandStyles } from "@/app/styles/brand-styles";
 
 export async function GameCard({ game }: { game: Partial<Game> }) {
-  const { id, name, cover, genres, rating, release_dates, summary } = game;
+  const { id, name, cover, platforms, genres, rating, release_dates, summary } =
+    game;
 
   const franchises = `
     fields name, games;
@@ -48,6 +49,10 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           {genres?.map((genre) => genre.name).join(", ")}
         </p>
         <p>
+          <span className="font-bold">Platforms: </span>
+          {platforms?.map((platform) => platform.name).join(", ")}
+        </p>
+        <p>
           <span className="font-bold">Rating: </span>
           {rating}
         </p>
@@ -63,7 +68,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           {summary}
         </p>
         <AddGameButton gameId={id} />
-        <button className={brandStyles.button}>Like</button>
+        <button className={`${brandStyles.button} self-center`}>Like</button>
       </section>
     </article>
   );
