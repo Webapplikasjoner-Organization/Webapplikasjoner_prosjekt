@@ -1,12 +1,8 @@
-import type { CreateUser } from "@/db/schema/user-schema";
 import {
   createUserSchema,
   updateUserSchema,
 } from "@/features/users/user-schema";
-import type {
-  CreateUserInput,
-  UpdateUserInput,
-} from "@/features/users/user-schema";
+import { z } from "zod";
 import { toUserDTO } from "./user-mapper";
 import type { Result } from "@/shared/result";
 import { userRepository, type UserRepository } from "./user-repository";
@@ -18,7 +14,8 @@ export interface UserService {
   create: (input: unknown) => Promise<Result<UserDTO>>;
   list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (input: unknown) => Promise<Result<UserDTO> | null>;
-  update: (input: unknown) => Promise<Result<UserDTO> | null>;
+  findByUsername: (input: unknown) => Promise<Result<UserDTO> | null>;
+  update: (input: unknown) => Promise<Result<void> | null>;
   delete: (input: unknown) => Promise<Result<void> | null>;
 }
 
@@ -31,9 +28,19 @@ export function createUserService(_repository: UserRepository): UserService {
           ok: false,
           error: {
             code: 400,
-            message: "Invalid input for creating a user.",
+            message: "Username and password fields cannot be empty.",
+            fieldErrors: z.flattenError(parsed.error).fieldErrors,
           },
         };
+      if (Object.keys(parsed.data).length === 0) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Input is empty.",
+          },
+        };
+      }
       const rule = validateUser(parsed.data);
       if (!rule.ok) {
         return {
@@ -82,21 +89,46 @@ export function createUserService(_repository: UserRepository): UserService {
       };
     },
     async findById(input: unknown): Promise<Result<UserDTO> | null> {
-      if (typeof input !== "string" || isNaN(Number(input))) {
+      // user-id er streng så isNaN sjekken vil feile
+      // if (typeof input !== "string" || isNaN(Number(input))) {
+      //   return {
+      //     ok: false,
+      //     error: {
+      //       code: 400,
+      //       message: "Id must be a string that can be represented as a number.",
+      //     },
+      //   };
+      // }
+      if (typeof input !== "string") {
         return {
           ok: false,
           error: {
             code: 400,
-            message: "Id must be a string that can be represented as a number.",
+            message: "Id must be a string.",
           },
         };
       }
       const result = await _repository.findById(input);
       if (result === null) {
-        return null;
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
       }
       if (!result.ok) {
         return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
       }
       return {
         ok: true,
@@ -104,7 +136,45 @@ export function createUserService(_repository: UserRepository): UserService {
         code: 200,
       };
     },
-    async update(input: unknown): Promise<Result<UserDTO> | null> {
+    async findByUsername(input: unknown): Promise<Result<UserDTO> | null> {
+      if (typeof input !== "string" || input.trim() === "") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Username cannot be an empty string.",
+          },
+        };
+      }
+      const result = await _repository.findByUsername(input);
+      if (result === null) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      if (!result.ok) {
+        return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      return {
+        ok: true,
+        data: toUserDTO(result.data),
+        code: 200,
+      };
+    },
+    async update(input: unknown): Promise<Result<void> | null> {
       const parsed = updateUserSchema.safeParse(input);
       if (!parsed.success) {
         return {
@@ -112,36 +182,61 @@ export function createUserService(_repository: UserRepository): UserService {
           error: {
             code: 400,
             message: "Invalid input for updating a user.",
+            fieldErrors: z.flattenError(parsed.error).fieldErrors,
           },
         };
       }
-      const { id, category, newValue } = parsed.data;
-      const result = await _repository.update(id, category, newValue);
-      if (result === null) {
-        return null;
-      }
-      if (!result.ok) {
-        return result;
-      }
-      return {
-        ok: true,
-        data: toUserDTO(result.data),
-        code: 201,
-      };
-    },
-    async delete(input: unknown): Promise<Result<void> | null> {
-      if (typeof input !== "string" || isNaN(Number(input))) {
+      if (Object.keys(parsed.data).length === 0) {
         return {
           ok: false,
           error: {
             code: 400,
-            message: "Id must be a string that can be represented as a number.",
+            message: "Input is empty.",
           },
         };
       }
-      const result = await _repository.delete(input);
+      const { id, category, newValue } = parsed.data;
+      const foundUser = await _repository.findById(id);
+      if (!foundUser) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      if (!foundUser?.ok) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      const rule = validateUser(foundUser?.data);
+      if (!rule.ok) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Invalid input",
+            fieldErrors: {
+              [rule.field]: [rule.error],
+            },
+          },
+        };
+      }
+      const result = await _repository.update(id, category, newValue);
       if (result === null) {
-        return null;
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
       }
       if (!result.ok) {
         return result;
@@ -150,6 +245,45 @@ export function createUserService(_repository: UserRepository): UserService {
         ok: true,
         data: undefined,
         code: 200,
+      };
+    },
+    async delete(input: unknown): Promise<Result<void> | null> {
+      if (typeof input !== "string") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Id must be a string.",
+          },
+        };
+      }
+      const foundUser = await _repository.findById(input);
+      if (!foundUser) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      const result = await _repository.delete(input);
+      if (result === null) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      if (!result.ok) {
+        return result;
+      }
+      return {
+        ok: true,
+        data: result.data,
+        code: 204,
       };
     },
   };

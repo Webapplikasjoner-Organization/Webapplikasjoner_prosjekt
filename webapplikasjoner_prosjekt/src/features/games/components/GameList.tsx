@@ -11,6 +11,9 @@ sort rating desc;
 limit 10;`;
 
 export async function GameList() {
+  // Siden du har en server component trenger du ikke useEffect. Du kan kalle denne direkte
+  // Hvis du bruker state har får du utfordring med @/constants/env_values
+  // Da denne filen importerer {env} som kun er tilgjengelig på serveren
   const games: Partial<Game>[] = await getIGDBContent(
     "games",
     gamesFromIGDB,

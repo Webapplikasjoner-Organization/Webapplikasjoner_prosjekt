@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import type { Result, ResultError } from "@/shared/result";
 import type { UserDTO } from "@/features/users/user-mapper";
@@ -31,8 +31,8 @@ export async function createUserAction(
   const { ctx, request } = requestInfo;
 
   const values: CreateUserFormValues = {
-    username: String(formData.get("username") ?? ""),
-    password: String(formData.get("password") ?? ""),
+    username: String(formData.get("username")),
+    password: String(formData.get("password")),
   };
 
   const result = await userService.create({

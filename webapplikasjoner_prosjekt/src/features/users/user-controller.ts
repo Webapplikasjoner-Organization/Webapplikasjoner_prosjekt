@@ -5,6 +5,7 @@ export interface UserController {
   create: (requestInfo: RequestInfo) => Promise<Response>;
   list: (requestInfo: RequestInfo) => Promise<Response>;
   findById: (requestInfo: RequestInfo) => Promise<Response>;
+  findByUsername: (requestInfo: RequestInfo) => Promise<Response>;
   update: (requestInfo: RequestInfo) => Promise<Response>;
   delete: (requestInfo: RequestInfo) => Promise<Response>;
 }
@@ -12,7 +13,18 @@ export interface UserController {
 export function createUserController(_service: UserService): UserController {
   return {
     async create({ request, ctx }: RequestInfo): Promise<Response> {
-      const body = await request.json();
+      let body: unknown;
+      try {
+        body = await request.json();
+      } catch (error) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 400,
+            message: "Body must be in JSON format.",
+          },
+        });
+      }
       const result = await _service.create(body);
       if (!result.ok) {
         return Response.json({
@@ -29,6 +41,15 @@ export function createUserController(_service: UserService): UserController {
     async list({ request, ctx }: RequestInfo): Promise<Response> {
       const params = parseParams(request);
       const result = await _service.list(params);
+      if (result === null) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 404,
+            message: `No users could be found.`,
+          },
+        });
+      }
       if (!result.ok) {
         return Response.json({
           ok: false,
@@ -41,15 +62,56 @@ export function createUserController(_service: UserService): UserController {
         code: 200,
       });
     },
-    async findById({ request, ctx }: RequestInfo): Promise<Response> {
-      const body = await request.json();
-      const result = await _service.findById(body);
+    async findById({ request, ctx, params }: RequestInfo): Promise<Response> {
+      // let body: unknown;
+      // try {
+      //   body = await request.json();
+      // } catch (error) {
+      //   return Response.json({
+      //     ok: false,
+      //     error: {
+      //       code: 400,
+      //       message: "Body must be in JSON format.",
+      //     },
+      //   });
+      // }
+      // Kan hente ut params direkte ellers må det sendes som body i findUserById og vi må bruke POST
+      const { id } = params;
+      const result = await _service.findById(id);
       if (result === null) {
         return Response.json({
           ok: false,
           error: {
             code: 404,
-            message: `User with the id: ${body} was not found.`,
+            message: `User with the id: ${id} was not found.`,
+          },
+        });
+      }
+      if (!result.ok) {
+        return Response.json({
+          ok: false,
+          error: result.error,
+        });
+      }
+      return Response.json({
+        ok: true,
+        data: result.data,
+        code: 200,
+      });
+    },
+    async findByUsername({
+      request,
+      ctx,
+      params,
+    }: RequestInfo): Promise<Response> {
+      const { username } = params;
+      const result = await _service.findByUsername(username);
+      if (result === null) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 404,
+            message: `User with the username: ${username} was not found.`,
           },
         });
       }
@@ -66,7 +128,18 @@ export function createUserController(_service: UserService): UserController {
       });
     },
     async update({ request, ctx }: RequestInfo): Promise<Response> {
-      const body = await request.json();
+      let body: unknown;
+      try {
+        body = await request.json();
+      } catch (error) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 400,
+            message: "Body must be in JSON format.",
+          },
+        });
+      }
       const result = await _service.update(body);
       if (result === null) {
         return Response.json({
@@ -83,14 +156,23 @@ export function createUserController(_service: UserService): UserController {
           error: result.error,
         });
       }
-      return Response.json({
-        ok: true,
-        data: result.data,
-        code: 200,
+      return new Response(null, {
+        status: 200,
       });
     },
     async delete({ request, ctx }: RequestInfo): Promise<Response> {
-      const body = await request.json();
+      let body: unknown;
+      try {
+        body = await request.json();
+      } catch (error) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 400,
+            message: "Body must be in JSON format.",
+          },
+        });
+      }
       const result = await _service.delete(body);
       if (result === null) {
         return Response.json({
@@ -107,10 +189,8 @@ export function createUserController(_service: UserService): UserController {
           error: result.error,
         });
       }
-      return Response.json({
-        ok: true,
-        data: result.data,
-        code: 200,
+      return new Response(null, {
+        status: 204,
       });
     },
   };

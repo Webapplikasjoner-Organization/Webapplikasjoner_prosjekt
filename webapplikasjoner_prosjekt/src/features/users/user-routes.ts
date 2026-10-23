@@ -9,11 +9,11 @@ export const userRoutes = [
   route("/api/v1/users/:id", {
     get: userController.findById,
     patch: [
-      //Require authentication
+      //Require authentication and authorization
       userController.update,
     ],
     delete: [
-      //Require authentication
+      //Require authentication and authorization
       userController.delete,
     ],
   }),

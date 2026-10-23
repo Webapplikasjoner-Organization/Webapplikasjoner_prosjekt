@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { SearchBar } from "./SearchBar";
 
 export function Header() {
@@ -20,7 +19,7 @@ export function Header() {
             <a href="/">Home</a>
           </li>
           <li>
-            <a href="/my-games">My Games</a>
+            <a href={`/users/0/my-games`}>My Games</a>
           </li>
           <li>
             <a href="/articles">Articles</a>

@@ -1,14 +1,14 @@
 import z from "zod";
 
 export const createUserSchema = z.object({
-  username: z.string().min(1, { message: "Username: is required " }),
-  password: z.string().min(1, { message: "Password: is required " }),
+  username: z.string().min(1, { message: "Username cannot be empty." }).trim(),
+  password: z.string().min(1, { message: "Password cannot be empty." }).trim(),
 });
 
 export const updateUserSchema = z.object({
-  id: z.string().min(1, { message: "Id: is required " }),
-  category: z.string().min(1, { message: "Category: is required " }),
-  newValue: z.string().min(1, { message: "New Value: is required " }),
+  id: z.string().min(1, { message: "Id is required." }),
+  category: z.string().min(1, { message: "Category cannot be empty." }).trim(),
+  newValue: z.string().min(1, { message: "New Value cannot be empty." }).trim(),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

@@ -4,8 +4,8 @@ import { GameList } from "../../features/games/components/GameList";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageLayout } from "@/components/PageLayout";
-import { FilterPanel } from "@/components/FilterPanel";
-import { SortPanel } from "@/components/SortPanel";
+import { FilterPanel } from "@/features/games/components/FilterPanel";
+import { SortPanel } from "@/features/games/components/SortPanel";
 
 /**
  * En server-komponent. Den kjører på serveren, én gang per forespørsel, og
@@ -15,7 +15,7 @@ import { SortPanel } from "@/components/SortPanel";
  * Server-komponent er standarden i RedwoodSDK. Trenger du klikk eller state,
  * lager du en klient-komponent, som `TimeClient` og `Counter` under.
  */
-export function Home() { 
+export function Home() {
   // const now = new Date().toLocaleString("no-NO");
 
   // return (
@@ -56,7 +56,7 @@ export function Home() {
       <main className="flex flex-col gap-10">
         <h1>Main page</h1>
         <div>
-          <FilterPanel />  
+          <FilterPanel />
         </div>
         <div>
           <SortPanel />

@@ -5,8 +5,10 @@
 #   better-sqlite3  uten den feiler databasetestene på en manglende binær
 #   esbuild         uten den feiler `tsx` og deler av byggekjeden
 allowBuilds:
+  '@parcel/watcher': false
   better-sqlite3: true
   esbuild: true
+  unrs-resolver: false
   workerd: true
 
 # pnpm holder helt ferske utgivelser i karantene. Disse tre er nyere enn
