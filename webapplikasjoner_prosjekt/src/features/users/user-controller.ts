@@ -5,6 +5,7 @@ export interface UserController {
   create: (requestInfo: RequestInfo) => Promise<Response>;
   list: (requestInfo: RequestInfo) => Promise<Response>;
   findById: (requestInfo: RequestInfo) => Promise<Response>;
+  findByEmail: (requestInfo: RequestInfo) => Promise<Response>;
   findByUsername: (requestInfo: RequestInfo) => Promise<Response>;
   update: (requestInfo: RequestInfo) => Promise<Response>;
   delete: (requestInfo: RequestInfo) => Promise<Response>;
@@ -84,6 +85,34 @@ export function createUserController(_service: UserService): UserController {
           error: {
             code: 404,
             message: `User with the id: ${id} was not found.`,
+          },
+        });
+      }
+      if (!result.ok) {
+        return Response.json({
+          ok: false,
+          error: result.error,
+        });
+      }
+      return Response.json({
+        ok: true,
+        data: result.data,
+        code: 200,
+      });
+    },
+    async findByEmail({
+      request,
+      ctx,
+      params,
+    }: RequestInfo): Promise<Response> {
+      const { email } = params;
+      const result = await _service.findByEmail(email);
+      if (result === null) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 404,
+            message: `User with the email: ${email} was not found.`,
           },
         });
       }

@@ -1,10 +1,11 @@
 import { env } from "cloudflare:workers";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { BETTER_AUTH_SECRET, BETTER_AUTH_URL } from "@/constants/env_values";
 
 import { db } from "@/db";
 
-if (!env.BETTER_AUTH_SECRET) {
+if (!BETTER_AUTH_SECRET) {
   throw new Error(
     "BETTER_AUTH_SECRET has not been set. Configure it in .dev.vars (locally) or " +
       "as a Cloudflare secret (prod) with `wrangler secret put BETTER_AUTH_SECRET`.",
@@ -13,10 +14,10 @@ if (!env.BETTER_AUTH_SECRET) {
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "sqlite" }),
-  baseURL: env.BETTER_AUTH_URL,
-  secret: env.BETTER_AUTH_SECRET,
+  baseURL: BETTER_AUTH_URL,
+  secret: BETTER_AUTH_SECRET,
 
-  usernameAndPassword: {
+  emailAndPassword: {
     enabled: true,
   },
 

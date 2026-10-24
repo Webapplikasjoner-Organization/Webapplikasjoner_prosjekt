@@ -15,7 +15,7 @@ export async function login(
   formData: FormData,
 ) {
   const parsed = loginSchema.safeParse({
-    username: formData.get("username"),
+    email: formData.get("email"),
     password: formData.get("password"),
   });
 
@@ -31,7 +31,7 @@ export async function login(
   const { request, response } = getRequestInfo();
 
   try {
-    const { headers } = await auth.api.signInUsername({
+    const { headers } = await auth.api.signInEmail({
       body: parsed.data,
       headers: request.headers,
       returnHeaders: true,
@@ -45,7 +45,7 @@ export async function login(
     response.headers.set("Location", "/");
     return { ok: true };
   } catch (error) {
-    return { ok: false, error: "Invalid username or password" };
+    return { ok: false, error: "Invalid email or password" };
   }
 }
 

@@ -23,15 +23,15 @@ export const seedData = async (env: Env) => {
   // helt til jeg finner ut av kryptering.
   await db.insert(users).values([
     {
-      username: "Jane Doe",
+      email: "jane.doe@example.com",
       password: "password456",
     },
     {
-      username: "Alice Smith",
+      email: "alice.smith@example.com",
       password: "password789",
     },
     {
-      username: "Bob Johnson",
+      email: "bob.johnson@example.com",
       password: "password101",
     },
   ]);

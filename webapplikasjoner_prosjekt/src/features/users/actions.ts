@@ -10,7 +10,7 @@ export type FormState =
   | ResultData<UserDTO>
   | (ResultError & { values: FormValues })
   | null;
-export type FormValues = { username: string; password: string };
+export type FormValues = { email: string; username?: string; password: string };
 
 export type CreateUserFormAction = (
   prevState: FormState,
@@ -25,6 +25,7 @@ export async function createUserAction(
     const { ctx, request } = requestInfo;
 
     const values: FormValues = {
+      email: String(formData.get("email")) as string,
       username: String(formData.get("username")) as string,
       password: String(formData.get("password")) as string,
     };
@@ -36,13 +37,14 @@ export async function createUserAction(
         ok: false,
         error: {
           code: 400,
-          message: "Invalid input for creating a user.",
+          message: "Input fields cannot be empty.",
         },
         values,
       };
     }
 
     const result = await userService.create({
+      email: values.email,
       username: values.username,
       password: values.password,
     });
@@ -58,6 +60,7 @@ export async function createUserAction(
         message: "An unexpected error occurred while trying to create a user.",
       },
       values: {
+        email: String(formData.get("email")),
         username: String(formData.get("username")),
         password: String(formData.get("password")),
       },
@@ -78,6 +81,7 @@ export async function loginAction(
     const { ctx, request } = requestInfo;
 
     const values: FormValues = {
+      email: String(formData.get("email")) as string,
       username: String(formData.get("username")) as string,
       password: String(formData.get("password")) as string,
     };
@@ -89,13 +93,13 @@ export async function loginAction(
         ok: false,
         error: {
           code: 400,
-          message: "Invalid input for login.",
+          message: "Input fields cannot be empty.",
         },
         values,
       };
     }
 
-    const result = await userService.findByUsername(values.username);
+    const result = await userService.findByEmail(values.email);
 
     if (result === null) {
       return {
@@ -119,6 +123,7 @@ export async function loginAction(
         message: "An unexpected error occurred while trying to login.",
       },
       values: {
+        email: String(formData.get("email")),
         username: String(formData.get("username")),
         password: String(formData.get("password")),
       },

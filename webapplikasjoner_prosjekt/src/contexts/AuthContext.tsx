@@ -15,7 +15,7 @@ type AuthContextData = {
   user: User | null;
   isLoading: boolean;
   changeProfilePicture?: (url: string) => void;
-  changeUsername: (newUsername: string) => void;
+  changeUsername?: (newUsername: string) => void;
   changePassword: (newPassword: string) => void;
   deleteAccount: () => void;
   logout: () => void;
@@ -38,6 +38,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const changeUsername = useCallback(async (newUsername: string) => {
     if (!user) {
       await navigate("/login");
+      return;
+    }
+    if (!user.username) {
       return;
     }
     await userService.update({

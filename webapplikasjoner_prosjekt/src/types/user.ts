@@ -6,7 +6,8 @@ import { GameSchema } from "./game";
 
 export const UserSchema = z.object({
   id: z.string().min(1, { message: "Id: is required " }),
-  username: z.string().min(1, { message: "Username: is required " }),
+  email: z.string().min(1, { message: "Email: is required " }),
+  username: z.string().min(1, { message: "Username: is required " }).optional(),
   password: z.string().min(1, { message: "Password: is required " }),
 });
 
@@ -15,7 +16,8 @@ export type User = z.infer<typeof UserSchema>;
 /*
 export type User = {
   readonly id: string,
-  username: string,
+  email: string,
+  username?: string,
   password: string,
 }
 */
