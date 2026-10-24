@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Game } from "../types/game";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
@@ -12,29 +12,32 @@ sort rating desc;
 limit 10;`;
 
 type GameContextData = {
-  games: Partial<Game>[];
-  getGames: () => Promise<Partial<Game>[]>;
+  gamesList: Partial<Game>[];
+  getGamesList: () => Promise<void>;
 };
 
 const GamesContext = createContext<GameContextData | null>(null);
 
 export function GamesProvider({ children }: { children: React.ReactNode }) {
-  let games: Partial<Game>[] = [];
+  const [gamesList, setGamesList] = useState<Partial<Game>[]>([]);
 
-  const getGames = async (): Promise<Partial<Game>[]> => {
+  const getGamesList = async () => {
     const fetchGames: Partial<Game>[] = await getIGDBContent(
       "games",
       gamesFromIGDB,
       CLIENTID,
     );
-    games = fetchGames;
-    return games;
+    setGamesList(fetchGames);
   };
 
+  useEffect(() => {
+    getGamesList();
+  }, []);
+
+  const value = { gamesList, getGamesList };
+
   return (
-    <GamesContext.Provider value={{ games, getGames }}>
-      {children}
-    </GamesContext.Provider>
+    <GamesContext.Provider value={value}>{children}</GamesContext.Provider>
   );
 }
 

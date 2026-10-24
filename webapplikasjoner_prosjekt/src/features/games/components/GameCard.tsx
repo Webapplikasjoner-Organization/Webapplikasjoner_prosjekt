@@ -54,7 +54,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
         </p>
         <p>
           <span className="font-bold">Rating: </span>
-          {rating}
+          {rating ? `${Math.round(rating)}/100` : "N/A"}
         </p>
         <p>
           <span className="font-bold">Release Date: </span>

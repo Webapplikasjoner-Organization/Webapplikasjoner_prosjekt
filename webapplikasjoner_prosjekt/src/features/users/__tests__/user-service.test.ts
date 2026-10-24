@@ -18,16 +18,19 @@ beforeEach(async () => {
     {
       id: "1",
       username: "testuser1",
+      email: "testuser1@example.com",
       password: "testpassword1",
     },
     {
       id: "2",
       username: "testuser2",
+      email: "testuser2@example.com",
       password: "testpassword2",
     },
     {
       id: "3",
       username: "testuser3",
+      email: "testuser3@example.com",
       password: "testpassword3",
     },
   ]);
@@ -37,7 +40,7 @@ beforeEach(async () => {
 describe("userService.create", () => {
   it("Creates a new user", async () => {
     const result = await service.create({
-      username: "newuser",
+      email: "newuser@example.com",
       password: "newpassword",
     });
     if (!result.ok) {
@@ -49,7 +52,7 @@ describe("userService.create", () => {
       throw new Error("Failed to list users after creating a new user.");
     }
     expect(listOfUsers.data).toHaveLength(4);
-    expect(result.data.username).toBe("newuser");
+    expect(result.data.email).toBe("newuser@example.com");
     expect(result.code).toBe(201);
   });
 });
@@ -62,30 +65,33 @@ describe("userService.list", () => {
     }
     expect(result.ok).toBe(true);
     expect(result.data).toHaveLength(3);
-    expect(result.data.map((user) => user.username).sort()).toEqual([
-      "testuser1",
-      "testuser2",
-      "testuser3",
+    expect(result.data.map((user) => user.email).sort()).toEqual([
+      "testuser1@example.com",
+      "testuser2@example.com",
+      "testuser3@example.com",
     ]);
     expect(result.code).toBe(200);
   });
   it("Filters based on parameters", async () => {
-    const firstUserResult = await service.list({ q: "testuser1", limit: "3" });
+    const firstUserResult = await service.list({
+      q: "testuser1@example.com",
+      limit: "3",
+    });
     if (!firstUserResult.ok) {
       throw new Error("Failed to list users.");
     }
     expect(firstUserResult.ok).toBe(true);
     expect(firstUserResult.data).toHaveLength(1);
-    expect(firstUserResult.data[0].username).toBe("testuser1");
+    expect(firstUserResult.data[0].email).toBe("testuser1@example.com");
     expect(firstUserResult.code).toBe(200);
 
-    const ThirdUserResult = await service.list({ q: "testuser3" });
+    const ThirdUserResult = await service.list({ q: "testuser3@example.com" });
     if (!ThirdUserResult.ok) {
       throw new Error("Failed to list users.");
     }
     expect(ThirdUserResult.ok).toBe(true);
     expect(ThirdUserResult.data).toHaveLength(1);
-    expect(ThirdUserResult.data[0].username).toBe("testuser3");
+    expect(ThirdUserResult.data[0].email).toBe("testuser3@example.com");
     expect(ThirdUserResult.code).toBe(200);
 
     const onlyTheFirstTwoResult = await service.list({ limit: "2" });
@@ -122,8 +128,8 @@ describe("userService.update", () => {
   it("Updates the username of a specific user", async () => {
     const result = await service.update({
       id: "1",
-      category: "username",
-      newValue: "updatedusername",
+      category: "email",
+      newValue: "updatedemail@example.com",
     });
     if (result === null) {
       throw new Error("Did not find a user with that id.");
@@ -132,14 +138,17 @@ describe("userService.update", () => {
       throw new Error("Failed to update user.");
     }
     expect(result.ok).toBe(true);
-    expect(result.data.username).toBe("updatedusername");
+    expect(await service.findById("1")).toHaveProperty(
+      "data.email",
+      "updatedemail@example.com",
+    );
     expect(result.code).toBe(201);
   });
   it("Does not find a user to update and returns null", async () => {
     const result = await service.update({
       id: "666",
-      category: "username",
-      newValue: "updatedusername",
+      category: "email",
+      newValue: "updatedemail@example.com",
     });
     expect(result).toBeNull();
   });
@@ -157,7 +166,10 @@ describe("userService.update", () => {
       throw new Error("Failed to update user.");
     }
     expect(result.ok).toBe(true);
-    expect(result.data.password).toBe("updatedpassword");
+    expect(await service.findById("1")).toHaveProperty(
+      "data.password",
+      "updatedpassword",
+    );
     expect(result.code).toBe(201);
   });
   it("Does not find a user to update the password and returns null", async () => {
@@ -189,6 +201,9 @@ describe("userService.delete", () => {
   });
   it("Does not find a user to delete and returns null", async () => {
     const result = await service.delete("666");
+    if (result === null) {
+      throw new Error("Did not find a user with that id.");
+    }
     expect(result).toBeNull();
   });
 });

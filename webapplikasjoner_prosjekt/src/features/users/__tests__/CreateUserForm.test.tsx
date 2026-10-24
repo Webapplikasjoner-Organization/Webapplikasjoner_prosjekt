@@ -8,6 +8,7 @@ import { userEvent } from "@testing-library/user-event";
 import {
   USERNAME_MAX_LENGTH,
   PASSWORD_MAX_LENGTH,
+  EMAIL_MAX_LENGTH,
 } from "@/features/users/utils/validateUser";
 import {
   createUserAction,
@@ -21,12 +22,18 @@ describe("CreateUserForm", () => {
     // Nå kan vi simulere resultatet av action under test
     const action = vi.fn<CreateUserFormAction>().mockResolvedValue({
       ok: true,
-      data: { id: "1", username: "validUsername", password: "validPassword" },
+      data: {
+        id: "1",
+        email: "validEmail@example.com",
+        username: "validUsername",
+        password: "validPassword",
+      },
+      code: 201,
     });
     // For å bruker userEvent må vi "setup" den.
     const user = userEvent.setup();
     render(<CreateUserForm action={action} />);
-    await user.type(screen.getByLabelText("Username:"), "validUsername");
+    await user.type(screen.getByLabelText("Email:"), "validEmail@example.com");
     await user.type(screen.getByLabelText("Password:"), "validPassword");
     await user.click(screen.getByRole("button"));
     // Bruker async sjekk her for å vente på resultatet
@@ -34,34 +41,34 @@ describe("CreateUserForm", () => {
       await screen.findByText("Account created successfully!"),
     ).toBeInTheDocument();
   });
-  it("Should display the proper error message when username is empty", async () => {
+  it("Should display the proper error message when email is empty", async () => {
     const user = userEvent.setup();
     render(<CreateUserForm action={createUserAction} />);
     await user.type(screen.getByLabelText("Password:"), "validPassword");
     await user.click(screen.getByRole("button"));
     expect(
-      await screen.findByText("Username cannot be empty."),
+      await screen.findByText("Email cannot be empty."),
     ).toBeInTheDocument();
   });
-  it("Should display the proper error message when inputting a username consisting of over 30 characters", async () => {
+  it("Should display the proper error message when inputting an email consisting of over 100 characters", async () => {
     const user = userEvent.setup();
     render(<CreateUserForm action={createUserAction} />);
     await user.type(
-      screen.getByLabelText("Username:"),
-      "invalidUsernameThatIsWayTooLong",
+      screen.getByLabelText("Email:"),
+      "invalidEmailThatIsWayTooLongAndIsOverOneHundredCharacters@example.com",
     );
     await user.type(screen.getByLabelText("Password:"), "invalidPassword");
     await user.click(screen.getByRole("button"));
     expect(
       await screen.findByText(
-        `Username cannot exceed ${USERNAME_MAX_LENGTH} characters.`,
+        `Email cannot exceed ${EMAIL_MAX_LENGTH} characters.`,
       ),
     ).toBeInTheDocument();
   });
   it("Should display the proper error message when inputting a password consisting of over 50 characters", async () => {
     const user = userEvent.setup();
     render(<CreateUserForm action={createUserAction} />);
-    await user.type(screen.getByLabelText("Username:"), "validUsername");
+    await user.type(screen.getByLabelText("Email:"), "validEmail@example.com");
     await user.type(
       screen.getByLabelText("Password:"),
       "invalidPasswordThatIsWayTooLongAndExceedsTheMaximumLengthAllowed",
