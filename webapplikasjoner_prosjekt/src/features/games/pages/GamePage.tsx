@@ -19,7 +19,8 @@ export async function GamePage({ params }: RequestInfo) {
 
   const game = gameFromIGDB?.[0];
 
-  const { name, cover, genres, rating, release_dates, summary } = game;
+  const { name, cover, platforms, genres, rating, release_dates, summary } =
+    game;
 
   const franchises = `
     fields name, games;
@@ -58,6 +59,10 @@ export async function GamePage({ params }: RequestInfo) {
             <p>
               <span className="font-bold">Genres: </span>
               {genres?.map((genre) => genre.name).join(", ")}
+            </p>
+            <p>
+              <span className="font-bold">Platforms: </span>
+              {platforms?.map((platform) => platform.name).join(", ")}
             </p>
             <p>
               <span className="font-bold">Rating: </span>

@@ -2,6 +2,7 @@ import type { RequestInfo } from "rwsdk/worker";
 import { PageLayout } from "@/components/PageLayout";
 import { ARTICLES } from "@/data/articles";
 import { Article as ArticleType } from "@/types/article";
+import { brandStyles } from "@/app/styles/brand-styles";
 
 export function ArticlePage({ params }: RequestInfo) {
   const { id } = params;
@@ -29,9 +30,11 @@ export function ArticlePage({ params }: RequestInfo) {
             <img src="" width="50" height="50" alt="dislike-button" />
             <form>
               <textarea placeholder="Write a comment..."></textarea>
-              <button type="submit">Post Comment</button>
+              <button type="submit" className={`${brandStyles.button}`}>
+                Post Comment
+              </button>
             </form>
-            <button>Report article</button>
+            <button className={`${brandStyles.button}`}>Report article</button>
           </article>
         ) : (
           <p>The article could not be found.</p>
