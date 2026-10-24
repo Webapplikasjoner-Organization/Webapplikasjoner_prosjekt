@@ -47,7 +47,7 @@ describe("CreateUserForm", () => {
     await user.type(screen.getByLabelText("Password:"), "validPassword");
     await user.click(screen.getByRole("button"));
     expect(
-      await screen.findByText("Email cannot be empty."),
+      await screen.findByText("Input fields cannot be empty."),
     ).toBeInTheDocument();
   });
   it("Should display the proper error message when inputting an email consisting of over 100 characters", async () => {
@@ -55,7 +55,7 @@ describe("CreateUserForm", () => {
     render(<CreateUserForm action={createUserAction} />);
     await user.type(
       screen.getByLabelText("Email:"),
-      "invalidEmailThatIsWayTooLongAndIsOverOneHundredCharacters@example.com",
+      "invalidEmailThatIsWayTooLongAndIsOverOneHundredCharactersinvalidEmailThatIsWayTooLongAndIsOverOneHundredCharacters@example.com",
     );
     await user.type(screen.getByLabelText("Password:"), "invalidPassword");
     await user.click(screen.getByRole("button"));

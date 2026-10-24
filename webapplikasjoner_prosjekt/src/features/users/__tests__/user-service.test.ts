@@ -18,19 +18,19 @@ beforeEach(async () => {
     {
       id: "1",
       username: "testuser1",
-      email: "testuser1@example.com",
+      email: "test.user1@example.com",
       password: "testpassword1",
     },
     {
       id: "2",
       username: "testuser2",
-      email: "testuser2@example.com",
+      email: "test.user2@example.com",
       password: "testpassword2",
     },
     {
       id: "3",
       username: "testuser3",
-      email: "testuser3@example.com",
+      email: "test.user3@example.com",
       password: "testpassword3",
     },
   ]);
@@ -40,7 +40,7 @@ beforeEach(async () => {
 describe("userService.create", () => {
   it("Creates a new user", async () => {
     const result = await service.create({
-      email: "newuser@example.com",
+      email: "new.user@example.com",
       password: "newpassword",
     });
     if (!result.ok) {
@@ -52,7 +52,7 @@ describe("userService.create", () => {
       throw new Error("Failed to list users after creating a new user.");
     }
     expect(listOfUsers.data).toHaveLength(4);
-    expect(result.data.email).toBe("newuser@example.com");
+    expect(result.data.email).toBe("new.user@example.com");
     expect(result.code).toBe(201);
   });
 });
@@ -66,15 +66,15 @@ describe("userService.list", () => {
     expect(result.ok).toBe(true);
     expect(result.data).toHaveLength(3);
     expect(result.data.map((user) => user.email).sort()).toEqual([
-      "testuser1@example.com",
-      "testuser2@example.com",
-      "testuser3@example.com",
+      "test.user1@example.com",
+      "test.user2@example.com",
+      "test.user3@example.com",
     ]);
     expect(result.code).toBe(200);
   });
   it("Filters based on parameters", async () => {
     const firstUserResult = await service.list({
-      q: "testuser1@example.com",
+      q: "test.user1@example.com",
       limit: "3",
     });
     if (!firstUserResult.ok) {
@@ -82,16 +82,16 @@ describe("userService.list", () => {
     }
     expect(firstUserResult.ok).toBe(true);
     expect(firstUserResult.data).toHaveLength(1);
-    expect(firstUserResult.data[0].email).toBe("testuser1@example.com");
+    expect(firstUserResult.data[0].email).toBe("test.user1@example.com");
     expect(firstUserResult.code).toBe(200);
 
-    const ThirdUserResult = await service.list({ q: "testuser3@example.com" });
+    const ThirdUserResult = await service.list({ q: "test.user3@example.com" });
     if (!ThirdUserResult.ok) {
       throw new Error("Failed to list users.");
     }
     expect(ThirdUserResult.ok).toBe(true);
     expect(ThirdUserResult.data).toHaveLength(1);
-    expect(ThirdUserResult.data[0].email).toBe("testuser3@example.com");
+    expect(ThirdUserResult.data[0].email).toBe("test.user3@example.com");
     expect(ThirdUserResult.code).toBe(200);
 
     const onlyTheFirstTwoResult = await service.list({ limit: "2" });
@@ -118,14 +118,20 @@ describe("userService.findById", () => {
     expect(result.data.id).toBe("1");
     expect(result.code).toBe(200);
   });
-  it("Does not find a user with a specific ID and returns null", async () => {
+  it("Does not find a user with a specific ID and returns 404", async () => {
     const result = await service.findById("666");
-    expect(result).toBeNull();
+    if (result === null) {
+      throw new Error("Expected not to be null.");
+    }
+    if (result.ok) {
+      throw new Error("Expected to fail with 404.");
+    }
+    expect(result.error.code).toBe(404);
   });
 });
 
 describe("userService.update", () => {
-  it("Updates the username of a specific user", async () => {
+  it("Updates the email of a specific user", async () => {
     const result = await service.update({
       id: "1",
       category: "email",
@@ -138,19 +144,21 @@ describe("userService.update", () => {
       throw new Error("Failed to update user.");
     }
     expect(result.ok).toBe(true);
-    expect(await service.findById("1")).toHaveProperty(
-      "data.email",
-      "updatedemail@example.com",
-    );
-    expect(result.code).toBe(201);
+    expect(await result.code).toBe(200);
   });
-  it("Does not find a user to update and returns null", async () => {
+  it("Does not find a user to update and returns 404", async () => {
     const result = await service.update({
       id: "666",
       category: "email",
       newValue: "updatedemail@example.com",
     });
-    expect(result).toBeNull();
+    if (result === null) {
+      throw new Error("Expected not to be null.");
+    }
+    if (result.ok) {
+      throw new Error("Expected update to fail with 404.");
+    }
+    expect(result.error.code).toBe(404);
   });
 
   it("Updates the password of a specific user", async () => {
@@ -170,15 +178,21 @@ describe("userService.update", () => {
       "data.password",
       "updatedpassword",
     );
-    expect(result.code).toBe(201);
+    expect(result.code).toBe(200);
   });
-  it("Does not find a user to update the password and returns null", async () => {
+  it("Does not find a user to update the password and returns 404", async () => {
     const result = await service.update({
       id: "666",
       category: "password",
       newValue: "updatedpassword",
     });
-    expect(result).toBeNull();
+    if (result === null) {
+      throw new Error("Expected not to be null.");
+    }
+    if (result.ok) {
+      throw new Error("Expected update to fail with 404.");
+    }
+    expect(result.error.code).toBe(404);
   });
 });
 
@@ -197,13 +211,19 @@ describe("userService.delete", () => {
       throw new Error("Failed to list users after deleting a new user.");
     }
     expect(listOfUsers.data).toHaveLength(2);
-    expect(result.code).toBe(200);
+    expect(result.code).toBe(204);
   });
-  it("Does not find a user to delete and returns null", async () => {
+  it("Does not find a user to delete and returns 404", async () => {
     const result = await service.delete("666");
     if (result === null) {
       throw new Error("Did not find a user with that id.");
     }
-    expect(result).toBeNull();
+    if (result === null) {
+      throw new Error("Expected not to be null.");
+    }
+    if (result.ok) {
+      throw new Error("Expected deletion to fail with 404.");
+    }
+    expect(result.error.code).toBe(404);
   });
 });
