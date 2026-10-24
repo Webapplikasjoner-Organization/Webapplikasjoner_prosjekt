@@ -1,5 +1,6 @@
 import { route } from "rwsdk/router";
 import { userController } from "./user-controller";
+import { requireUser } from "@/shared/lib/guards";
 
 export const userRoutes = [
   route("/api/v1/users", {
@@ -9,11 +10,15 @@ export const userRoutes = [
   route("/api/v1/users/:id", {
     get: userController.findById,
     patch: [
-      //Require authentication and authorization
+      () => {
+        requireUser();
+      },
       userController.update,
     ],
     delete: [
-      //Require authentication and authorization
+      () => {
+        requireUser();
+      },
       userController.delete,
     ],
   }),
