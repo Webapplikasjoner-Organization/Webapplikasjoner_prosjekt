@@ -25,9 +25,9 @@ export function createUserRepository(_db: DB): UserRepository {
   return {
     async create(user: CreateUser): Promise<Result<User>> {
       try {
-        const existingUserWithUsername = await this.findByUsername(
-          user?.username ?? "",
-        );
+        const existingUserWithUsername = user.username
+          ? await this.findByUsername(user.username)
+          : null;
         const existingUserWithEmail = await this.findByEmail(user?.email);
         if (
           existingUserWithEmail !== null ||
@@ -65,9 +65,14 @@ export function createUserRepository(_db: DB): UserRepository {
     async findMany({ q, limit }: UserListParams = {}): Promise<Result<User[]>> {
       try {
         const rows = await _db.query.users.findMany({
-          where: {
-            username: q ? { like: `%${q}%` } : undefined,
-          },
+          where: q
+            ? {
+                OR: [
+                  { username: { like: `%${q}%` } },
+                  { email: { like: `%${q}%` } },
+                ],
+              }
+            : undefined,
           orderBy: { username: "desc" },
           limit,
         });

@@ -41,10 +41,9 @@ describe("CreateUserForm", () => {
       await screen.findByText("Account created successfully!"),
     ).toBeInTheDocument();
   });
-  it("Should display the proper error message when email is empty", async () => {
+  it("Should display the proper error message when input fields are empty", async () => {
     const user = userEvent.setup();
     render(<CreateUserForm action={createUserAction} />);
-    await user.type(screen.getByLabelText("Password:"), "validPassword");
     await user.click(screen.getByRole("button"));
     expect(
       await screen.findByText("Input fields cannot be empty."),
