@@ -1,12 +1,22 @@
 import z from "zod";
 
 export const createUserSchema = z.object({
-  username: z.string().min(1, { message: "Username cannot be empty." }).trim(),
+  email: z.string().min(1, { message: "Email cannot be empty." }).trim(),
+  username: z
+    .string()
+    .min(1, { message: "Username cannot be empty." })
+    .trim()
+    .optional(),
   password: z.string().min(1, { message: "Password cannot be empty." }).trim(),
 });
 
 export const loginSchema = z.object({
-  username: z.string().min(1, { message: "Username cannot be empty." }).trim(),
+  email: z.string().min(1, { message: "Email cannot be empty." }).trim(),
+  username: z
+    .string()
+    .min(1, { message: "Username cannot be empty." })
+    .trim()
+    .optional(),
   password: z.string().min(1, { message: "Password cannot be empty." }).trim(),
 });
 

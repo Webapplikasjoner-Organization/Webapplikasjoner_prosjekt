@@ -4,7 +4,8 @@ import { toUserDTO, type UserDTO } from "@/features/users/user-mapper";
 
 const user: User = {
   id: "1",
-  username: "John Doe",
+  username: "John doe",
+  email: "johndoe@example.com",
   password: "badpassword",
 };
 
@@ -13,5 +14,6 @@ describe("toUserDTO", () => {
     const userDTO = toUserDTO(user);
     expect(userDTO).toHaveProperty("id", user.id);
     expect(userDTO).toHaveProperty("username", user.username);
+    expect(userDTO).toHaveProperty("email", user.email);
   });
 });

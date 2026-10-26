@@ -9,9 +9,11 @@ interface PageLayoutProps {
 export function PageLayout({ children }: PageLayoutProps) {
   return (
     <AuthProvider>
+      {/* <GamesProvider> */}
       <Header />
       {children}
       <Footer />
+      {/* </GamesProvider> */}
     </AuthProvider>
   );
 }

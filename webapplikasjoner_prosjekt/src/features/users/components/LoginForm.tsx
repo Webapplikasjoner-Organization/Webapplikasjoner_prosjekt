@@ -23,9 +23,10 @@ export function LoginForm({ action }: LoginFormProps) {
   );
 
   const failed = state?.ok === false ? state : null;
+  const emailError = failed?.error?.fieldErrors?.email?.[0];
   const usernameError = failed?.error?.fieldErrors?.username?.[0];
   const passwordError = failed?.error?.fieldErrors?.password?.[0];
-  const hasFieldErrors = usernameError ?? passwordError;
+  const hasFieldErrors = emailError ?? usernameError ?? passwordError;
   const success = state?.ok === true;
 
   return (
@@ -33,14 +34,14 @@ export function LoginForm({ action }: LoginFormProps) {
       <h1 className="text-2xl font-bold mb-4">Login</h1>
       <form action={formAction}>
         <div className="flex flex-col w-50 md:w-100">
-          <label htmlFor="username" className="font-bold">
-            Username:
+          <label htmlFor="email" className="font-bold">
+            Email:
           </label>
           <input
-            id="username"
-            name="username"
-            type="text"
-            defaultValue={failed ? failed?.values.username : ""}
+            id="email"
+            name="email"
+            type="email"
+            defaultValue={failed ? failed?.values.email : ""}
             className="border p-2 rounded"
           ></input>
           <label htmlFor="password" className="font-bold">
@@ -60,6 +61,11 @@ export function LoginForm({ action }: LoginFormProps) {
           >
             {isPending ? "Logging in..." : "Log in"}
           </button>
+          {emailError && (
+            <p id="email-error" className="text-red-500 text-center">
+              {emailError}
+            </p>
+          )}
           {usernameError && (
             <p id="username-error" className="text-red-500 text-center">
               {usernameError}

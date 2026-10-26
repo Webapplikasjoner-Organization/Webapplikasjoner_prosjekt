@@ -22,7 +22,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
   );
 
   return (
-    <article className="pt-10 pb-10 w-75">
+    <article className="pt-10 pb-10 w-75 gap-5">
       <a href={`/games/${id}`}>
         <img
           src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${cover?.image_id}.jpg`}
@@ -31,7 +31,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           height="300"
         />
       </a>
-      <section className="flex flex-col flex-wrap bg-[#d7d7d7]">
+      <section className="flex flex-col flex-wrap gap-5 bg-[#d7d7d7]">
         <a href={`/games/${id}`}>
           <p>
             <span className="font-bold">Name: </span>
@@ -54,7 +54,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
         </p>
         <p>
           <span className="font-bold">Rating: </span>
-          {rating}
+          {rating ? `${Math.round(rating)}/100` : "N/A"}
         </p>
         <p>
           <span className="font-bold">Release Date: </span>

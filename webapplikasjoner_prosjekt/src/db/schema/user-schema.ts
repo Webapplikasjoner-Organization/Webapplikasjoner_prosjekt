@@ -5,7 +5,8 @@ export const users = sqliteTable("users", {
   id: text("id")
     .primaryKey()
     .$default(() => createId()),
-  username: text().notNull(),
+  email: text().notNull(),
+  username: text(),
   password: text().notNull(),
 });
 

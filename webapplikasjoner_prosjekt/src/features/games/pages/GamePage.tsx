@@ -10,7 +10,8 @@ export async function GamePage({ params }: RequestInfo) {
   const { id } = params;
 
   const gameWithID = `
-  fields name, cover.image_id, genres.name, rating, release_dates.human, summary;
+  fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary, 
+  age_ratings.rating_category.rating, storyline, websites.url;
   where id = (${id});
   sort rating desc;
   limit 10;`;
@@ -19,8 +20,18 @@ export async function GamePage({ params }: RequestInfo) {
 
   const game = gameFromIGDB?.[0];
 
-  const { name, cover, platforms, genres, rating, release_dates, summary } =
-    game;
+  const {
+    name,
+    cover,
+    platforms,
+    genres,
+    rating,
+    release_dates,
+    summary,
+    age_ratings,
+    storyline,
+    websites,
+  } = game;
 
   const franchises = `
     fields name, games;
@@ -39,7 +50,7 @@ export async function GamePage({ params }: RequestInfo) {
     <PageLayout>
       <main className="flex flex-col items-center pt-5 pb-5">
         {game ? (
-          <article>
+          <article className="flex flex-col w-2/3 gap-5">
             <img
               src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${cover?.image_id}.jpg`}
               alt={`${name} box-art`}
@@ -66,7 +77,7 @@ export async function GamePage({ params }: RequestInfo) {
             </p>
             <p>
               <span className="font-bold">Rating: </span>
-              {rating}
+              {rating ? `${Math.round(rating)}/100` : "N/A"}
             </p>
             <p>
               <span className="font-bold">Release Date: </span>
@@ -79,6 +90,35 @@ export async function GamePage({ params }: RequestInfo) {
               <span className="font-bold">Description: </span>
               {summary}
             </p>
+            <p>
+              <span className="font-bold">Age Ratings: </span>
+              {age_ratings
+                ?.map((age_rating) => age_rating?.rating_category?.rating)
+                .join(", ") ?? "N/A"}
+            </p>
+            <p>
+              <span className="font-bold">Storyline: </span>
+              {storyline ?? "N/A"}
+            </p>
+            <div>
+              <p className="font-bold">Related sources: </p>
+              <ul className="list-disc list-inside">
+                {websites?.map((website) => (
+                  <li
+                    className="text-blue-600 visited:text-purple-600"
+                    key={website.id}
+                  >
+                    <a
+                      href={website.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website.url}
+                    </a>
+                  </li>
+                )) ?? "N/A"}
+              </ul>
+            </div>
           </article>
         ) : (
           <p>The game could not be found.</p>

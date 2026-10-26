@@ -14,6 +14,7 @@ export interface UserService {
   create: (input: unknown) => Promise<Result<UserDTO>>;
   list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (input: unknown) => Promise<Result<UserDTO> | null>;
+  findByEmail: (input: unknown) => Promise<Result<UserDTO> | null>;
   findByUsername: (input: unknown) => Promise<Result<UserDTO> | null>;
   update: (input: unknown) => Promise<Result<void> | null>;
   delete: (input: unknown) => Promise<Result<void> | null>;
@@ -136,6 +137,53 @@ export function createUserService(_repository: UserRepository): UserService {
         code: 200,
       };
     },
+    async findByEmail(input: unknown): Promise<Result<UserDTO> | null> {
+      if (typeof input !== "string") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Email must be a string.",
+          },
+        };
+      }
+      if (input.trim() === "") {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Email cannot be an empty string.",
+          },
+        };
+      }
+      const result = await _repository.findByEmail(input);
+      if (result === null) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: `A user with the email ${input} could not be found.`,
+          },
+        };
+      }
+      if (!result.ok) {
+        return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      return {
+        ok: true,
+        data: toUserDTO(result.data),
+        code: 200,
+      };
+    },
     async findByUsername(input: unknown): Promise<Result<UserDTO> | null> {
       if (typeof input !== "string") {
         return {
@@ -156,7 +204,6 @@ export function createUserService(_repository: UserRepository): UserService {
         };
       }
       const result = await _repository.findByUsername(input);
-      console.log(result);
       if (result === null) {
         return {
           ok: false,

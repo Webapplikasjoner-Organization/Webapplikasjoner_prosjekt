@@ -17,9 +17,7 @@ export async function UsersPage() {
           <ul>
             {result.ok ? (
               result.data.length > 0 ? (
-                result.data.map((user) => (
-                  <li key={user.id}>{user.username}</li>
-                ))
+                result.data.map((user) => <li key={user.id}>{user.email}</li>)
               ) : (
                 <li>No users found</li>
               )
