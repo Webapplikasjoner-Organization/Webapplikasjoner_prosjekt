@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { id } from "zod/v4/locales";
 
 export const GameSchema = z.object({
   id: z.string().min(1, { message: "Id: is required " }),
