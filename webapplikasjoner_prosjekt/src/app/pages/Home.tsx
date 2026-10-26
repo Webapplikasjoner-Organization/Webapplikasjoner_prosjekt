@@ -6,6 +6,9 @@ import { Footer } from "@/components/Footer";
 import { PageLayout } from "@/components/PageLayout";
 import { FilterPanel } from "@/features/games/components/FilterPanel";
 import { SortPanel } from "@/features/games/components/SortPanel";
+import { CLIENTID } from "@/constants/env_values";
+import { getIGDBContent } from "@/api/igdb";
+import { Game } from "@/types/game";
 
 /**
  * En server-komponent. Den kjører på serveren, én gang per forespørsel, og
@@ -15,6 +18,19 @@ import { SortPanel } from "@/features/games/components/SortPanel";
  * Server-komponent er standarden i RedwoodSDK. Trenger du klikk eller state,
  * lager du en klient-komponent, som `TimeClient` og `Counter` under.
  */
+
+const gamesFromIGDB = `
+fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
+where rating > 80 & rating_count > 50;
+sort rating desc;
+limit 10;`;
+
+const games: Partial<Game>[] = await getIGDBContent(
+  "games",
+  gamesFromIGDB,
+  CLIENTID,
+);
+
 export function Home() {
   // const now = new Date().toLocaleString("no-NO");
 
@@ -55,13 +71,11 @@ export function Home() {
     <PageLayout>
       <main className="flex flex-col gap-10">
         <h1>Main page</h1>
-        <div>
-          <FilterPanel />
-        </div>
-        <div>
-          <SortPanel />
-        </div>
-        <GameList />
+        <GameList
+          games={games}
+          filterPanel={<FilterPanel />}
+          sortPanel={<SortPanel />}
+        />
       </main>
     </PageLayout>
   );
