@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { id } from "zod/v4/locales";
 
 export const GameSchema = z.object({
   id: z.string().min(1, { message: "Id: is required " }),
@@ -27,6 +28,28 @@ export const GameSchema = z.object({
     }),
   ),
   summary: z.string().min(1, { message: "Description: is required " }),
+  age_ratings: z
+    .array(
+      z.object({
+        id: z.number().min(1, { message: "Age Rating ID: is required " }),
+        rating_category: z.object({
+          id: z
+            .number()
+            .min(1, { message: "Age Rating Category ID: is required " }),
+          rating: z.string().min(1, { message: "Age Rating: is required " }),
+        }),
+      }),
+    )
+    .optional(),
+  storyline: z.string().optional(),
+  websites: z
+    .array(
+      z.object({
+        id: z.number().min(1, { message: "Website ID: is required " }),
+        url: z.string().min(1, { message: "Website URL: is required " }),
+      }),
+    )
+    .optional(),
 });
 
 export type Game = z.infer<typeof GameSchema>;

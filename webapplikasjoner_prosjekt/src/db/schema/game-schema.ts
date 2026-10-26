@@ -9,6 +9,9 @@ export const games = sqliteTable("games", {
   rating: int(),
   releaseDate: integer("releaseDate", { mode: "timestamp" }).notNull(),
   summary: text().notNull(),
+  age_ratings: int(),
+  storyline: text(),
+  websites: text(),
 });
 
 export type Game = typeof games.$inferSelect;

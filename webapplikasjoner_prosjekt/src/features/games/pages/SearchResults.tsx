@@ -14,7 +14,7 @@ export async function SearchResults({ params }: RequestInfo) {
 
   const gamesMatchingQuery = `
   search "${q}";
-  fields name, cover.image_id, platforms.name, genres.name, rating, first_release_date, summary;
+  fields name, cover.image_id, platforms.name, genres.name, rating, release_dates.human, summary;
   where cover != null & version_parent = null;
   limit 10;`;
 
