@@ -76,5 +76,17 @@ export type Game = {
     human: Date,
   }[],
   summary: string,
+  age_ratings: {
+    id: number,
+    rating_category: {
+      id: number,
+      rating: string,
+    },
+  }[],
+  storyline?: string,
+  websites?: {
+    id: number,
+    url: string,
+  }[]
 }
 */
