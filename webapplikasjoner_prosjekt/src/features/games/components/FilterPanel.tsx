@@ -11,6 +11,7 @@ type FilterPanelProps = {
 export function FilterPanel({ genres, platforms }: FilterPanelProps) {
   const [genrefilter, setGenreFilter] = useState("");
   const [platformfilter, setPlatformFilter] = useState("");
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     setGenreFilter(
@@ -19,6 +20,7 @@ export function FilterPanel({ genres, platforms }: FilterPanelProps) {
     setPlatformFilter(
       new URLSearchParams(window.location.search).get("platformfilter") || "",
     );
+    setSort(new URLSearchParams(window.location.search).get("sort") || "");
   }, []);
 
   return (
@@ -54,10 +56,25 @@ export function FilterPanel({ genres, platforms }: FilterPanelProps) {
             ))}
           </select>
         </li>
+        <li className="flex flex-row flex-wrap gap-4">
+          <p className="font-bold">Sort by:</p>
+          <select
+            onChange={(e) => setSort(e.target.value)}
+            className="bg-red-400 border-solid border-2"
+            value={sort}
+          >
+            <option value="rating desc">Rating desc</option>
+            <option value="rating asc">Rating asc</option>
+            <option value="name desc">Name desc</option>
+            <option value="name asc">Name asc</option>
+            <option value="release_dates.human desc">Release desc</option>
+            <option value="release_dates.human asc">Release asc</option>
+          </select>
+        </li>
       </ul>
       <button type="submit" className={`${brandStyles.button}`}>
         <a
-          href={`/?genrefilter=${genrefilter}&platformfilter=${platformfilter}`}
+          href={`/?genrefilter=${genrefilter}&platformfilter=${platformfilter}&sort=${sort}`}
         >
           Apply Filtering
         </a>

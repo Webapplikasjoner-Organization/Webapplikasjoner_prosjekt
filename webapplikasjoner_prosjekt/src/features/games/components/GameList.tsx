@@ -23,10 +23,12 @@ export async function GameList({
 }: GameListProps) {
   let genreFilter;
   let platformFilter;
+  let sort;
 
   const url = new URL(request?.url || "");
   genreFilter = url.searchParams.get("genrefilter");
   platformFilter = url.searchParams.get("platformfilter");
+  sort = url.searchParams.get("sort");
 
   let gamesFromIGDB;
 
@@ -37,7 +39,7 @@ export async function GameList({
   gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
   where ${conditions.join(" & ")};
-  sort rating desc;
+  sort ${sort || "rating desc"};
   limit 10;`;
 
   const games: Partial<Game>[] = (await getIGDBContent(
