@@ -2,6 +2,7 @@
 //https://claude.ai/share/cbf3f386-cf06-47b9-810b-7f8b9e8884e2
 
 import type { Game } from "@/types/game";
+import type { Filter } from "@/types/filter";
 import {
   CLIENTID,
   CLIENTSECRET,
@@ -39,7 +40,7 @@ export async function getIGDBContent(
   endpoint: string,
   apicalypseQuery: string,
   clientId: string,
-): Promise<Partial<Game>[]> {
+): Promise<Partial<Game>[] | Filter[]> {
   try {
     const accessToken = await getAccessToken(
       PUBLIC_AUTHENTICATION_URL_BASE,

@@ -3,25 +3,43 @@ import { GameCard } from "./GameCard";
 import { Suspense } from "react";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
-
-const gamesFromIGDB = `
-fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-where rating > 80 & rating_count > 50;
-sort rating desc;
-limit 10;`;
-
-const games: Partial<Game>[] = await getIGDBContent(
-  "games",
-  gamesFromIGDB,
-  CLIENTID,
-);
+import { requestInfo } from "rwsdk/worker";
 
 type GameListProps = {
   filterPanel?: React.ReactNode;
   sortPanel?: React.ReactNode;
+  request?: Request;
+  params?: Record<string, string>;
 };
 
 export async function GameList({ filterPanel, sortPanel }: GameListProps) {
+  let genreFilter;
+  let platformFilter;
+  let sort;
+
+  const urlParams = new URL(requestInfo.request.url);
+  genreFilter = urlParams.searchParams.get("genrefilter");
+  platformFilter = urlParams.searchParams.get("platformfilter");
+  sort = urlParams.searchParams.get("sort");
+
+  let gamesFromIGDB;
+
+  const conditions = ["rating > 80 & rating_count > 50"];
+  if (genreFilter) conditions.push(`genres.name = "${genreFilter}"`);
+  if (platformFilter) conditions.push(`platforms.name = "${platformFilter}"`);
+
+  gamesFromIGDB = `
+  fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
+  where ${conditions.join(" & ")};
+  sort ${sort ?? "rating desc"};
+  limit 10;`;
+
+  const games: Partial<Game>[] = (await getIGDBContent(
+    "games",
+    gamesFromIGDB,
+    CLIENTID,
+  )) as Partial<Game>[];
+
   return (
     <>
       <div>{filterPanel}</div>

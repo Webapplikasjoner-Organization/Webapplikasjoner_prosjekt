@@ -5,10 +5,11 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageLayout } from "@/components/PageLayout";
 import { FilterPanel } from "@/features/games/components/FilterPanel";
-import { SortPanel } from "@/features/games/components/SortPanel";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
 import { Game } from "@/types/game";
+import { useEffect, useState } from "react";
+import type { Filter } from "@/types/filter";
 
 /**
  * En server-komponent. Den kjører på serveren, én gang per forespørsel, og
@@ -19,47 +20,32 @@ import { Game } from "@/types/game";
  * lager du en klient-komponent, som `TimeClient` og `Counter` under.
  */
 
-export function Home() {
-  // const now = new Date().toLocaleString("no-NO");
+type HomeProps = {
+  request?: Request;
+  params?: Record<string, string>;
+};
 
-  // return (
-  //   <main className="mx-auto max-w-2xl p-8 font-sans">
-  //     <h1 className="text-3xl font-bold">Webapplikasjoner 2026</h1>
-  //     <p className="mt-2 text-slate-600">
-  //       Startprosjektet virker. Nå kan dere begynne å bygge.
-  //     </p>
+export async function Home({ request, params }: HomeProps) {
+  const genres = (await getIGDBContent(
+    "genres",
+    "fields name; limit 100; sort name asc;",
+    CLIENTID,
+  )) as Filter[];
+  const platforms = (await getIGDBContent(
+    "platforms",
+    "fields name; limit 300; sort name asc;",
+    CLIENTID,
+  )) as Filter[];
 
-  //     <p className="mt-6 text-sm text-slate-500">
-  //       Rendret på serveren {now}. Last siden på nytt, så endrer tallet seg.
-  //     </p>
-
-  //     {/* Samme klokke, men rendret i nettleseren. Ser dere to ulike tidspunkt,
-  //         har dere sett forskjellen på server og klient med egne øyne. */}
-  //     <TimeClient />
-
-  //     <Counter />
-
-  //     <h2 className="mt-10 text-xl font-semibold">Prøv dette</h2>
-  //     <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-700">
-  //       <li>
-  //         Åpne{" "}
-  //         <a className="underline" href="/api/status">
-  //           /api/status
-  //         </a>
-  //         . Det er en rute som svarer JSON i stedet for HTML.
-  //       </li>
-  //       <li>
-  //         Endre teksten i src/app/pages/Home.tsx og se at siden oppdaterer seg.
-  //       </li>
-  //       <li>Trykk på knappen over. Den er en klient-komponent.</li>
-  //     </ul>
-  //   </main>
-  // );
   return (
     <PageLayout>
       <main className="flex flex-col gap-10">
         <h1>Main page</h1>
-        <GameList filterPanel={<FilterPanel />} sortPanel={<SortPanel />} />
+        <GameList
+          filterPanel={<FilterPanel genres={genres} platforms={platforms} />}
+          request={request}
+          params={params}
+        />
       </main>
     </PageLayout>
   );

@@ -1,41 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { brandStyles } from "@/app/styles/brand-styles";
 
-export function FilterPanel() {
-  const [filter, setFilter] = useState("");
+type FilterPanelProps = {
+  genres?: { id: number; name: string }[];
+  platforms?: { id: number; name: string }[];
+};
 
-  const filteredGamesFromIGDB = `
-    fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-    (where rating > 80 & rating_count > 50) & (where genres.name = "${filter}" | where platforms.name = "${filter}");
-    sort rating desc;
-    limit 10;`;
+export function FilterPanel({ genres, platforms }: FilterPanelProps) {
+  const [genrefilter, setGenreFilter] = useState("");
+  const [platformfilter, setPlatformFilter] = useState("");
+  const [sort, setSort] = useState("");
 
   return (
-    <>
+    <form>
       <p>Filters: </p>
       <ul className="flex flex-row flex-wrap gap-4">
         <li className="flex flex-row flex-wrap gap-4">
           Genres:
-          <select onChange={(e) => setFilter(e.target.value)}>
-            <option value="">All</option>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="RPG">RPG</option>
-            <option value="Strategy">Strategy</option>
+          <select onChange={(e) => setGenreFilter(e.target.value)}>
+            {genres?.map((genre) => (
+              <option key={genre.id} value={genre.name}>
+                {genre.name}
+              </option>
+            ))}
           </select>
         </li>
         <li className="flex flex-row flex-wrap gap-4">
           Platforms:
-          <select onChange={(e) => setFilter(e.target.value)}>
-            <option value="">All</option>
-            <option value="PC">PC</option>
-            <option value="PlayStation">PlayStation</option>
-            <option value="Xbox">Xbox</option>
-            <option value="Switch">Switch</option>
+          <select onChange={(e) => setPlatformFilter(e.target.value)}>
+            {platforms?.map((platform) => (
+              <option key={platform.id} value={platform.name}>
+                {platform.name}
+              </option>
+            ))}
           </select>
         </li>
       </ul>
-    </>
+      <p>Sort by: </p>
+      <ul className="flex flex-row flex-wrap gap-4">
+        <select onChange={(e) => setSort(e.target.value)}>
+          <option value="rating asc">Rating asc</option>
+          <option value="rating desc">Rating desc</option>
+        </select>
+      </ul>
+      <button type="submit" className={`${brandStyles.button}`}>
+        <a
+          href={`/?genrefilter=${genrefilter}&platformfilter=${platformfilter}&sort=${sort}`}
+        >
+          Apply Sorting and Filtering
+        </a>
+      </button>
+    </form>
   );
 }

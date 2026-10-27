@@ -18,7 +18,6 @@ import { ArticlePage } from "./features/articles/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
 import { UsersPage } from "./features/users/pages/UsersPage";
-import { auth } from "@/auth/auth";
 import { requireUser } from "./shared/lib/guards";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
@@ -50,7 +49,6 @@ const app = defineApp([
 
   // Sider. render(Document, [...]) pakker dem i et helt HTML-dokument.
   render(Document, [
-    route("/api/auth/*", async ({ request }) => auth.handler(request)),
     route("/", Home),
     route("/users", UsersPage),
     route("/create-user", CreateUserPage),
