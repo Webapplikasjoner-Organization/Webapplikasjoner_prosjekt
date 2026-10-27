@@ -11,15 +11,27 @@ type FilterPanelProps = {
 export function FilterPanel({ genres, platforms }: FilterPanelProps) {
   const [genrefilter, setGenreFilter] = useState("");
   const [platformfilter, setPlatformFilter] = useState("");
-  const [sort, setSort] = useState("");
+
+  useEffect(() => {
+    setGenreFilter(
+      new URLSearchParams(window.location.search).get("genrefilter") || "",
+    );
+    setPlatformFilter(
+      new URLSearchParams(window.location.search).get("platformfilter") || "",
+    );
+  }, []);
 
   return (
     <form>
-      <p>Filters: </p>
-      <ul className="flex flex-row flex-wrap gap-4">
+      <ul className="flex flex-row flex-wrap gap-4 pl-3 pt-3">
         <li className="flex flex-row flex-wrap gap-4">
-          Genres:
-          <select onChange={(e) => setGenreFilter(e.target.value)}>
+          <p className="font-bold">Genres:</p>
+          <select
+            onChange={(e) => setGenreFilter(e.target.value)}
+            className="bg-red-400 border-solid border-2"
+            value={genrefilter}
+          >
+            <option>All</option>
             {genres?.map((genre) => (
               <option key={genre.id} value={genre.name}>
                 {genre.name}
@@ -28,8 +40,13 @@ export function FilterPanel({ genres, platforms }: FilterPanelProps) {
           </select>
         </li>
         <li className="flex flex-row flex-wrap gap-4">
-          Platforms:
-          <select onChange={(e) => setPlatformFilter(e.target.value)}>
+          <p className="font-bold">Platforms:</p>
+          <select
+            onChange={(e) => setPlatformFilter(e.target.value)}
+            className="bg-red-400 border-solid border-2"
+            value={platformfilter}
+          >
+            <option>All</option>
             {platforms?.map((platform) => (
               <option key={platform.id} value={platform.name}>
                 {platform.name}
@@ -38,18 +55,11 @@ export function FilterPanel({ genres, platforms }: FilterPanelProps) {
           </select>
         </li>
       </ul>
-      <p>Sort by: </p>
-      <ul className="flex flex-row flex-wrap gap-4">
-        <select onChange={(e) => setSort(e.target.value)}>
-          <option value="rating asc">Rating asc</option>
-          <option value="rating desc">Rating desc</option>
-        </select>
-      </ul>
       <button type="submit" className={`${brandStyles.button}`}>
         <a
-          href={`/?genrefilter=${genrefilter}&platformfilter=${platformfilter}&sort=${sort}`}
+          href={`/?genrefilter=${genrefilter}&platformfilter=${platformfilter}`}
         >
-          Apply Sorting and Filtering
+          Apply Filtering
         </a>
       </button>
     </form>

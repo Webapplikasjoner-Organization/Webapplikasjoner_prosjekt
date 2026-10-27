@@ -40,7 +40,6 @@ export async function Home({ request, params }: HomeProps) {
   return (
     <PageLayout>
       <main className="flex flex-col gap-10">
-        <h1>Main page</h1>
         <GameList
           filterPanel={<FilterPanel genres={genres} platforms={platforms} />}
           request={request}

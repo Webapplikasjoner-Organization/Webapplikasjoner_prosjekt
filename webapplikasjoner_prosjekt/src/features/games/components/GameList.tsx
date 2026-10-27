@@ -1,3 +1,6 @@
+//Claude chat explaining how to use query parameters.
+//https://claude.ai/share/75b1a8e0-ecae-46f0-8172-8fee45982a04
+
 import type { Game } from "@/types/game";
 import { GameCard } from "./GameCard";
 import { Suspense } from "react";
@@ -12,15 +15,18 @@ type GameListProps = {
   params?: Record<string, string>;
 };
 
-export async function GameList({ filterPanel, sortPanel }: GameListProps) {
+export async function GameList({
+  filterPanel,
+  sortPanel,
+  request,
+  params,
+}: GameListProps) {
   let genreFilter;
   let platformFilter;
-  let sort;
 
-  const urlParams = new URL(requestInfo.request.url);
-  genreFilter = urlParams.searchParams.get("genrefilter");
-  platformFilter = urlParams.searchParams.get("platformfilter");
-  sort = urlParams.searchParams.get("sort");
+  const url = new URL(request?.url || "");
+  genreFilter = url.searchParams.get("genrefilter");
+  platformFilter = url.searchParams.get("platformfilter");
 
   let gamesFromIGDB;
 
@@ -31,7 +37,7 @@ export async function GameList({ filterPanel, sortPanel }: GameListProps) {
   gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
   where ${conditions.join(" & ")};
-  sort ${sort ?? "rating desc"};
+  sort rating desc;
   limit 10;`;
 
   const games: Partial<Game>[] = (await getIGDBContent(
@@ -46,9 +52,11 @@ export async function GameList({ filterPanel, sortPanel }: GameListProps) {
       <div>{sortPanel}</div>
       <section className="flex flex-row flex-wrap justify-evenly gap-10">
         <Suspense fallback={<p>Loading games...</p>}>
-          {games?.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
+          {games.length === 0 ? (
+            <p>No games found.</p>
+          ) : (
+            games?.map((game) => <GameCard key={game.id} game={game} />)
+          )}
         </Suspense>
       </section>
     </>
