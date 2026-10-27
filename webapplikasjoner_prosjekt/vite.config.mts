@@ -33,6 +33,7 @@ export default defineConfig({
   server: {
     // strictPort makes a taken port fail loudly instead of silently moving to
     // another one. Override with `--port`, which Playwright uses.
+    host: '0.0.0.0',
     port: 5173,
     strictPort: true,
     host: true,
