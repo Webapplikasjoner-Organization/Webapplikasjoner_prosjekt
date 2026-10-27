@@ -43,6 +43,8 @@ export const setCommonHeaders =
         "media-src 'self' data: blob:",
         "frame-ancestors 'self'",
         "object-src 'none'",
+        "Access-Control-Allow-Origin, http://localhost:8081",
+        "Access-Control-Allow-Methods, POST",
       ].join("; "),
     );
   };
