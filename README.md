@@ -4,9 +4,9 @@ CheckPoint er et studentprosjekt utviklet i emnet **Webapplikasjoner** ved Høgs
 
 ## Om prosjektet og hva appen gjør
 
-CheckPoint er en interaktiv nettside for spillinteresserte. Formålet med appen er å gjøre det enkelt å holde seg oppdatert på hva som skjer i spillverdenen, samtidig som brukeren kan holde oversikt over spillene sine på ett sted.
+CheckPoint er en interaktiv nettside for spillinteresserte. Formålet med appen er å finne og søke opp mange ulike spill som finnes, samtidig som brukeren kan holde oversikt over spillene de har lagret selv på ett sted.
 
-Appen skal blant annet kunne vise spillnyheter, nylig lanserte spill og informasjon om forskjellige spill. Brukeren skal også kunne opprette en personlig bruker og lage egne spillister.
+Appen skal blant annet kunne vise spillartikler, nylig lanserte spill og informasjon om forskjellige spill. Brukeren skal også kunne opprette en personlig bruker og lage egne spillister.
 
 Prosjektet utvikles som en del av emnet Webapplikasjoner og skal demonstrere bruk av moderne webutvikling, eksterne datakilder, komponentbasert utvikling, state-håndtering, navigasjon og testing.
 
@@ -23,7 +23,6 @@ Prosjektet utvikles av **Gruppe W-01**.
 ## Funksjonalitet
 
 Planlagt funksjonalitet i CheckPoint inkluderer blant annet:
-
 - Opprette og administrere en personlig bruker
 - Legge spill til en personlig spilliste
 - Opprette offentlige eller private spillister
@@ -45,6 +44,8 @@ Planlagt funksjonalitet i CheckPoint inkluderer blant annet:
 Appen skal hente informasjon fra minst én ekstern datakilde/API. <br>
 Så langt:
 - IGDB - https://api-docs.igdb.com/#getting-started
+
+*En del av det som står her vil ikke være oppnådd til leveringsdatoen på grunn av at vi underestimerte omfanget og vanskeligheten av å utvikle prosjektet*
 
 ## Avgrensninger
 
@@ -90,7 +91,7 @@ Prosjektet utvikles gjennom høstsemesteret 2026 som en del av emnet Webutviklin
 2. Kjør "npm install" i "webapplikasjoner_prosjekt" mappen.
 3. Hent private og hemmelige nøkler og legg dem i en ".dev.vars" fil i for å bruke IGDB-api-et. Kontakt Daniel Karlsen for å få nøklene.
 4. Kjør "npx wrangler types".
-5. Kjør "npm run migrate:dev" og "npm run migrate:dev" for å migrere schemaer til databasen og deretter "npm run generate".
+5. Kjør "npm run migrate:dev" og "npm run migrate:new" for å migrere schemaer til databasen og deretter "npm run generate".
 6. Kjør "npm run dev" og åpne url-en i en nettleser.
 
 ## Tekniske detaljer
