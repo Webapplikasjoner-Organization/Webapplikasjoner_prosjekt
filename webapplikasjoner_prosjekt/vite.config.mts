@@ -15,6 +15,11 @@ export default defineConfig({
   plugins: [
     cloudflare({
       viteEnvironment: { name: "worker" },
+      tunnel: { 
+        name: "dev-server-api",
+        autoStart: true
+       }
+      
     }),
     redwood(),
     react(),
