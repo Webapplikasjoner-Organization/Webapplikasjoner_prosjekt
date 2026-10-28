@@ -39,6 +39,9 @@ export async function UserProfile({ params, request }: RequestInfo) {
           <a href={`/users/${id}/change-password`}>Change password</a>
         </button>
         <button className={brandStyles.button}>
+          <a href={`/logout`}>Log out</a>
+        </button>
+        <button className={brandStyles.button}>
           <a className="text-red-600" href={`/users/${id}/delete-account`}>
             Delete account
           </a>

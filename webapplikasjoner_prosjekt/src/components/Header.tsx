@@ -1,8 +1,11 @@
 "use client";
 
 import { SearchBar } from "./SearchBar";
+import { useAuth } from "@/features/auth/contexts/AuthContext";
 
 export function Header() {
+  const { user } = useAuth();
+
   return (
     <header className="flex justify-between bg-brand-grey p-5">
       <a href="/">
@@ -28,9 +31,19 @@ export function Header() {
       </nav>
       <div className="flex flex-row items-center gap-4">
         <SearchBar />
-        <a href="/login">
-          <img src="https://placehold.co/50x50/blue/white" alt="placeholder" />
-        </a>
+        {!user && (
+          <a href="/login">
+            <img src="https://placehold.co/50x50/red/white" alt="placeholder" />
+          </a>
+        )}
+        {user && (
+          <a href={`/users/${encodeURIComponent(user.id)}`}>
+            <img
+              src="https://placehold.co/50x50/green/white"
+              alt="user profile"
+            />
+          </a>
+        )}
       </div>
     </header>
   );

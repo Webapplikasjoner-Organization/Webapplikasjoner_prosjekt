@@ -1,15 +1,6 @@
 "use client";
 
-import { userService } from "@/features/users/user-service";
-import { type User } from "@/types/user";
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
-import { navigate } from "rwsdk/client";
+import { createContext, useContext } from "react";
 import { SessionUser } from "../auth-types";
 
 type AuthContextData = {
