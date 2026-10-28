@@ -10,81 +10,90 @@ import {
   useCallback,
 } from "react";
 import { navigate } from "rwsdk/client";
+import { SessionUser } from "../auth-types";
 
 type AuthContextData = {
-  user: User | null;
+  user: SessionUser | null;
+  /*
   isLoading: boolean;
   changeProfilePicture?: (url: string) => void;
   changeUsername?: (newUsername: string) => void;
   changePassword: (newPassword: string) => void;
   deleteAccount: () => void;
   logout: () => void;
+  */
 };
 
 const AuthContext = createContext<AuthContextData | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+type AuthProviderProps = {
+  user: SessionUser | null;
+  children: React.ReactNode;
+};
 
-  useEffect(() => {
-    //Call API that gets a user.
-    //setUser();
-  }, []);
+export function AuthProvider({ user, children }: AuthProviderProps) {
+  /*
+  const [currentUser, setCurrentUser] = useState<SessionUser | null>(user);
 
-  const isLoading = user === null;
+  const isLoading = currentUser === null;
 
   const changeProfilePicture = useCallback((url: string) => {}, []);
 
   const changeUsername = useCallback(async (newUsername: string) => {
-    if (!user) {
+    if (!currentUser) {
       await navigate("/login");
       return;
     }
-    if (!user.username) {
+    if (!currentUser.username) {
       return;
     }
     await userService.update({
-      id: user.id,
+      id: currentUser.id,
       category: "username",
       newValue: newUsername,
     });
   }, []);
 
   const changePassword = useCallback(async (newPassword: string) => {
-    if (!user) {
+    if (!currentUser) {
       await navigate("/login");
       return;
     }
     await userService.update({
-      id: user.id,
+      id: currentUser.id,
       category: "password",
       newValue: newPassword,
     });
   }, []);
 
   const deleteAccount = useCallback(async () => {
-    if (!user) {
+    if (!currentUser) {
       await navigate("/login");
       return;
     }
-    await userService.delete(user.id);
-    setUser(null);
+    await userService.delete(currentUser.id);
+    setCurrentUser(null);
     await navigate("/login");
   }, []);
 
   const logout = useCallback(async () => {
-    setUser(null);
+    setCurrentUser(null);
     await navigate("/");
   }, []);
 
   const value = {
-    user,
+    user: currentUser,
     isLoading,
     changeProfilePicture,
     changeUsername,
     changePassword,
     deleteAccount,
     logout,
+  };
+  */
+
+  const value = {
+    user: user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

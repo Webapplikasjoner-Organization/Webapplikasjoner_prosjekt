@@ -32,7 +32,7 @@ export function LoginForm({ action }: LoginFormProps) {
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form action={formAction}>
+      <form method="post" action={formAction}>
         <div className="flex flex-col w-50 md:w-100">
           <label htmlFor="email" className="font-bold">
             Email:

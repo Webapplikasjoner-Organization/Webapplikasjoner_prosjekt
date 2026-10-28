@@ -18,14 +18,18 @@ import { ArticlePage } from "./features/articles/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
 import { UsersPage } from "./features/users/pages/UsersPage";
-import { requireUser } from "./shared/lib/guards";
+import { requireUser } from "./features/auth/middleware";
+import { SessionUser } from "./features/auth/auth-types";
+import { LogoutPage } from "./features/users/pages/LogoutPage";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
  *
  * Tom nå. Legger dere til `user` her, blir `ctx.user` typet i hele appen,
  * fordi types/rw.d.ts mater denne typen inn i rwsdk.
  */
-export type AppContext = {};
+export type AppContext = {
+  user: SessionUser | null;
+};
 
 const app = defineApp([
   // Middleware. Kjører for hver forespørsel, i rekkefølgen de står.
@@ -53,11 +57,12 @@ const app = defineApp([
     route("/users", UsersPage),
     route("/create-user", CreateUserPage),
     route("/login", LoginPage),
-    route("/users/:id", [UserProfile]),
-    route("/users/:id/change-password", [ChangePasswordPage]),
-    route("/users/:id/change-username", [ChangeUsernamePage]),
-    route("/users/:id/delete-account", [DeleteAccountPage]),
-    route("/users/:id/my-games", [MyGamesPage]),
+    route("/logout", LogoutPage),
+    route("/users/:id", [requireUser, UserProfile]),
+    route("/users/:id/change-password", [requireUser, ChangePasswordPage]),
+    route("/users/:id/change-username", [requireUser, ChangeUsernamePage]),
+    route("/users/:id/delete-account", [requireUser, DeleteAccountPage]),
+    route("/users/:id/my-games", [requireUser, MyGamesPage]),
     route("/games/:id", GamePage),
     route("/search-results/:q", SearchResults),
     route("/articles", ArticlesPage),
