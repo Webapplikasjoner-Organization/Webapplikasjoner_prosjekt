@@ -1,10 +1,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { PageLayout } from "@/components/PageLayout";
 import { brandStyles } from "@/app/styles/brand-styles";
-// import { findUserById } from "@/features/users/user-api";
 import { userService } from "@/features/users/user-service";
-// import { navigate } from "rwsdk/client";
-import { useAuth } from "@/features/auth/contexts/AuthContext";
 
 export async function UserProfile({ params, request }: RequestInfo) {
   const { id } = params;

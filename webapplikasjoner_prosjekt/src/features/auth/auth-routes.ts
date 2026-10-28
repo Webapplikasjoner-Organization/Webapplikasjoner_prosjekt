@@ -12,6 +12,10 @@ import { UserProfile } from "@/features/users/pages/UserProfile";
 import { route } from "rwsdk/router";
 import { requireUserPage } from "@/features/auth/middleware";
 import { db } from "@/db";
+import { ChangePasswordPage } from "@/features/users/pages/ChangePasswordPage";
+import { ChangeUsernamePage } from "@/features/users/pages/ChangeUsernamePage";
+import { DeleteAccountPage } from "@/features/users/pages/DeleteAccountPage";
+import { MyGamesPage } from "@/features/users/pages/MyGamesPage";
 
 async function login({ request }: RequestInfo) {
   let form: FormData;
@@ -99,4 +103,8 @@ export const authRoutes = [
   route("/login", { get: LoginPage, post: login }),
   route("/logout", { get: logout }),
   route("/users/:id", [requireUserPage, UserProfile]),
+  route("/users/:id/change-password", [requireUserPage, ChangePasswordPage]),
+  route("/users/:id/change-username", [requireUserPage, ChangeUsernamePage]),
+  route("/users/:id/delete-account", [requireUserPage, DeleteAccountPage]),
+  route("/users/:id/my-games", [requireUserPage, MyGamesPage]),
 ];

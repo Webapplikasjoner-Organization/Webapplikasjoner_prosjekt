@@ -1,8 +1,4 @@
-"use client";
-
 import { PageLayout } from "@/components/PageLayout";
-import { LoginForm } from "@/features/users/components/LoginForm";
-import { loginAction } from "@/features/users/actions";
 
 export function LogoutPage() {
   return (
