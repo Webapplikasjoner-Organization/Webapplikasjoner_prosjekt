@@ -12,9 +12,8 @@ export async function UserProfile({ params, request }: RequestInfo) {
   // Den her virker ikke på serveren da findUserById ikke bruker full url (det kreves på serveren)
   // const user = await findUserById(id);
   const user = await userService.findById(id);
-  console.log(user, id);
 
-  if (!user?.ok) {
+  if (!user?.ok || user === null) {
     return Response.redirect(new URL("/create-user", request.url), 302);
   }
 
@@ -26,7 +25,7 @@ export async function UserProfile({ params, request }: RequestInfo) {
   return (
     <PageLayout>
       <main className="flex flex-col gap-4 items-center">
-        <h1>{`${user?.data?.username}'s page`}</h1>
+        <h1>{`Welcome ${user?.data?.email}!`}</h1>
         <button className={brandStyles.button}>
           <a href="/">Change profile picture</a>
         </button>

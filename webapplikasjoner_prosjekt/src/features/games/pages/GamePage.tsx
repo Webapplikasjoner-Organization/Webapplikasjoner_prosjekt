@@ -31,7 +31,7 @@ export async function GamePage({ params }: RequestInfo) {
     age_ratings,
     storyline,
     websites,
-  } = game;
+  } = game as Game;
 
   const franchises = `
     fields name, games;
@@ -61,12 +61,10 @@ export async function GamePage({ params }: RequestInfo) {
               <span className="font-bold">Name: </span>
               {name}
             </p>
-            <a href={`/`}>
-              <p>
-                <span className="font-bold">Franchise: </span>
-                {gameFranchise?.[0]?.name ?? "N/A"}
-              </p>
-            </a>
+            <p>
+              <span className="font-bold">Franchise: </span>
+              {gameFranchise?.[0]?.name ?? "N/A"}
+            </p>
             <p>
               <span className="font-bold">Genres: </span>
               {genres?.map((genre) => genre.name).join(", ")}

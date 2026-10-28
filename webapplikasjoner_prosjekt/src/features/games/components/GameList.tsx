@@ -1,6 +1,3 @@
-//Claude chat explaining how to use query parameters.
-//https://claude.ai/share/75b1a8e0-ecae-46f0-8172-8fee45982a04
-
 import type { Game } from "@/types/game";
 import { GameCard } from "./GameCard";
 import { Suspense } from "react";

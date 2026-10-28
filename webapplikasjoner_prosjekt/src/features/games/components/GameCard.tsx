@@ -8,19 +8,6 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
   const { id, name, cover, platforms, genres, rating, release_dates, summary } =
     game;
 
-  const franchises = `
-    fields name, games;
-    sort rating desc;
-    where games = (${id});
-    limit 10;
-  `;
-
-  const gameFranchise = await getIGDBContent(
-    "franchises",
-    franchises,
-    CLIENTID,
-  );
-
   return (
     <article className="pt-10 pb-10 w-75 gap-5">
       <a href={`/games/${id}`}>
@@ -36,12 +23,6 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           <p>
             <span className="font-bold">Name: </span>
             {name}
-          </p>
-        </a>
-        <a href={`/`}>
-          <p>
-            <span className="font-bold">Franchise: </span>
-            {gameFranchise?.[0]?.name ?? "N/A"}
           </p>
         </a>
         <p>

@@ -9,17 +9,7 @@ export const userRoutes = [
   }),
   route("/api/v1/users/:id", {
     get: userController.findById,
-    patch: [
-      () => {
-        requireUser();
-      },
-      userController.update,
-    ],
-    delete: [
-      () => {
-        requireUser();
-      },
-      userController.delete,
-    ],
+    patch: [userController.update],
+    delete: [userController.delete],
   }),
 ];

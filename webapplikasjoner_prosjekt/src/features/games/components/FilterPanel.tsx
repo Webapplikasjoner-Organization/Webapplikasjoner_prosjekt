@@ -67,8 +67,8 @@ export function FilterPanel({ genres, platforms }: FilterPanelProps) {
             <option value="rating asc">Rating asc</option>
             <option value="name desc">Name desc</option>
             <option value="name asc">Name asc</option>
-            <option value="release_dates.human desc">Release desc</option>
-            <option value="release_dates.human asc">Release asc</option>
+            <option value="first_release_date desc">Release desc</option>
+            <option value="first_release_date asc">Release asc</option>
           </select>
         </li>
       </ul>

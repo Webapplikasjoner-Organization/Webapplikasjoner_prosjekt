@@ -53,36 +53,11 @@ const app = defineApp([
     route("/users", UsersPage),
     route("/create-user", CreateUserPage),
     route("/login", LoginPage),
-    route("/users/:id", [
-      () => {
-        requireUser();
-      },
-      UserProfile,
-    ]),
-    route("/users/:id/change-password", [
-      () => {
-        requireUser();
-      },
-      ChangePasswordPage,
-    ]),
-    route("/users/:id/change-username", [
-      () => {
-        requireUser();
-      },
-      ChangeUsernamePage,
-    ]),
-    route("/users/:id/delete-account", [
-      () => {
-        requireUser();
-      },
-      DeleteAccountPage,
-    ]),
-    route("/users/:id/my-games", [
-      () => {
-        requireUser();
-      },
-      MyGamesPage,
-    ]),
+    route("/users/:id", [UserProfile]),
+    route("/users/:id/change-password", [ChangePasswordPage]),
+    route("/users/:id/change-username", [ChangeUsernamePage]),
+    route("/users/:id/delete-account", [DeleteAccountPage]),
+    route("/users/:id/my-games", [MyGamesPage]),
     route("/games/:id", GamePage),
     route("/search-results/:q", SearchResults),
     route("/articles", ArticlesPage),

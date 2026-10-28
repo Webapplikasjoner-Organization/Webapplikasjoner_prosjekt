@@ -29,15 +29,23 @@ export function createUserRepository(_db: DB): UserRepository {
           ? await this.findByUsername(user.username)
           : null;
         const existingUserWithEmail = await this.findByEmail(user?.email);
-        if (
-          existingUserWithEmail !== null ||
-          existingUserWithUsername !== null
-        ) {
+        if (existingUserWithUsername !== null) {
+          if (existingUserWithEmail !== null) {
+            return {
+              ok: false,
+              error: {
+                code: 409,
+                message: "A user with this email or username already exists.",
+              },
+            };
+          }
+        }
+        if (existingUserWithEmail !== null) {
           return {
             ok: false,
             error: {
               code: 409,
-              message: "A user with this email or username already exists.",
+              message: "A user with this email already exists.",
             },
           };
         }
