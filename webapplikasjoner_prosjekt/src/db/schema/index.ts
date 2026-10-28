@@ -4,4 +4,5 @@
 export * from "./user-schema";
 export * from "./task-schema";
 export * from "./game-schema";
+export * from "./user-game-schema";
 export * from "./article-schema";

@@ -13,11 +13,9 @@ export function PageLayout({ children }: PageLayoutProps) {
 
   return (
     <AuthProvider user={user}>
-      {/* <GamesProvider> */}
       <Header />
       {children}
       <Footer />
-      {/* </GamesProvider> */}
     </AuthProvider>
   );
 }

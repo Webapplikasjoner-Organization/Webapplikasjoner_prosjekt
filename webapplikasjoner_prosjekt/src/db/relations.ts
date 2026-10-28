@@ -10,7 +10,16 @@ import { defineRelations } from "drizzle-orm";
 import * as schema from "./schema";
 
 export const relations = defineRelations(schema, (r) => ({
-  /*Ingen relasjoner enda.*/
+  users: {
+    usergames: r.many.usergames({ from: r.users.id, to: r.usergames.id }),
+  },
+  usergames: {
+    user: r.one.users({
+      from: r.usergames.userid,
+      to: r.users.id,
+      optional: false,
+    }),
+  },
 }));
 
 export type Relations = typeof relations;
