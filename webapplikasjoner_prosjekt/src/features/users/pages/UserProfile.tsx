@@ -24,9 +24,6 @@ export async function UserProfile({ params, request }: RequestInfo) {
       <main className="flex flex-col gap-4 items-center">
         <h1>{`Welcome ${user?.data?.email}!`}</h1>
         <button className={brandStyles.button}>
-          <a href="/">Change profile picture</a>
-        </button>
-        <button className={brandStyles.button}>
           <a href={`/users/${id}/my-games`}>My Games</a>
         </button>
         <button className={brandStyles.button}>
@@ -38,10 +35,8 @@ export async function UserProfile({ params, request }: RequestInfo) {
         <button className={brandStyles.button}>
           <a href={`/logout`}>Log out</a>
         </button>
-        <button className={brandStyles.button}>
-          <a className="text-red-600" href={`/users/${id}/delete-account`}>
-            Delete account
-          </a>
+        <button className={brandStyles.dangerButton}>
+          <a href={`/users/${id}/delete-account`}>Delete account</a>
         </button>
       </main>
     </PageLayout>

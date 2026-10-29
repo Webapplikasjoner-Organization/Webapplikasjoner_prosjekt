@@ -11,6 +11,8 @@ import { ChangePasswordPage } from "@/features/users/pages/ChangePasswordPage";
 import { ChangeEmailPage } from "@/features/users/pages/ChangeEmailPage";
 import { DeleteAccountPage } from "@/features/users/pages/DeleteAccountPage";
 import { MyGamesPage } from "@/features/users/pages/MyGamesPage";
+import { userService } from "@/features/users/user-service";
+import type { RouteMiddleware } from "rwsdk/router";
 
 function logout() {
   return new Response(null, {
@@ -22,9 +24,32 @@ function logout() {
   });
 }
 
+const deleteAccount: RouteMiddleware = async ({ ctx }) => {
+  if (!ctx.user) {
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: "/login",
+      },
+    });
+  }
+
+  await userService.delete(ctx.user.id);
+  ctx.user = null;
+
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: "/login",
+      "Set-Cookie": clearSessionCookie(),
+    },
+  });
+};
+
 export const authRoutes = [
   route("/login", { get: LoginPage, post: LoginPage }),
   route("/logout", { get: logout }),
+  route("/delete", { post: deleteAccount }),
   route("/users/:id", [requireUserPage, UserProfile]),
   route("/users/:id/change-password", [requireUserPage, ChangePasswordPage]),
   route("/users/:id/change-email", [requireUserPage, ChangeEmailPage]),
