@@ -78,8 +78,6 @@ export async function loginAction(
   formData: FormData,
 ): Promise<FormState> {
   try {
-    const { ctx, request } = requestInfo;
-
     const values: FormValues = {
       email: String(formData.get("email")) as string,
       username: String(formData.get("username")) as string,

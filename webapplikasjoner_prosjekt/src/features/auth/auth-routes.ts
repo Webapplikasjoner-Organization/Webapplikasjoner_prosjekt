@@ -13,7 +13,7 @@ import { route } from "rwsdk/router";
 import { requireUserPage } from "@/features/auth/middleware";
 import { db } from "@/db";
 import { ChangePasswordPage } from "@/features/users/pages/ChangePasswordPage";
-import { ChangeUsernamePage } from "@/features/users/pages/ChangeUsernamePage";
+import { ChangeEmailPage } from "@/features/users/pages/ChangeEmailPage";
 import { DeleteAccountPage } from "@/features/users/pages/DeleteAccountPage";
 import { MyGamesPage } from "@/features/users/pages/MyGamesPage";
 
@@ -38,11 +38,7 @@ async function login({ request }: RequestInfo) {
 
   const formObject = Object.fromEntries(form);
 
-  const validFormData =
-    typeof formObject === "object" &&
-    "userId" in formObject &&
-    Number.isInteger(Number(formObject.userId)) &&
-    Number(formObject.userId) > 0;
+  const validFormData = typeof formObject === "object";
 
   if (!validFormData) {
     return Response.json(
@@ -52,7 +48,9 @@ async function login({ request }: RequestInfo) {
           code: "400",
           message: "Invalid login information",
           fieldErrors: {
-            userId: "",
+            username: "",
+            email: "",
+            password: "",
           },
         },
       },
@@ -61,7 +59,7 @@ async function login({ request }: RequestInfo) {
   }
   // Her ville vi sjekket passord mot hash
   const user = await db.query.users.findFirst({
-    where: { id: String(formObject.userId) },
+    where: { email: String(formObject.email) },
   });
 
   if (!user) {
@@ -71,7 +69,7 @@ async function login({ request }: RequestInfo) {
         error: {
           code: "400",
           message: "Invalid login information",
-          fieldErrors: { userId: ["User does not exist"] },
+          fieldErrors: { email: ["User does not exist"] },
         },
       },
       { status: 400 },
@@ -104,7 +102,7 @@ export const authRoutes = [
   route("/logout", { get: logout }),
   route("/users/:id", [requireUserPage, UserProfile]),
   route("/users/:id/change-password", [requireUserPage, ChangePasswordPage]),
-  route("/users/:id/change-username", [requireUserPage, ChangeUsernamePage]),
+  route("/users/:id/change-email", [requireUserPage, ChangeEmailPage]),
   route("/users/:id/delete-account", [requireUserPage, DeleteAccountPage]),
   route("/users/:id/my-games", [requireUserPage, MyGamesPage]),
 ];

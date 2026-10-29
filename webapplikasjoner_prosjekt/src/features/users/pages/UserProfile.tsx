@@ -30,7 +30,7 @@ export async function UserProfile({ params, request }: RequestInfo) {
           <a href={`/users/${id}/my-games`}>My Games</a>
         </button>
         <button className={brandStyles.button}>
-          <a href={`/users/${id}/change-username`}>Change username</a>
+          <a href={`/users/${id}/change-email`}>Change email</a>
         </button>
         <button className={brandStyles.button}>
           <a href={`/users/${id}/change-password`}>Change password</a>

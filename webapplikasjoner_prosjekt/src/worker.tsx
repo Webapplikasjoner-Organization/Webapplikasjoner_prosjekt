@@ -9,7 +9,7 @@ import { Home } from "@/app/pages/Home";
 import { GamePage } from "./features/games/pages/GamePage";
 import { UserProfile } from "./features/users/pages/UserProfile";
 import { ChangePasswordPage } from "./features/users/pages/ChangePasswordPage";
-import { ChangeUsernamePage } from "./features/users/pages/ChangeUsernamePage";
+import { ChangeEmailPage } from "./features/users/pages/ChangeEmailPage";
 import { MyGamesPage } from "./features/users/pages/MyGamesPage";
 import { DeleteAccountPage } from "./features/users/pages/DeleteAccountPage";
 import { SearchResults } from "./features/games/pages/SearchResults";
