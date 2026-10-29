@@ -3,6 +3,7 @@
 import type { Result, ResultData, ResultError } from "@/shared/result";
 import type { UserDTO } from "@/features/users/user-mapper";
 import { requestInfo } from "rwsdk/worker";
+import { createSessionCookie } from "@/features/auth/session";
 import { userService } from "@/features/users/user-service";
 import { loginSchema, createUserSchema } from "./user-schema";
 
@@ -22,8 +23,6 @@ export async function createUserAction(
   formData: FormData,
 ): Promise<FormState> {
   try {
-    const { ctx, request } = requestInfo;
-
     const values: FormValues = {
       email: String(formData.get("email")) as string,
       username: String(formData.get("username")) as string,
@@ -49,9 +48,16 @@ export async function createUserAction(
       password: values.password,
     });
 
-    return result.ok
-      ? { ok: true, data: result.data, code: 201 }
-      : { ok: false, error: result.error, values };
+    if (!result.ok) {
+      return { ok: false, error: result.error, values };
+    }
+
+    requestInfo.response.headers.append(
+      "Set-Cookie",
+      createSessionCookie(result.data.id),
+    );
+
+    return { ok: true, data: result.data, code: 201 };
   } catch (error) {
     return {
       ok: false,
@@ -78,8 +84,6 @@ export async function loginAction(
   formData: FormData,
 ): Promise<FormState> {
   try {
-    const { ctx, request } = requestInfo;
-
     const values: FormValues = {
       email: String(formData.get("email")) as string,
       username: String(formData.get("username")) as string,
@@ -112,9 +116,16 @@ export async function loginAction(
       };
     }
 
-    return result.ok
-      ? { ok: true, data: result.data, code: 200 }
-      : { ok: false, error: result.error, values };
+    if (!result.ok) {
+      return { ok: false, error: result.error, values };
+    }
+
+    requestInfo.response.headers.append(
+      "Set-Cookie",
+      createSessionCookie(result.data.id),
+    );
+
+    return { ok: true, data: result.data, code: 200 };
   } catch (error) {
     return {
       ok: false,

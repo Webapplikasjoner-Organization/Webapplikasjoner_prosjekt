@@ -30,8 +30,8 @@ function serializeCookie(value: string, maxAge: number) {
 }
 
 /** Innlogging: cookien nettleseren skal ta vare på. */
-export function createSessionCookie(userId: number) {
-  return serializeCookie(String(userId), SESSION_MAX_AGE);
+export function createSessionCookie(userId: string) {
+  return serializeCookie(encodeURIComponent(userId), SESSION_MAX_AGE);
 }
 
 // setter Max-Age=0. Da kaster nettleseren den selv.
@@ -39,12 +39,9 @@ export function clearSessionCookie() {
   return serializeCookie("", 0);
 }
 
-export function readSessionUserId(request: Request): number | null {
+export function readSessionUserId(request: Request): string | null {
   const value = readCookie(request.headers.get("cookie"), SESSION_COOKIE);
-  if (!value || !/^\d+$/.test(value)) return null;
-
-  const userId = Number(value);
-  return Number.isSafeInteger(userId) && userId > 0 ? userId : null;
+  return value ? value : null;
 }
 
 // annet=1; session=2

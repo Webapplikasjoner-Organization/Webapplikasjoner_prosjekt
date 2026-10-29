@@ -31,7 +31,7 @@ export const setUser: RouteMiddleware = async ({ ctx, request }) => {
   }
 
   const user = await db.query.users.findFirst({
-    where: { id: String(userId) },
+    where: { id: userId },
     columns: {
       id: true,
       username: true,

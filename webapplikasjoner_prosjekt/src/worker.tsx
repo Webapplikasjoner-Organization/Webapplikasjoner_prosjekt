@@ -18,7 +18,7 @@ import { ArticlePage } from "./features/articles/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
 import { UsersPage } from "./features/users/pages/UsersPage";
-import { requireUser } from "./features/auth/middleware";
+import { requireUser, setUser } from "./features/auth/middleware";
 import { SessionUser } from "./features/auth/auth-types";
 import { LogoutPage } from "./features/users/pages/LogoutPage";
 import { authRoutes } from "./features/auth/auth-routes";
@@ -35,6 +35,7 @@ export type AppContext = {
 const app = defineApp([
   // Middleware. Kjører for hver forespørsel, i rekkefølgen de står.
   setCommonHeaders(),
+  setUser,
   ...userRoutes,
 
   ...(import.meta.env.VITE_IS_DEV_SERVER
