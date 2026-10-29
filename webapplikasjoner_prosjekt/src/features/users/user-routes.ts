@@ -1,6 +1,6 @@
 import { route } from "rwsdk/router";
 import { userController } from "./user-controller";
-import { requireUser } from "@/shared/lib/guards";
+import { requireUser } from "@/features/auth/middleware";
 
 export const userRoutes = [
   route("/api/v1/users", {
@@ -9,7 +9,7 @@ export const userRoutes = [
   }),
   route("/api/v1/users/:id", {
     get: userController.findById,
-    patch: [userController.update],
-    delete: [userController.delete],
+    patch: [requireUser, userController.update],
+    delete: [requireUser, userController.delete],
   }),
 ];
