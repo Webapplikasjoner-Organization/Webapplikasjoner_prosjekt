@@ -2,6 +2,8 @@
 
 import { SearchBar } from "./SearchBar";
 import { useAuth } from "@/features/auth/contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faTree } from "@fortawesome/free-solid-svg-icons";
 
 export function Header() {
   const { user } = useAuth();
@@ -33,14 +35,17 @@ export function Header() {
         <SearchBar />
         {!user && (
           <a href="/login">
-            <img src="https://placehold.co/50x50/red/white" alt="placeholder" />
+            <FontAwesomeIcon
+              icon={faTree}
+              className="text-brand-white text-4xl"
+            />
           </a>
         )}
         {user && (
           <a href={`/users/${encodeURIComponent(user.id)}`}>
-            <img
-              src="https://placehold.co/50x50/green/white"
-              alt="user profile"
+            <FontAwesomeIcon
+              icon={faUser}
+              className="text-brand-white text-4xl"
             />
           </a>
         )}

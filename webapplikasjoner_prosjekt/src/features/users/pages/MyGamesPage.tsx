@@ -6,7 +6,6 @@ export function MyGamesPage() {
   return (
     <PageLayout>
       <main className="flex flex-col gap-10">
-        <h1>My games</h1>
         <MyGamesList />
       </main>
     </PageLayout>
