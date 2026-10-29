@@ -57,7 +57,6 @@ async function login({ request }: RequestInfo) {
       { status: 400 },
     );
   }
-  // Her ville vi sjekket passord mot hash
   const user = await db.query.users.findFirst({
     where: { email: String(formObject.email) },
   });
