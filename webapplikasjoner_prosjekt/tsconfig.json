@@ -17,8 +17,7 @@
     "types": [
       "./worker-configuration.d.ts",
       "./types/rw.d.ts",
-      "./types/vite.d.ts",
-      "node"
+      "./types/vite.d.ts"
     ],
     "paths": {
       "@/*": ["./src/*"],
@@ -46,5 +45,5 @@
     /* Skip type checking all .d.ts files. */
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist", "e2e", "playwright.config.ts"]
+  "exclude": ["node_modules", "dist", "e2e"]
 }
