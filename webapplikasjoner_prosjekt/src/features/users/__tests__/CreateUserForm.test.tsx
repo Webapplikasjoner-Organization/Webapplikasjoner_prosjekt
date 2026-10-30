@@ -79,4 +79,16 @@ describe("CreateUserForm", () => {
       ),
     ).toBeInTheDocument();
   });
+  it("Should display the proper error message when a user with the same email already exists", async () => {
+    const user = userEvent.setup();
+    render(<CreateUserForm action={createUserAction} />);
+    await user.type(screen.getByLabelText("Email:"), "jane.doe@example.com");
+    await user.type(screen.getByLabelText("Password:"), "password456");
+    await user.click(screen.getByRole("button"));
+    expect(
+      await screen.findByText(
+        "A user with this email or username already exists.",
+      ),
+    ).toBeInTheDocument();
+  });
 });
