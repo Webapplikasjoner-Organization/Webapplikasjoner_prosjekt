@@ -6,14 +6,14 @@
 // startet. Da slipper dere å lure på om feilen ligger i dataene.
 import { defineScript } from "rwsdk/worker";
 import { drizzle } from "drizzle-orm/d1";
-import { users, games, articles } from "./schema";
+import { users, usergames, articles } from "./schema";
 
 export const seedData = async (env: Env) => {
   const db = drizzle(env.DB);
 
   // Tøm først, så seed kan kjøres om igjen uten å doble alt.
   await db.delete(users);
-  await db.delete(games);
+  //await db.delete(usergames);
   await db.delete(articles);
 
   // Brukerne må inn før oppgavene: fremmednøkkelen krever at brukeren finnes.
@@ -23,47 +23,38 @@ export const seedData = async (env: Env) => {
   // helt til jeg finner ut av kryptering.
   await db.insert(users).values([
     {
+      id: "1",
       email: "jane.doe@example.com",
       password: "password456",
     },
     {
+      id: "2",
       email: "alice.smith@example.com",
       password: "password789",
     },
     {
+      id: "3",
       email: "bob.johnson@example.com",
       password: "password101",
     },
   ]);
 
-  await db.insert(games).values([
+  /*
+  await db.insert(usergames).values([
     {
-      name: "The Legend of Zelda: Tears of the Kingdom",
-      cover: "https://example.com/zelda.jpg",
-      genres: "Action, Adventure",
-      rating: 5,
-      releaseDate: new Date("2023-05-12"),
-      summary: "An open-world adventure game set in the kingdom of Hyrule.",
+      userid: "1",
+      gameid: "1",
     },
     {
-      name: "Super Mario Odyssey",
-      cover: "https://example.com/mario.jpg",
-      genres: "Platformer",
-      rating: 10,
-      releaseDate: new Date("2017-09-27"),
-      summary:
-        "Join Mario on a globe-trotting adventure to save Princess Peach.",
+      userid: "2",
+      gameid: "2",
     },
     {
-      name: "Animal Crossing: New Horizons",
-      cover: "https://example.com/animalcrossing.jpg",
-      genres: "Simulation",
-      rating: 8,
-      releaseDate: new Date("2020-03-20"),
-      summary:
-        "A life simulation game where players develop a deserted island into a thriving community.",
+      userid: "3",
+      gameid: "3",
     },
   ]);
+  */
 
   await db.insert(articles).values([
     {
