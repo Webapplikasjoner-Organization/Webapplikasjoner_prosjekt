@@ -1,44 +1,79 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Oppsett for end to end-tester.
- *
- * `npm run test:e2e` starter dev-serveren selv og kjører alt i `e2e/` mot den.
- *
- * Er 5173 opptatt, velg en annen port:
- *   E2E_PORT=5199 npm run test:e2e
- *
- * Sett `E2E_BASE_URL` for å teste mot en app som allerede kjører, eller mot en
- * deployet adresse. Da starter ikke Playwright noen server selv.
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
  */
-const PORT = process.env.E2E_PORT ?? "5173";
-const BASE_URL = process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
+// import dotenv from 'dotenv';
+// import path from 'path';
+// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
 export default defineConfig({
-  testDir: "./e2e",
-  testMatch: "**/*.e2e.ts",
-  // Testene deler én database, så de kjører én av gangen.
-  fullyParallel: false,
-  workers: 1,
+  testDir: './integration-tests',
+  /* Run tests in files in parallel */
+  fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  reporter: "list",
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: 'html',
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: BASE_URL,
-    // Lagrer en trace når en test feiler. Åpne den med:
-    //   npx playwright show-trace test-results/<mappe>/trace.zip
-    trace: "retain-on-failure",
+    /* Base URL to use in actions like `await page.goto('')`. */
+    // baseURL: 'http://localhost:3000',
+
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: process.env.E2E_BASE_URL
-    ? undefined
-    : {
-        // `npm run` virker uansett om dere installerte med npm eller pnpm.
-        command: `npm run dev -- --port ${PORT}`,
-        url: BASE_URL,
-        // Gjenbruker en dev-server som alt kjører på porten. Kjører dere et
-        // ANNET prosjekt på 5173, tester Playwright det prosjektet. Da er det
-        // E2E_PORT dere vil ha.
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
-      },
+
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+
+    /* Test against mobile viewports. */
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 12'] },
+    // },
+
+    /* Test against branded browsers. */
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    // },
+    // {
+    //   name: 'Google Chrome',
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    // },
+  ],
+
+  /* Run your local dev server before starting the tests */
+  // webServer: {
+  //   command: 'npm run start',
+  //   url: 'http://localhost:3000',
+  //   reuseExistingServer: !process.env.CI,
+  // },
 });

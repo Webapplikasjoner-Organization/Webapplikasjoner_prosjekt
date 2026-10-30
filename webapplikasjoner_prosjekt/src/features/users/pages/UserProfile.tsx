@@ -26,12 +26,12 @@ export async function UserProfile({ params, request }: RequestInfo) {
         <button className={brandStyles.button}>
           <a href={`/users/${id}/my-games`}>My Games</a>
         </button>
-        <button className={brandStyles.button}>
+        {/* <button className={brandStyles.button}>
           <a href={`/users/${id}/change-email`}>Change email</a>
         </button>
         <button className={brandStyles.button}>
           <a href={`/users/${id}/change-password`}>Change password</a>
-        </button>
+        </button> */}
         <button className={brandStyles.button}>
           <a href={`/logout`}>Log out</a>
         </button>

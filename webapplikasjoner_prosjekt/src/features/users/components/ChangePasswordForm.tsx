@@ -1,7 +1,6 @@
 "use client";
 
 import { brandStyles } from "@/app/styles/brand-styles";
-import { navigate } from "rwsdk/client";
 import { useState } from "react";
 
 export function ChangePasswordForm() {
@@ -10,29 +9,18 @@ export function ChangePasswordForm() {
 
   return (
     <>
-      <form>
-        <fieldset>
+      <form method="post" action="/change-password" className="pt-5 pb-5">
+        <fieldset className="flex flex-col gap-4">
           <label>
-            New Password:
             <input
               type="password"
               placeholder="Enter new password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              className=" border-black border-3 rounded p-2 w-full"
             />
           </label>
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              if (!newPassword) {
-                setError("The new password cannot be empty.");
-                return;
-              }
-              navigate("/");
-            }}
-            className={brandStyles.button}
-          >
+          <button type="submit" className={brandStyles.button}>
             Change Password
           </button>
         </fieldset>

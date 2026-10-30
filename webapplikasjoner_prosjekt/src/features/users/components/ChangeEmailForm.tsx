@@ -1,6 +1,5 @@
 "use client";
 
-import { navigate } from "rwsdk/client";
 import { useState } from "react";
 import { brandStyles } from "@/app/styles/brand-styles";
 
@@ -10,29 +9,18 @@ export function ChangeEmailForm() {
 
   return (
     <>
-      <form>
-        <fieldset>
+      <form method="post" action="/change-email" className="pt-5 pb-5">
+        <fieldset className="flex flex-col gap-4">
           <label>
-            New Email:
             <input
               type="text"
               placeholder="Enter new email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
+              className=" border-black border-3 rounded p-2 w-full"
             />
           </label>
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              if (!newEmail) {
-                setError("The new email cannot be empty.");
-                return;
-              }
-              navigate("/");
-            }}
-            className={brandStyles.button}
-          >
+          <button type="submit" className={brandStyles.button}>
             Change Email
           </button>
         </fieldset>

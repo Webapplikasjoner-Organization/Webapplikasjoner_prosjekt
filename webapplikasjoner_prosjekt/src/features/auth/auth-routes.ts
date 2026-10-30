@@ -24,6 +24,56 @@ function logout() {
   });
 }
 
+/*
+const changeEmail: RouteMiddleware = async ({ ctx }) => {
+  if (!ctx.user) {
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: "/login",
+      },
+    });
+  }
+
+  await userService.update({
+    id: ctx.user.id,
+    field: "email",
+    value: newEmail,
+  });
+
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: `/users/${encodeURIComponent(ctx.user.id)}`,
+    },
+  });
+};
+
+const changePassword: RouteMiddleware = async ({ ctx }) => {
+  if (!ctx.user) {
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: "/login",
+      },
+    });
+  }
+
+  await userService.update({
+    id: ctx.user.id,
+    field: "password",
+    value: newPassword,
+  });
+
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: `/users/${encodeURIComponent(ctx.user.id)}`,
+    },
+  });
+};
+*/
+
 const deleteAccount: RouteMiddleware = async ({ ctx }) => {
   if (!ctx.user) {
     return new Response(null, {
@@ -49,10 +99,12 @@ const deleteAccount: RouteMiddleware = async ({ ctx }) => {
 export const authRoutes = [
   route("/login", { get: LoginPage, post: LoginPage }),
   route("/logout", { get: logout }),
+  // route("/change-email", { post: changeEmail }),
+  // route("/change-password", { post: changePassword }),
   route("/delete", { post: deleteAccount }),
   route("/users/:id", [requireUserPage, UserProfile]),
-  route("/users/:id/change-password", [requireUserPage, ChangePasswordPage]),
   route("/users/:id/change-email", [requireUserPage, ChangeEmailPage]),
+  route("/users/:id/change-password", [requireUserPage, ChangePasswordPage]),
   route("/users/:id/delete-account", [requireUserPage, DeleteAccountPage]),
   route("/users/:id/my-games", [requireUserPage, MyGamesPage]),
 ];
