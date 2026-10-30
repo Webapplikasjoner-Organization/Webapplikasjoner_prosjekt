@@ -1,6 +1,7 @@
 import {
   createUserSchema,
   updateUserSchema,
+  loginSchema,
 } from "@/features/users/user-schema";
 import { z } from "zod";
 import { toUserDTO } from "./user-mapper";
@@ -14,6 +15,7 @@ export interface UserService {
   create: (input: unknown) => Promise<Result<UserDTO>>;
   list: (params?: Params) => Promise<Result<UserDTO[]>>;
   findById: (input: unknown) => Promise<Result<UserDTO> | null>;
+  login: (input: unknown) => Promise<Result<UserDTO> | null>;
   findByEmail: (input: unknown) => Promise<Result<UserDTO> | null>;
   findByUsername: (input: unknown) => Promise<Result<UserDTO> | null>;
   update: (input: unknown) => Promise<Result<void> | null>;
@@ -116,6 +118,55 @@ export function createUserService(_repository: UserRepository): UserService {
           error: {
             code: 404,
             message: "User could not be found.",
+          },
+        };
+      }
+      if (!result.ok) {
+        return result;
+      }
+      if (!result.data) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "User could not be found.",
+          },
+        };
+      }
+      return {
+        ok: true,
+        data: toUserDTO(result.data),
+        code: 200,
+      };
+    },
+    async login(input: unknown): Promise<Result<UserDTO> | null> {
+      if (typeof input !== "object" || input === null) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Input must be an object.",
+          },
+        };
+      }
+      const parsed = loginSchema.safeParse(input);
+      if (!parsed.success) {
+        return {
+          ok: false,
+          error: {
+            code: 400,
+            message: "Invalid login input.",
+          },
+        };
+      }
+      const { email, password } = parsed.data;
+      const result = await _repository.login(email, password);
+      if (result === null) {
+        return {
+          ok: false,
+          error: {
+            code: 404,
+            message: "Wrong email or password.",
           },
         };
       }

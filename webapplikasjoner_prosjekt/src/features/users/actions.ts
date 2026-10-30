@@ -103,7 +103,10 @@ export async function loginAction(
       };
     }
 
-    const result = await userService.findByEmail(values.email);
+    const result = await userService.login({
+      email: values.email,
+      password: values.password,
+    });
 
     if (result === null) {
       return {

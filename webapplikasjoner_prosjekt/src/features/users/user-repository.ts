@@ -11,6 +11,7 @@ export interface UserRepository {
   create: (user: CreateUser) => Promise<Result<User>>;
   findMany: (params?: UserListParams) => Promise<Result<User[]>>;
   findById: (id: string) => Promise<Result<User> | null>;
+  login: (email: string, password: string) => Promise<Result<User> | null>;
   findByEmail: (email: string) => Promise<Result<User> | null>;
   findByUsername: (username: string) => Promise<Result<User> | null>;
   update: (
@@ -122,6 +123,33 @@ export function createUserRepository(_db: DB): UserRepository {
           error: {
             code: 500,
             message: "Server error. Could not retrieve the user.",
+          },
+        };
+      }
+    },
+    async login(email: string, password: string): Promise<Result<User> | null> {
+      try {
+        const getUser = await _db.query.users.findFirst({
+          where: {
+            email: email ? { like: email } : undefined,
+            password: password ? { like: password } : undefined,
+          },
+        });
+        if (!getUser) {
+          return null;
+        }
+        return {
+          ok: true,
+          data: getUser,
+          code: 200,
+        };
+      } catch (error) {
+        console.error(error);
+        return {
+          ok: false,
+          error: {
+            code: 500,
+            message: "Server error. Could not retrieve the user by login.",
           },
         };
       }

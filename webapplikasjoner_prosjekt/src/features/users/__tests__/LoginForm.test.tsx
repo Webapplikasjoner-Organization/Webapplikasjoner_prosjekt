@@ -50,4 +50,28 @@ describe("LoginForm", () => {
       await screen.findByText("Input fields cannot be empty."),
     ).toBeInTheDocument();
   });
+  it("Should display the proper error message when email or password is incorrect", async () => {
+    const invalidloginAction = vi.fn<LoginFormAction>().mockResolvedValue({
+      ok: false,
+      error: {
+        code: 404,
+        message: "Wrong email or password.",
+      },
+      values: {
+        email: "invalidEmail@example.com",
+        password: "invalidPassword",
+      },
+    });
+    const user = userEvent.setup();
+    render(<LoginForm action={invalidloginAction} />);
+    await user.type(
+      screen.getByLabelText("Email:"),
+      "invalidEmail@example.com",
+    );
+    await user.type(screen.getByLabelText("Password:"), "invalidPassword");
+    await user.click(screen.getByRole("button"));
+    expect(
+      await screen.findByText("Wrong email or password."),
+    ).toBeInTheDocument();
+  });
 });
