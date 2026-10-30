@@ -130,10 +130,7 @@ export function createUserRepository(_db: DB): UserRepository {
     async login(email: string, password: string): Promise<Result<User> | null> {
       try {
         const getUser = await _db.query.users.findFirst({
-          where: {
-            email: email ? { like: email } : undefined,
-            password: password ? { like: password } : undefined,
-          },
+          where: { email, password },
         });
         if (!getUser) {
           return null;
@@ -157,7 +154,7 @@ export function createUserRepository(_db: DB): UserRepository {
     async findByEmail(email: string): Promise<Result<User> | null> {
       try {
         const getUser = await _db.query.users.findFirst({
-          where: { email: email ? { like: email } : undefined },
+          where: { email },
         });
         if (!getUser) {
           return null;
@@ -181,7 +178,7 @@ export function createUserRepository(_db: DB): UserRepository {
     async findByUsername(username: string): Promise<Result<User> | null> {
       try {
         const getUser = await _db.query.users.findFirst({
-          where: { username: username ? { like: username } : undefined },
+          where: { username },
         });
         if (!getUser) {
           return null;
