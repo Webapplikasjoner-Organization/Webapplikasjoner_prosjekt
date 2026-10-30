@@ -16,9 +16,7 @@ export function Footer() {
       >
         Generate a random number
       </button>
-      {number === undefined ? (
-        <p>_</p>
-      ) : (
+      {number === undefined ? null : (
         <p className="text-brand-white">{number}</p>
       )}
     </footer>
