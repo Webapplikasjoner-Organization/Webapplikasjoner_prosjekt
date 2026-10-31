@@ -10,12 +10,12 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
 
   return (
     <article className="pt-10 pb-10 w-75 gap-5">
-      <a href={`/games/${id}`}>
+      <a href={`/games/${id}`} className="flex flex-col items-center">
         <img
-          src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${cover?.image_id}.jpg`}
+          src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${cover?.image_id}.jpg`}
           alt={`${name} box-art`}
-          width="300"
-          height="300"
+          width="264"
+          height="374"
         />
       </a>
       <section className="flex flex-col flex-wrap gap-5 bg-[#d7d7d7]">

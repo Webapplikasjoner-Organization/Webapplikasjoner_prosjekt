@@ -52,10 +52,10 @@ export async function GamePage({ params }: RequestInfo) {
         {game ? (
           <article className="flex flex-col w-2/3 gap-5">
             <img
-              src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${cover?.image_id}.jpg`}
+              src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${cover?.image_id}.jpg`}
               alt={`${name} box-art`}
-              width="300"
-              height="300"
+              width="264"
+              height="374"
             />
             <p>
               <span className="font-bold">Name: </span>
