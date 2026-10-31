@@ -19,15 +19,17 @@ import type { RouteMiddleware } from "rwsdk/router";
 import { getRandomNumbers } from "./middleware";
 import { Footer } from "@/components/Footer";
 
+function createLogoutHeaders(location: string): Headers {
+  const headers = new Headers({ Location: location });
+  headers.append("Set-Cookie", clearSessionCookie());
+  headers.append("Set-Cookie", clearRandomNumbersCookie());
+  return headers;
+}
+
 function logout() {
   return new Response(null, {
     status: 303,
-    headers: {
-      Location: "/",
-      "Set-Cookie": [clearSessionCookie(), clearRandomNumbersCookie()].join(
-        ", ",
-      ),
-    },
+    headers: createLogoutHeaders("/"),
   });
 }
 
@@ -96,12 +98,7 @@ const deleteAccount: RouteMiddleware = async ({ ctx }) => {
 
   return new Response(null, {
     status: 303,
-    headers: {
-      Location: "/login",
-      "Set-Cookie": [clearSessionCookie(), clearRandomNumbersCookie()].join(
-        ", ",
-      ),
-    },
+    headers: createLogoutHeaders("/login"),
   });
 };
 
