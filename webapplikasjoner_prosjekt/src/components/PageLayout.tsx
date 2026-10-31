@@ -9,10 +9,10 @@ interface PageLayoutProps {
 
 export function PageLayout({ children }: PageLayoutProps) {
   const { ctx } = requestInfo;
-  const { user } = ctx;
+  const { user, randomNumbers } = ctx;
 
   return (
-    <AuthProvider user={user}>
+    <AuthProvider user={user} randomNumbers={randomNumbers ?? []}>
       <Header />
       {children}
       <Footer />

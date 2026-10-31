@@ -2,7 +2,10 @@
 // eks login, logout, register
 // og metodene som jeg skal kunne bruke til dette
 
-import { clearSessionCookie } from "@/features/auth/session";
+import {
+  clearSessionCookie,
+  clearRandomNumbersCookie,
+} from "@/features/auth/session";
 import { LoginPage } from "@/features/users/pages/LoginPage";
 import { UserProfile } from "@/features/users/pages/UserProfile";
 import { route } from "rwsdk/router";
@@ -13,13 +16,17 @@ import { DeleteAccountPage } from "@/features/users/pages/DeleteAccountPage";
 import { MyGamesPage } from "@/features/users/pages/MyGamesPage";
 import { userService } from "@/features/users/user-service";
 import type { RouteMiddleware } from "rwsdk/router";
+import { getRandomNumbers } from "./middleware";
+import { Footer } from "@/components/Footer";
 
 function logout() {
   return new Response(null, {
     status: 303,
     headers: {
       Location: "/",
-      "Set-Cookie": clearSessionCookie(),
+      "Set-Cookie": [clearSessionCookie(), clearRandomNumbersCookie()].join(
+        ", ",
+      ),
     },
   });
 }
@@ -91,7 +98,9 @@ const deleteAccount: RouteMiddleware = async ({ ctx }) => {
     status: 303,
     headers: {
       Location: "/login",
-      "Set-Cookie": clearSessionCookie(),
+      "Set-Cookie": [clearSessionCookie(), clearRandomNumbersCookie()].join(
+        ", ",
+      ),
     },
   });
 };

@@ -5,6 +5,8 @@ import type { RouteMiddleware } from "rwsdk/router";
 import { db } from "@/db";
 import { readSessionUserId } from "./session";
 import type { ResultError } from "@/shared/result";
+import { getRandomNumber } from "@/shared/utils/get-random-number";
+import { readRandomNumbers } from "./session";
 
 export const requireUser: RouteMiddleware = ({ ctx }) => {
   if (!ctx.user) {
@@ -46,4 +48,10 @@ export const requireUserPage: RouteMiddleware = ({ ctx }) => {
   if (!ctx.user) {
     return new Response(null, { status: 302, headers: { Location: "/login" } });
   }
+};
+
+export const getRandomNumbers: RouteMiddleware = ({ ctx, request }) => {
+  const randomNumbers = readRandomNumbers(request);
+
+  ctx.randomNumbers = randomNumbers;
 };

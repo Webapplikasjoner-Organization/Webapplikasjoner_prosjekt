@@ -3,7 +3,11 @@
 import type { Result, ResultData, ResultError } from "@/shared/result";
 import type { UserDTO } from "@/features/users/user-mapper";
 import { requestInfo } from "rwsdk/worker";
-import { createSessionCookie } from "@/features/auth/session";
+import {
+  createRandomNumbersCookie,
+  createSessionCookie,
+  readRandomNumbers,
+} from "@/features/auth/session";
 import { userService } from "@/features/users/user-service";
 import { loginSchema, createUserSchema } from "./user-schema";
 
@@ -143,4 +147,14 @@ export async function loginAction(
       },
     };
   }
+}
+
+export async function saveRandomNumber(randomNumber: number) {
+  const existingRandomNumbers = readRandomNumbers(requestInfo.request) ?? [];
+  const updatedRandomNumbers = [...existingRandomNumbers, randomNumber];
+
+  requestInfo.response.headers.append(
+    "Set-Cookie",
+    createRandomNumbersCookie(updatedRandomNumbers),
+  );
 }
