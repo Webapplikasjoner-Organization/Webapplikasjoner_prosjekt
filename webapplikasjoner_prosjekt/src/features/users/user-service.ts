@@ -31,7 +31,7 @@ export function createUserService(_repository: UserRepository): UserService {
           ok: false,
           error: {
             code: 400,
-            message: "Username and password fields cannot be empty.",
+            message: "Email and password fields cannot be empty.",
             fieldErrors: z.flattenError(parsed.error).fieldErrors,
           },
         };
