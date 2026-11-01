@@ -12,4 +12,7 @@ export const userRoutes = [
     patch: [requireUser, userController.update],
     delete: [requireUser, userController.delete],
   }),
+  route("/api/v1/auth/login", {
+    post: userController.login,
+  }),
 ];

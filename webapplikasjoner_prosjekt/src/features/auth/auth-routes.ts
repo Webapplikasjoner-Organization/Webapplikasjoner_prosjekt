@@ -18,12 +18,49 @@ import { userService } from "@/features/users/user-service";
 import type { RouteMiddleware } from "rwsdk/router";
 import { getRandomNumbers } from "./middleware";
 import { Footer } from "@/components/Footer";
+import { RequestInfo } from "rwsdk/worker";
+import { UserDTO } from "../users/user-mapper";
+import type { Result } from "@/shared/result";
 
 function createLogoutHeaders(location: string): Headers {
   const headers = new Headers({ Location: location });
   headers.append("Set-Cookie", clearSessionCookie());
   headers.append("Set-Cookie", clearRandomNumbersCookie());
   return headers;
+}
+
+//Kan bli brukt fra mobil.
+async function login(input: unknown): Promise<Result<UserDTO>> {
+  try {
+    const response = await fetch(`/api/v1/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+    if (!response.ok) {
+      console.log(response.ok, response.status, response.statusText);
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
+    }
+    const data = await response.json();
+    return data as { ok: true; data: UserDTO; code: 200 };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      error: {
+        code: 500,
+        message: "Failed to login due to a server error.",
+      },
+    };
+  }
 }
 
 function logout() {
