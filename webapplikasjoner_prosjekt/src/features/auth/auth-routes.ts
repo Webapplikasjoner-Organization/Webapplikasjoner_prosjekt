@@ -29,7 +29,7 @@ function createLogoutHeaders(location: string): Headers {
   return headers;
 }
 
-//Kan bli brukt fra mobil.
+//Kan bli brukt fra mobil, men brukes ikke her i web foreløpig.
 async function login(input: unknown): Promise<Result<UserDTO>> {
   try {
     const response = await fetch(`/api/v1/auth/login`, {
