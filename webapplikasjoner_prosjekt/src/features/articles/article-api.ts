@@ -6,7 +6,7 @@ const GET_ALL_ARTICLES_ENDPOINT = "/api/v1/articles";
 export type ArticleResult<T> = 
 |   { 
         ok: true, 
-        data: T 
+        data: T
     }
 |   { 
         ok: false, 
@@ -28,7 +28,8 @@ export async function getAllArticles(): Promise<ArticleResult<ArticleDTO[]>> {
         }
 
         const data: ArticleDTO[] = await response.json();
-        return { ok:true, data: data };
+        
+        return { ok:true, data };
         
     } catch (error) {
         console.log(error);

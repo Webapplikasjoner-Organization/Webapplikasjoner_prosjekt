@@ -1,9 +1,8 @@
-import { Article } from "@/types/article";
 import { ArticleResult, getAllArticles } from "./article-api"
-import { toArticle } from "./article-mapper";
+import { ArticleDTO } from "./article-mapper";
 
 export interface ArticleRepository {
-    listAll(): Promise<ArticleResult<Article[]>>; 
+    listAll(): Promise<ArticleResult<ArticleDTO[]>>; 
 }
 
 export function createArticleRepository(): ArticleRepository {
@@ -17,8 +16,11 @@ export function createArticleRepository(): ArticleRepository {
 
             return {
                 ok: true,
-                data: result.data.map(toArticle),
+                data: result.data,
             };
         },
     };
 }
+
+
+export const articleRepository = createArticleRepository();
