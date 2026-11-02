@@ -23,9 +23,8 @@ export function ArticlesClient() {
         console.error(result.error.message);
       }
     }
-      console.log("Starter opp useEffect");
-      loadArticles();  
-      console.log("Kjørt ferdig loadArticles();")
+      loadArticles(); 
+      console.log("loadArticles() har kjørt"); 
 }, []);
 
 

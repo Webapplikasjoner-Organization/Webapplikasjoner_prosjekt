@@ -1,3 +1,4 @@
+import { Mock } from "vitest";
 import { ArticleDTO } from "./article-mapper";
 import { env } from "cloudflare:workers";
 
@@ -18,6 +19,12 @@ export type ArticleResult<T> =
         }
     };
 
+type MockApiArticlesResponse = {
+    data: ArticleDTO[];
+};
+
+
+
 export async function getAllArticles(): Promise<ArticleResult<ArticleDTO[]>> {
     const GET_ALL_ARTICLES_URL = `${MOCK_API_BASE_URL}${GET_ALL_ARTICLES_ENDPOINT}`;
     
@@ -34,9 +41,9 @@ export async function getAllArticles(): Promise<ArticleResult<ArticleDTO[]>> {
             throw new Error(`HTTP-feil: ${response.status}`);
         }
 
-        const data: ArticleDTO[] = await response.json();
+        const payload: MockApiArticlesResponse = await response.json();
 
-        return { ok:true, data };
+        return { ok:true, data: payload.data };
         
     } catch (error) {
         console.log(error);

@@ -8,6 +8,7 @@ export type ArticleDTO = {
 };
 
 export function toArticle(articleDTO: ArticleDTO): Article {
+    console.log("Mapper toArticle blir kjørt");
     return {
         id: articleDTO.id,
         title: articleDTO.title,

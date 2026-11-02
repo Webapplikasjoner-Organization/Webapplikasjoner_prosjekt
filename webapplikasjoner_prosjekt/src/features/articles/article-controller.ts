@@ -11,6 +11,7 @@ export function createArticleController (_service: ArticleService): ArticleContr
     return {
         async listAll() {
             try {
+                console.log("articleController kjører");
                 const response = await articleService.listAll();
                 
                 if (!response.ok) return response;
@@ -23,11 +24,12 @@ export function createArticleController (_service: ArticleService): ArticleContr
 
 
             } catch (error) {
+                console.log("Error fra articleController");
                 return {
                     ok: false,
                     error: {
                         code: 500,
-                        message: "Could not fetch articles",
+                        message: "Controller not fetch articles",
                     },
                 }
                 
