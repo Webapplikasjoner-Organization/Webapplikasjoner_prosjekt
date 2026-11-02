@@ -39,7 +39,7 @@ export const setCommonHeaders =
         `script-src 'self' 'unsafe-eval' 'nonce-${nonce}'`,
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
-        "img-src 'self' https://placehold.co https://images.igdb.com data: blob:",
+        "img-src 'self' https://placehold.co https://images.igdb.com https://cdn.mockapi.com data: blob:",
         "media-src 'self' data: blob:",
         "frame-ancestors 'self'",
         "object-src 'none'",
