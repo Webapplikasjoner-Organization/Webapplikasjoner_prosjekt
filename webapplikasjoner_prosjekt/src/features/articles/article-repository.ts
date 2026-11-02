@@ -1,5 +1,7 @@
+
 import { ArticleResult, getAllArticles } from "./article-api"
 import { ArticleDTO } from "./article-mapper";
+
 
 export interface ArticleRepository {
     listAll(): Promise<ArticleResult<ArticleDTO[]>>; 

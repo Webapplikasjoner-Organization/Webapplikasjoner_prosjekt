@@ -22,6 +22,7 @@ import { requireUser, setUser } from "./features/auth/middleware";
 import { SessionUser } from "./features/auth/auth-types";
 import { LogoutPage } from "./features/users/pages/LogoutPage";
 import { authRoutes } from "./features/auth/auth-routes";
+import { articleRoutes } from "./features/articles/article-routes";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
  *
@@ -37,6 +38,7 @@ const app = defineApp([
   setCommonHeaders(),
   setUser,
   ...userRoutes,
+  ...articleRoutes,
 
   ...(import.meta.env.VITE_IS_DEV_SERVER
     ? [

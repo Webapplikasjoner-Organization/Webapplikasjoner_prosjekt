@@ -1,4 +1,3 @@
-import { ARTICLES } from "@/data/articles";
 import { ArticleCard } from "../components/ArticleCard";
 import { Suspense } from "react";
 import { Article } from "@/types/article";
