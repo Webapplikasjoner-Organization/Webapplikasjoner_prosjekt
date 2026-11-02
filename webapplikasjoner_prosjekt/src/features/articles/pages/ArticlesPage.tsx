@@ -1,12 +1,13 @@
 
 import { PageLayout } from "@/components/PageLayout";
-import { Articles } from "../components/Articles";
+import { ArticlesClient } from "../components/ArticlesClient";
 
 export function ArticlesPage() {
+
   return (
     <PageLayout>
       <main>
-        <Articles></Articles>
+        <ArticlesClient></ArticlesClient>
       </main>
     </PageLayout>
   );
