@@ -2,7 +2,10 @@
 // eks login, logout, register
 // og metodene som jeg skal kunne bruke til dette
 
-import { clearSessionCookie } from "@/features/auth/session";
+import {
+  clearSessionCookie,
+  clearRandomNumbersCookie,
+} from "@/features/auth/session";
 import { LoginPage } from "@/features/users/pages/LoginPage";
 import { UserProfile } from "@/features/users/pages/UserProfile";
 import { route } from "rwsdk/router";
@@ -13,14 +16,57 @@ import { DeleteAccountPage } from "@/features/users/pages/DeleteAccountPage";
 import { MyGamesPage } from "@/features/users/pages/MyGamesPage";
 import { userService } from "@/features/users/user-service";
 import type { RouteMiddleware } from "rwsdk/router";
+import { getRandomNumbers } from "./middleware";
+import { Footer } from "@/components/Footer";
+import { RequestInfo } from "rwsdk/worker";
+import { UserDTO } from "../users/user-mapper";
+import type { Result } from "@/shared/result";
+
+function createLogoutHeaders(location: string): Headers {
+  const headers = new Headers({ Location: location });
+  headers.append("Set-Cookie", clearSessionCookie());
+  headers.append("Set-Cookie", clearRandomNumbersCookie());
+  return headers;
+}
+
+//Kan bli brukt fra mobil, men brukes ikke her i web foreløpig.
+async function login(input: unknown): Promise<Result<UserDTO>> {
+  try {
+    const response = await fetch(`/api/v1/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+    if (!response.ok) {
+      console.log(response.ok, response.status, response.statusText);
+      return {
+        ok: false,
+        error: {
+          code: response.status,
+          message: `Response not ok:${response.statusText}`,
+        },
+      };
+    }
+    const data = await response.json();
+    return data as { ok: true; data: UserDTO; code: 200 };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      error: {
+        code: 500,
+        message: "Failed to login due to a server error.",
+      },
+    };
+  }
+}
 
 function logout() {
   return new Response(null, {
     status: 303,
-    headers: {
-      Location: "/",
-      "Set-Cookie": clearSessionCookie(),
-    },
+    headers: createLogoutHeaders("/"),
   });
 }
 
@@ -89,10 +135,7 @@ const deleteAccount: RouteMiddleware = async ({ ctx }) => {
 
   return new Response(null, {
     status: 303,
-    headers: {
-      Location: "/login",
-      "Set-Cookie": clearSessionCookie(),
-    },
+    headers: createLogoutHeaders("/login"),
   });
 };
 

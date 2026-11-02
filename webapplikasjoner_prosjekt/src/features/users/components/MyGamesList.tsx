@@ -8,7 +8,9 @@ import { requestInfo } from "rwsdk/worker";
 export async function MyGamesList() {
   const gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-  where rating > 80 & rating_count > 50;
+  where rating > 80 & rating_count > 50 
+  & name != "Grand Theft Auto V: Special Edition"
+  & name != "The Witcher 3: Wild Hunt - Game of the Year Edition";
   sort rating desc;
   limit 10;`;
 

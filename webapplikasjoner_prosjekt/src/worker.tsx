@@ -22,6 +22,7 @@ import { requireUser, setUser } from "./features/auth/middleware";
 import { SessionUser } from "./features/auth/auth-types";
 import { LogoutPage } from "./features/users/pages/LogoutPage";
 import { authRoutes } from "./features/auth/auth-routes";
+import { getRandomNumbers } from "./features/auth/middleware";
 import { articleRoutes } from "./features/articles/article-routes";
 /**
  * Alt som ligger på `ctx` for én forespørsel.
@@ -31,12 +32,14 @@ import { articleRoutes } from "./features/articles/article-routes";
  */
 export type AppContext = {
   user: SessionUser | null;
+  randomNumbers: number[] | null;
 };
 
 const app = defineApp([
   // Middleware. Kjører for hver forespørsel, i rekkefølgen de står.
   setCommonHeaders(),
   setUser,
+  getRandomNumbers,
   ...userRoutes,
   ...articleRoutes,
 

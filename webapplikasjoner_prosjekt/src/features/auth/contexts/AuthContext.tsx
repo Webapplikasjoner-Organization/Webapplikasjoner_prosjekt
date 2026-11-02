@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { SessionUser } from "../auth-types";
 
 type AuthContextData = {
@@ -13,16 +13,23 @@ type AuthContextData = {
   deleteAccount: () => void;
   logout: () => void;
   */
+  randomNumbers: number[] | [];
+  addRandomNumber: (num: number) => void;
 };
 
 const AuthContext = createContext<AuthContextData | null>(null);
 
 type AuthProviderProps = {
   user: SessionUser | null;
+  randomNumbers: number[] | [];
   children: React.ReactNode;
 };
 
-export function AuthProvider({ user, children }: AuthProviderProps) {
+export function AuthProvider({
+  user,
+  randomNumbers: initialRandomNumbers,
+  children,
+}: AuthProviderProps) {
   /*
   const [currentUser, setCurrentUser] = useState<SessionUser | null>(user);
 
@@ -82,9 +89,18 @@ export function AuthProvider({ user, children }: AuthProviderProps) {
     logout,
   };
   */
+  const [randomNumbers, setRandomNumbers] = useState<number[] | []>(
+    initialRandomNumbers ?? [],
+  );
+
+  const addRandomNumber = (num: number) => {
+    setRandomNumbers((prev) => (prev ? [...prev, num] : [num]));
+  };
 
   const value = {
     user: user,
+    randomNumbers: randomNumbers,
+    addRandomNumber,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

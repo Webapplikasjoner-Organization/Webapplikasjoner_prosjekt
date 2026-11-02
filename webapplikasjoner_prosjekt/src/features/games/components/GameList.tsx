@@ -35,7 +35,9 @@ export async function GameList({
 
   gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-  where ${conditions.join(" & ")};
+  where ${conditions.join(" & ")} 
+  & name != "Grand Theft Auto V: Special Edition"
+  & name != "The Witcher 3: Wild Hunt - Game of the Year Edition";
   sort ${sort || "rating desc"};
   limit 10;`;
 

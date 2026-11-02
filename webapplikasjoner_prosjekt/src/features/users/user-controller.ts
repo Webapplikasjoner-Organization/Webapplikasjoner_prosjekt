@@ -5,6 +5,7 @@ export interface UserController {
   create: (requestInfo: RequestInfo) => Promise<Response>;
   list: (requestInfo: RequestInfo) => Promise<Response>;
   findById: (requestInfo: RequestInfo) => Promise<Response>;
+  login: (requestInfo: RequestInfo) => Promise<Response>;
   findByEmail: (requestInfo: RequestInfo) => Promise<Response>;
   findByUsername: (requestInfo: RequestInfo) => Promise<Response>;
   update: (requestInfo: RequestInfo) => Promise<Response>;
@@ -85,6 +86,41 @@ export function createUserController(_service: UserService): UserController {
           error: {
             code: 404,
             message: `User with the id: ${id} was not found.`,
+          },
+        });
+      }
+      if (!result.ok) {
+        return Response.json({
+          ok: false,
+          error: result.error,
+        });
+      }
+      return Response.json({
+        ok: true,
+        data: result.data,
+        code: 200,
+      });
+    },
+    async login({ request, ctx }: RequestInfo): Promise<Response> {
+      let body: unknown;
+      try {
+        body = await request.json();
+      } catch (error) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 400,
+            message: "Body must be in JSON format.",
+          },
+        });
+      }
+      const result = await _service.login(body);
+      if (result === null) {
+        return Response.json({
+          ok: false,
+          error: {
+            code: 404,
+            message: `Invalid login credentials.`,
           },
         });
       }

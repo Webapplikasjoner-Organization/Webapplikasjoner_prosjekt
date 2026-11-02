@@ -29,8 +29,7 @@ export async function createUser(input: unknown): Promise<Result<UserDTO>> {
       ok: false,
       error: {
         code: 500,
-        message:
-          "Failed to create a user in the database or the input is in the wrong format.",
+        message: "Failed to create a user due to a server error.",
       },
     };
   }
