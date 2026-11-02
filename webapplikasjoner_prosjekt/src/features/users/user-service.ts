@@ -165,7 +165,7 @@ export function createUserService(_repository: UserRepository): UserService {
         return {
           ok: false,
           error: {
-            code: 404,
+            code: 401,
             message: "Wrong email or password.",
           },
         };
