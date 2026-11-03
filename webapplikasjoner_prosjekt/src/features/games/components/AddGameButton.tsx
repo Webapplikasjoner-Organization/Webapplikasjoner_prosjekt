@@ -1,25 +1,54 @@
 "use client";
 
 import { brandStyles } from "@/app/styles/brand-styles";
-import { useState } from "react";
+import { useAuth } from "@/features/auth/contexts/AuthContext";
+import { saveGameID, removeGameIDFromCookies } from "@/features/users/actions";
+import { useState, useEffect } from "react";
 
 type AddGameButtonProps = {
-  gameName: string | undefined;
+  gameID: string | undefined;
 };
 
-export function AddGameButton({ gameName }: AddGameButtonProps) {
-  const [isAdded, setIsAdded] = useState(false);
+export function AddGameButton({ gameID }: AddGameButtonProps) {
+  const { user, gameIDs, addGameID, removeGameID } = useAuth();
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasGameInLibrary, setHasGameInLibrary] = useState(false);
+
+  useEffect(() => {
+    const hasGame = () => {
+      if (!gameID) return false;
+      return gameIDs.includes(gameID);
+    };
+    setHasGameInLibrary(hasGame());
+  }, [gameIDs, gameID, addGameID, removeGameID]);
 
   return (
     <button
       className={
-        isAdded
+        hasGameInLibrary
           ? `${brandStyles.successButton} self-center`
           : `${brandStyles.button} self-center`
       }
-      onClick={() => setIsAdded(!isAdded)}
+      onClick={() => {
+        setIsSaving(true);
+        if (user && gameID && !gameIDs.includes(gameID)) {
+          if (hasGameInLibrary) {
+            removeGameIDFromCookies(gameID);
+            removeGameID(gameID);
+          } else {
+            saveGameID(gameID);
+            addGameID(gameID);
+          }
+        }
+        setIsSaving(false);
+      }}
+      disabled={isSaving}
     >
-      {isAdded ? "In library" : "Add to your game library"}
+      {isSaving
+        ? "Saving..."
+        : hasGameInLibrary
+          ? "In library"
+          : "Add to your game library"}
     </button>
   );
 }

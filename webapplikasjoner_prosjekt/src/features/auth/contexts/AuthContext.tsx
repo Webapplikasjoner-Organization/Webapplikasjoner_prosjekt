@@ -15,6 +15,9 @@ type AuthContextData = {
   */
   randomNumbers: number[] | [];
   addRandomNumber: (num: number) => void;
+  gameIDs: string[];
+  addGameID: (id: string) => void;
+  removeGameID: (id: string) => void;
 };
 
 const AuthContext = createContext<AuthContextData | null>(null);
@@ -22,12 +25,14 @@ const AuthContext = createContext<AuthContextData | null>(null);
 type AuthProviderProps = {
   user: SessionUser | null;
   randomNumbers: number[] | [];
+  gameIDs: string[] | [];
   children: React.ReactNode;
 };
 
 export function AuthProvider({
   user,
   randomNumbers: initialRandomNumbers,
+  gameIDs: initialGameIDs,
   children,
 }: AuthProviderProps) {
   /*
@@ -92,15 +97,27 @@ export function AuthProvider({
   const [randomNumbers, setRandomNumbers] = useState<number[] | []>(
     initialRandomNumbers ?? [],
   );
+  const [gameIDs, setGameIDs] = useState<string[] | []>(initialGameIDs ?? []);
 
   const addRandomNumber = (num: number) => {
     setRandomNumbers((prev) => (prev ? [...prev, num] : [num]));
+  };
+
+  const addGameID = (gameID: string) => {
+    setGameIDs((prev) => (prev ? [...prev, gameID] : [gameID]));
+  };
+
+  const removeGameID = (gameID: string) => {
+    setGameIDs((prev) => (prev ? prev.filter((id) => id !== gameID) : []));
   };
 
   const value = {
     user: user,
     randomNumbers: randomNumbers,
     addRandomNumber,
+    gameIDs: gameIDs,
+    addGameID,
+    removeGameID,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

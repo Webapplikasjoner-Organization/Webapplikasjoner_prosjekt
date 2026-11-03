@@ -7,6 +7,8 @@ import {
   createRandomNumbersCookie,
   createSessionCookie,
   readRandomNumbers,
+  readGameIDs,
+  createGameIDsCookie,
 } from "@/features/auth/session";
 import { userService } from "@/features/users/user-service";
 import { loginSchema, createUserSchema } from "./user-schema";
@@ -156,5 +158,25 @@ export async function saveRandomNumber(randomNumber: number) {
   requestInfo.response.headers.append(
     "Set-Cookie",
     createRandomNumbersCookie(updatedRandomNumbers),
+  );
+}
+
+export async function saveGameID(gameID: string) {
+  const existingGameIDs = readGameIDs(requestInfo.request) ?? [];
+  const updatedGameIDs = [...existingGameIDs, gameID];
+
+  requestInfo.response.headers.append(
+    "Set-Cookie",
+    createGameIDsCookie(updatedGameIDs),
+  );
+}
+
+export async function removeGameIDFromCookies(gameID: string) {
+  const existingGameIDs = readGameIDs(requestInfo.request) ?? [];
+  const updatedGameIDs = existingGameIDs.filter((id) => id !== gameID);
+
+  requestInfo.response.headers.append(
+    "Set-Cookie",
+    createGameIDsCookie(updatedGameIDs),
   );
 }

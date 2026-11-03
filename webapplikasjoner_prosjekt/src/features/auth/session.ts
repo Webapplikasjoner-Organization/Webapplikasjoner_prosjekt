@@ -1,5 +1,6 @@
 export const SESSION_COOKIE = "session";
 export const RANDOM_NUMBERS_COOKIE = "randomNumbers";
+export const GAME_IDS_COOKIE = "gameIDs";
 
 export const SESSION_MAX_AGE = 60 * 60;
 
@@ -92,5 +93,35 @@ export function readRandomNumbers(request: Request): number[] | null {
     request.headers.get("cookie"),
     RANDOM_NUMBERS_COOKIE,
   );
+  return value ? JSON.parse(value) : null;
+}
+
+function serializeGameIDsCookie(value: string, maxAge: number) {
+  // Skru av https krav lokalt
+  const secure = !import.meta.env.VITE_IS_DEV_SERVER;
+
+  return [
+    `${GAME_IDS_COOKIE}=${value}`,
+    "HttpOnly",
+    "SameSite=Lax",
+    "Path=/",
+    `Max-Age=${maxAge}`,
+    ...(secure ? ["Secure"] : []),
+  ].join("; ");
+}
+
+export function createGameIDsCookie(gameIDs: string[]) {
+  return serializeGameIDsCookie(
+    encodeURIComponent(JSON.stringify(gameIDs)),
+    SESSION_MAX_AGE,
+  );
+}
+
+export function clearGameIDsCookie() {
+  return serializeGameIDsCookie("", 0);
+}
+
+export function readGameIDs(request: Request): string[] | null {
+  const value = readCookie(request.headers.get("cookie"), GAME_IDS_COOKIE);
   return value ? JSON.parse(value) : null;
 }

@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { readSessionUserId } from "./session";
 import type { ResultError } from "@/shared/result";
 import { getRandomNumber } from "@/shared/utils/get-random-number";
-import { readRandomNumbers } from "./session";
+import { readRandomNumbers, readGameIDs } from "./session";
 
 export const requireUser: RouteMiddleware = ({ ctx }) => {
   if (!ctx.user) {
@@ -54,4 +54,10 @@ export const getRandomNumbers: RouteMiddleware = ({ ctx, request }) => {
   const randomNumbers = readRandomNumbers(request);
 
   ctx.randomNumbers = randomNumbers;
+};
+
+export const getGameIDs: RouteMiddleware = ({ ctx, request }) => {
+  const gameIDs = readGameIDs(request);
+
+  ctx.gameIDs = gameIDs;
 };

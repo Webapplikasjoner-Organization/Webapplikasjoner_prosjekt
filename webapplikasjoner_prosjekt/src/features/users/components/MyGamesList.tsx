@@ -6,19 +6,22 @@ import { getIGDBContent } from "@/api/igdb";
 import { requestInfo } from "rwsdk/worker";
 
 export async function MyGamesList() {
+  const gameIDs = requestInfo.ctx.gameIDs ?? [];
+
   const gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-  where rating > 80 & rating_count > 50 
-  & name != "Grand Theft Auto V: Special Edition"
-  & name != "The Witcher 3: Wild Hunt - Game of the Year Edition";
-  sort rating desc;
+  where id = (${gameIDs.join(",")});
+  sort name desc;
   limit 10;`;
 
-  const games: Partial<Game>[] = (await getIGDBContent(
-    "games",
-    gamesFromIGDB,
-    CLIENTID,
-  )) as Partial<Game>[];
+  const games: Partial<Game>[] =
+    gameIDs.length === 0
+      ? []
+      : ((await getIGDBContent(
+          "games",
+          gamesFromIGDB,
+          CLIENTID,
+        )) as Partial<Game>[]);
 
   return (
     <>

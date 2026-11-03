@@ -18,7 +18,7 @@ import { ArticlePage } from "./features/articles/pages/ArticlePage";
 import { env } from "cloudflare:workers";
 import { seedData } from "./db/seed";
 import { UsersPage } from "./features/users/pages/UsersPage";
-import { requireUser, setUser } from "./features/auth/middleware";
+import { getGameIDs, requireUser, setUser } from "./features/auth/middleware";
 import { SessionUser } from "./features/auth/auth-types";
 import { LogoutPage } from "./features/users/pages/LogoutPage";
 import { authRoutes } from "./features/auth/auth-routes";
@@ -33,6 +33,7 @@ import { articleRoutes } from "./features/articles/article-routes";
 export type AppContext = {
   user: SessionUser | null;
   randomNumbers: number[] | null;
+  gameIDs: string[] | null;
 };
 
 const app = defineApp([
@@ -40,6 +41,7 @@ const app = defineApp([
   setCommonHeaders(),
   setUser,
   getRandomNumbers,
+  getGameIDs,
   ...userRoutes,
   ...articleRoutes,
 
