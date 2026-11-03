@@ -1,4 +1,3 @@
-import type { User } from "@/db/schema/user-schema";
 import { type Result } from "@/shared/result";
 import { UserDTO } from "./user-mapper";
 
@@ -150,7 +149,7 @@ export async function deleteUser(id: string): Promise<Result<void>> {
       };
     }
     const data = await response.json();
-    return data as { ok: true; data: void; code: 200 };
+    return data as { ok: true; data: void; code: 204 };
   } catch (error) {
     console.log(error);
     return {

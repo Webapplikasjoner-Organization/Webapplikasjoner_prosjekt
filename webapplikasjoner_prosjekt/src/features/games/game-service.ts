@@ -1,6 +1,6 @@
 import { addGameSchema } from "@/features/games/game-schema";
 import { z } from "zod";
-import { toGameDTO } from "./game-mapper";
+import { toGameDTO, toDBGame } from "./game-mapper";
 import type { Result } from "@/shared/result";
 import { gameRepository, type GameRepository } from "./game-repository";
 import { GameDTO } from "./game-mapper";
@@ -36,7 +36,7 @@ export function createGameService(_repository: GameRepository): GameService {
           },
         };
       }
-      const result = await _repository.create(parsed.data);
+      const result = await _repository.create(toDBGame(parsed.data));
       if (!result.ok) {
         return result;
       }
