@@ -29,14 +29,14 @@ export function AddGameButton({ gameID }: AddGameButtonProps) {
           ? `${brandStyles.successButton} self-center`
           : `${brandStyles.button} self-center`
       }
-      onClick={() => {
+      onClick={async () => {
         setIsSaving(true);
-        if (user && gameID && !gameIDs.includes(gameID)) {
+        if (user && gameID) {
           if (hasGameInLibrary) {
-            removeGameIDFromCookies(gameID);
+            await removeGameIDFromCookies(gameID);
             removeGameID(gameID);
-          } else {
-            saveGameID(gameID);
+          } else if (!gameIDs.includes(gameID)) {
+            await saveGameID(gameID);
             addGameID(gameID);
           }
         }
