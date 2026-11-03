@@ -4,8 +4,6 @@
 import type { RouteMiddleware } from "rwsdk/router";
 import { db } from "@/db";
 import { readSessionUserId } from "./session";
-import type { ResultError } from "@/shared/result";
-import { getRandomNumber } from "@/shared/utils/get-random-number";
 import { readRandomNumbers } from "./session";
 
 export const requireUser: RouteMiddleware = ({ ctx }) => {
