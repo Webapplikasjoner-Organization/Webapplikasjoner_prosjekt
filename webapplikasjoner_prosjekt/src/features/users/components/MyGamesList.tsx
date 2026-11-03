@@ -4,13 +4,22 @@ import { Suspense } from "react";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
 import { requestInfo } from "rwsdk/worker";
+import { userService } from "@/features/users/user-service";
 
 export async function MyGamesList() {
+  const userGamesList = await userService.list();
+
+  if (!userGamesList.ok) {
+    return <p>Failed to load your games.</p>;
+  }
+
+  if (!userGamesList.data || userGamesList.data.length === 0) {
+    return <p>No games found in your library.</p>;
+  }
+
   const gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-  where rating > 80 & rating_count > 50 
-  & name != "Grand Theft Auto V: Special Edition"
-  & name != "The Witcher 3: Wild Hunt - Game of the Year Edition";
+  where id = (${userGamesList?.data?.map((game) => game.id).join(",")});
   sort rating desc;
   limit 10;`;
 

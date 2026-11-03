@@ -49,7 +49,7 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           <span className="font-bold">Summary: </span>
           {summary}
         </p>
-        <AddGameButton gameName={name} />
+        <AddGameButton gameId={id} gameName={name} />
         <LikeButton gameName={name} />
       </section>
     </article>

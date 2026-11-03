@@ -2,24 +2,30 @@
 
 import { brandStyles } from "@/app/styles/brand-styles";
 import { useState } from "react";
+import { gameService } from "@/features/games/game-service";
 
 type AddGameButtonProps = {
+  gameId: string | undefined;
   gameName: string | undefined;
 };
 
-export function AddGameButton({ gameName }: AddGameButtonProps) {
-  const [isAdded, setIsAdded] = useState(false);
+export async function AddGameButton({ gameId, gameName }: AddGameButtonProps) {
+  const game = await gameService.findById(gameId);
 
   return (
     <button
       className={
-        isAdded
+        game?.ok && game?.data
           ? `${brandStyles.successButton} self-center`
           : `${brandStyles.button} self-center`
       }
-      onClick={() => setIsAdded(!isAdded)}
+      onClick={async () => {
+        if (gameId) {
+          await gameService.add(gameId);
+        }
+      }}
     >
-      {isAdded ? "In library" : "Add to your game library"}
+      {game?.ok && game?.data ? "In library" : "Add to your game library"}
     </button>
   );
 }
