@@ -4,22 +4,22 @@ import { Suspense } from "react";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
 import { requestInfo } from "rwsdk/worker";
-import { userService } from "@/features/users/user-service";
+import { gameService } from "@/features/games/game-service";
 
 export async function MyGamesList() {
-  const userGamesList = await userService.list();
+  const userGamesList = await gameService.list();
 
   if (!userGamesList.ok) {
-    return <p>Failed to load your games.</p>;
+    return <p className="text-center">Failed to load your games.</p>;
   }
 
   if (!userGamesList.data || userGamesList.data.length === 0) {
-    return <p>No games found in your library.</p>;
+    return <p className="text-center">No games found in your library.</p>;
   }
 
   const gamesFromIGDB = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary;
-  where id = (${userGamesList?.data?.map((game) => game.id).join(",")});
+  where id = (${userGamesList?.data.map((game) => game.gameId).join(",")});
   sort rating desc;
   limit 10;`;
 
