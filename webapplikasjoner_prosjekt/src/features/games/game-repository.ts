@@ -58,7 +58,7 @@ export function createGameRepository(_db: DB): GameRepository {
     > {
       try {
         const rows = await _db.query.usergames.findMany({
-          where: q ? { id: q } : undefined,
+          where: q ? { gameid: q } : undefined,
           orderBy: { id: "desc" },
           limit,
         });
