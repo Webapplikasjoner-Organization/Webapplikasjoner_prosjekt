@@ -14,12 +14,11 @@ export function createArticleService(
   return {
     async listAll() {
       try {
-        console.log("articleService kjører");
         const result = await _repository.listAll();
         console.log("MockAPI-respons:", result);
 
         if (!result.ok) {
-          console.log("Respons i service ikke ok: ", result.error.message);
+          console.log("Response in service not ok: ", result.error.message);
           return result;
         }
 
@@ -28,7 +27,7 @@ export function createArticleService(
           data: result.data.map(toArticle),
         };
       } catch (error) {
-        console.log("Error fra articleService", error);
+        console.log("Service error: ", error);
         return {
           ok: false,
           error: {
@@ -42,7 +41,7 @@ export function createArticleService(
       try {
         const result = await _repository.getById(id);
         if (!result.ok) {
-          console.log("Respons i service ikke ok: ", result.error.message);
+          console.log("Response in service not ok: ", result.error.message);
           return result;
         }
 
@@ -51,7 +50,7 @@ export function createArticleService(
           data: toArticle(result.data),
         };
       } catch (error) {
-        console.log("Error fra articleService", error);
+        console.log("Service error: ", error);
         return {
           ok: false,
           error: {
