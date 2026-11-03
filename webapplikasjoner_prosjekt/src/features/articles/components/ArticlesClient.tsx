@@ -24,7 +24,6 @@ export function ArticlesClient() {
       }
     }
       loadArticles(); 
-      console.log("loadArticles() har kjørt"); 
 }, []);
 
 

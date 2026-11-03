@@ -13,7 +13,6 @@ export function createArticleController(
   return {
     async listAll() {
       try {
-        console.log("articleController kjører");
         const response = await articleService.listAll();
 
         if (!response.ok) return response;
@@ -23,7 +22,7 @@ export function createArticleController(
           data: response.data,
         };
       } catch (error) {
-        console.log("Error fra articleController");
+        console.log("Controller error: ", error);
         return {
           ok: false,
           error: {
@@ -43,6 +42,7 @@ export function createArticleController(
           data: response.data,
         };
       } catch (error) {
+        console.log("Controller error: ", error);
         return {
           ok: false,
           error: {
