@@ -1,5 +1,6 @@
 import { Game } from "@/types/game";
 import { AddGameButton } from "./AddGameButton";
+import { LikeButton } from "./LikeButton";
 import { CLIENTID } from "@/constants/env_values";
 import { getIGDBContent } from "@/api/igdb";
 import { brandStyles } from "@/app/styles/brand-styles";
@@ -48,8 +49,8 @@ export async function GameCard({ game }: { game: Partial<Game> }) {
           <span className="font-bold">Summary: </span>
           {summary}
         </p>
-        <AddGameButton gameId={id} />
-        <button className={`${brandStyles.button} self-center`}>Like</button>
+        <AddGameButton gameName={name} />
+        <LikeButton gameName={name} />
       </section>
     </article>
   );

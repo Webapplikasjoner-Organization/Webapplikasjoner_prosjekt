@@ -1,17 +1,28 @@
+"use client";
+
 import type { RequestInfo } from "rwsdk/worker";
 import { PageLayout } from "@/components/PageLayout";
-import { ARTICLES } from "@/data/articles";
-import { Article as ArticleType } from "@/types/article";
 import { brandStyles } from "@/app/styles/brand-styles";
+import type { Article } from "@/types/article";
+import { useState, useEffect } from "react";
+import { ArticleResult } from "../article-api";
 
 export function ArticlePage({ params }: RequestInfo) {
-  const { id } = params;
+  const [article, setArticle] = useState<Article | undefined>(undefined);
 
-  const article: ArticleType | undefined = ARTICLES.find(
-    (article) => article.id === id,
-  );
+  useEffect(() => {
+    async function loadArticle() {
+      const response = await fetch(`api/v1/articles/${params.id}`);
+      const result: ArticleResult<Article> = await response.json();
 
-  const { title, content, articleImageURL } = article || {};
+      if (result.ok) {
+        setArticle(result.data);
+      } else {
+        console.error(result.error.message);
+      }
+    }
+    loadArticle();
+  }, []);
 
   return (
     <PageLayout>
@@ -19,13 +30,13 @@ export function ArticlePage({ params }: RequestInfo) {
         {article ? (
           <article>
             <img
-              src={articleImageURL}
+              src={article.articleImageURL}
               width="600"
               height="300"
               alt="article-image"
             ></img>
-            <h1>{title}</h1>
-            <p>{content}</p>
+            <h1>{article.title}</h1>
+            <p>{article.content}</p>
             <img src="" width="50" height="50" alt="like-button" />
             <img src="" width="50" height="50" alt="dislike-button" />
             <form>
