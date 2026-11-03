@@ -15,7 +15,6 @@ export function createArticleService(
     async listAll() {
       try {
         const result = await _repository.listAll();
-        console.log("MockAPI-respons:", result);
 
         if (!result.ok) {
           console.log("Response in service not ok: ", result.error.message);
