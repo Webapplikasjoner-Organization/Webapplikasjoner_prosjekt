@@ -5,6 +5,7 @@
 import {
   clearSessionCookie,
   clearRandomNumbersCookie,
+  clearGameIDsCookie,
 } from "@/features/auth/session";
 import { LoginPage } from "@/features/users/pages/LoginPage";
 import { UserProfile } from "@/features/users/pages/UserProfile";
@@ -26,6 +27,7 @@ function createLogoutHeaders(location: string): Headers {
   const headers = new Headers({ Location: location });
   headers.append("Set-Cookie", clearSessionCookie());
   headers.append("Set-Cookie", clearRandomNumbersCookie());
+  headers.append("Set-Cookie", clearGameIDsCookie());
   return headers;
 }
 
