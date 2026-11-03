@@ -1,4 +1,4 @@
-import { ArticleResult, getAllArticles } from "./article-api";
+import { ArticleResult, getAllArticles, getArticleById } from "./article-api";
 import { ArticleDTO } from "./article-mapper";
 
 export interface ArticleRepository {
@@ -37,12 +37,12 @@ export function createArticleRepository(): ArticleRepository {
     },
     async getById(id: string) {
       try {
-        const result = await getAllArticles(); // Assuming getAllArticles is used to fetch by ID as well
+        const result = await getArticleById(id);
         if (!result.ok) {
           return result;
         }
 
-        const article = result.data.find((a) => a.id === id);
+        const article = result.data;
         if (!article) {
           return {
             ok: false,
