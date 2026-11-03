@@ -6,7 +6,7 @@ export interface GameController {
   add: (requestInfo: RequestInfo) => Promise<Response>;
   list: (requestInfo: RequestInfo) => Promise<Response>;
   findById: (requestInfo: RequestInfo) => Promise<Response>;
-  delete: (requestInfo: RequestInfo) => Promise<Response>;
+  remove: (requestInfo: RequestInfo) => Promise<Response>;
 }
 
 export function createGameController(_service: GameService): GameController {
@@ -85,7 +85,7 @@ export function createGameController(_service: GameService): GameController {
         code: 200,
       });
     },
-    async delete({ request }: RequestInfo): Promise<Response> {
+    async remove({ request }: RequestInfo): Promise<Response> {
       let body: unknown;
       try {
         body = await request.json();
@@ -98,7 +98,7 @@ export function createGameController(_service: GameService): GameController {
           },
         });
       }
-      const result = await _service.delete(body);
+      const result = await _service.remove(body);
       if (result === null) {
         return Response.json({
           ok: false,

@@ -9,6 +9,6 @@ export const gameRoutes = [
   }),
   route("/api/v1/games/:id", {
     get: gameController.findById,
-    delete: [requireUser, gameController.delete],
+    delete: [requireUser, gameController.remove],
   }),
 ];
