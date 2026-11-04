@@ -1,0 +1,63 @@
+// verifisere at vi er logget inn
+// oppdatere ctx med nøvendig data
+
+import type { RouteMiddleware } from "rwsdk/router";
+import { db } from "@/db";
+import { readSessionUserId } from "./session";
+import type { ResultError } from "@/shared/result";
+import { getRandomNumber } from "@/shared/utils/get-random-number";
+import { readRandomNumbers, readGameIDs } from "./session";
+
+export const requireUser: RouteMiddleware = ({ ctx }) => {
+  if (!ctx.user) {
+    return Response.json(
+      {
+        ok: false,
+        error: {
+          code: 401,
+          message: "You must be logged in. Go to /login to log in.",
+          fieldErrors: {},
+        },
+      },
+      { status: 401 },
+    );
+  }
+};
+
+export const setUser: RouteMiddleware = async ({ ctx, request }) => {
+  const userId = readSessionUserId(request);
+
+  if (!userId) {
+    ctx.user = null;
+    return;
+  }
+
+  const user = await db.query.users.findFirst({
+    where: { id: userId },
+    columns: {
+      id: true,
+      username: true,
+      email: true,
+    },
+  });
+
+  ctx.user = user ?? null;
+};
+
+export const requireUserPage: RouteMiddleware = ({ ctx }) => {
+  if (!ctx.user) {
+    return new Response(null, { status: 302, headers: { Location: "/login" } });
+  }
+};
+
+export const getRandomNumbers: RouteMiddleware = ({ ctx, request }) => {
+  const randomNumbers = readRandomNumbers(request);
+
+  ctx.randomNumbers = randomNumbers;
+};
+
+export const getGameIDs: RouteMiddleware = ({ ctx, request }) => {
+  const gameIDs = readGameIDs(request);
+
+  ctx.gameIDs = gameIDs;
+};
