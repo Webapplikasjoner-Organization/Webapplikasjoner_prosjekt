@@ -20,7 +20,7 @@ export const setCommonHeaders =
     // No framing in an iframe.
     response.headers.set("X-Frame-Options", "DENY");
     // Do not pass the referring URL on.
-    response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     // Isolate the browsing context from windows opened on other origins.
     response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
 
@@ -40,6 +40,7 @@ export const setCommonHeaders =
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
         "img-src 'self' https://placehold.co https://images.igdb.com https://cdn.mockapi.com data: blob:",
+        "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
         "media-src 'self' data: blob:",
         "frame-ancestors 'self'",
         "object-src 'none'",
