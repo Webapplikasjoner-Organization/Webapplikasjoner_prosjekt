@@ -8,6 +8,7 @@ import type { RequestInfo } from "rwsdk/worker";
 
 export async function GamePage({ params }: RequestInfo) {
   const { id } = params;
+  const gameId = Number(id);
 
   const gameWithID = `
   fields name, cover.image_id, genres.name, platforms.name, rating, release_dates.human, summary, 
@@ -48,6 +49,10 @@ export async function GamePage({ params }: RequestInfo) {
     CLIENTID,
   )as Franchise[];
 
+  if (!game){
+    return <p>The game is not found</p>
+  }
+
   return (
     <PageLayout>
       <main className="flex flex-col items-center pt-5 pb-5">
@@ -71,7 +76,7 @@ export async function GamePage({ params }: RequestInfo) {
               <h2 className="font-bold mb-3"> Games in that franchise: </h2>
               {(gameFranchise?.[0]?.games?.length ?? 0) > 0 ? (
                 <ul className="list-disc list-inside">
-                  {gameFranchise?.[0]?.games?.map((franchiseGame) => (
+                  {gameFranchise?.[0]?.games?.filter((franchiseGame) => franchiseGame.id !== gameId).map((franchiseGame) => (
                     <li key={franchiseGame.id}>
                       <a href={`/games/${franchiseGame.id}`} className="text-blue-600 visited:text-purple-600">
                         {franchiseGame.name}
@@ -134,13 +139,13 @@ export async function GamePage({ params }: RequestInfo) {
             </div>
             <div>
               <h2 className="font-bold mb-3">Videos: </h2>
-              {videos && videos.length > 0 ? (
+              {videos?.length ?(
                 <iframe
                 src={`https://www.youtube.com/embed/${videos[0].video_id}`}
                 title={`${name} video`}
                 className="w-full aspect-video rounded-lg"
                 allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                loading="lazy"
               ></iframe>
               ) : (
                 <p>No videos available.</p>
