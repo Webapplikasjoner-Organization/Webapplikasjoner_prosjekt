@@ -49,6 +49,23 @@ export const GameSchema = z.object({
       }),
     )
     .optional(),
+    screenshots: z
+    .array(
+      z.object({
+        id: z.number().min(1, { message: "Screenshot ID: is required " }),
+        image_id: z.string().min(1, { message: "Screenshot Image ID: is required " }),
+      }),
+    )
+    .optional(),
+
+    videos: z
+    .array(
+      z.object({
+        id: z.number().min(1, { message: "Video ID: is required " }),
+        video_id: z.string().min(1, { message: "Video ID: is required " }),
+      }),
+    )
+    .optional(),
 });
 
 export type Game = z.infer<typeof GameSchema>;
