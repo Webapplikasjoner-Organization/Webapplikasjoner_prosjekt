@@ -39,7 +39,7 @@ test("User can log in and navigate protected routes", async ({
   await page.getByRole("link", { name: "Log out" }).click();
 });
 
-test("User can search for clair obscur, navigate to its game page and open an external link", async ({
+test("User can search for clair obscur, and find a link leading to its website", async ({
   page,
 }) => {
   await page.goto("http://localhost:5173/");
@@ -51,10 +51,9 @@ test("User can search for clair obscur, navigate to its game page and open an ex
   await page
     .getByRole("link", { name: "Clair Obscur: Expedition 33 box-art" })
     .click();
-  const page1Promise = page.waitForEvent("popup");
-  await page
-    .getByRole("link", { name: "https://www.expedition33.com/" })
-    .click();
-  const page1 = await page1Promise;
-  await expect(page1).toHaveURL("https://www.expedition33.com/");
+  const link = page.getByRole("link", {
+    name: "https://www.expedition33.com/",
+  });
+  await expect(link).toHaveAttribute("href", "https://www.expedition33.com/");
+  await expect(link).toHaveAttribute("target", "_blank");
 });
