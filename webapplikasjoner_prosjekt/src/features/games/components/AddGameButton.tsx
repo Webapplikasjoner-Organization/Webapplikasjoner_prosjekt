@@ -22,7 +22,7 @@ export function AddGameButton({ gameID }: AddGameButtonProps) {
     setHasGameInLibrary(hasGame());
   }, [gameIDs, gameID, addGameID, removeGameID]);
 
-  return (
+  return user ? (
     <button
       className={
         hasGameInLibrary
@@ -50,5 +50,5 @@ export function AddGameButton({ gameID }: AddGameButtonProps) {
           ? "In library"
           : "Add to your game library"}
     </button>
-  );
+  ) : null;
 }
